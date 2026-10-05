@@ -1,0 +1,76 @@
+{
+ "d_claws": {
+  "name": "Klauenwirbel",
+  "desc": "Aktiv: Klauen-Rundumschlag.",
+  "max": 1,
+  "kind": "active",
+  "ability": "d_claws",
+  "level": 1
+ },
+ "d_hellfire": {
+  "name": "Höllenfeuer",
+  "desc": "Aktiv: dämonisches Feuergeschoss.",
+  "max": 1,
+  "kind": "active",
+  "ability": "d_hellfire",
+  "level": 2
+ },
+ "d_shadowstep": {
+  "name": "Schattensprung",
+  "desc": "Aktiv: Teleport hinter das Ziel.",
+  "max": 1,
+  "kind": "active",
+  "ability": "d_shadowstep",
+  "level": 3
+ },
+ "d_bloodfrenzy": {
+  "name": "Blutrausch",
+  "desc": "Aktiv: Schaden & Lebensraub.",
+  "max": 1,
+  "kind": "active",
+  "ability": "d_bloodfrenzy",
+  "level": 4
+ },
+ "d_terror": {
+  "name": "Schreckensbrüllen",
+  "desc": "Aktiv: Furcht im Umkreis.",
+  "max": 1,
+  "kind": "active",
+  "ability": "d_terror",
+  "level": 5
+ },
+ "d_hide": {
+  "name": "Höllenhaut",
+  "desc": "+10% Rüstung in Dämonengestalt pro Rang.",
+  "max": 3,
+  "kind": "passive",
+  "level": 1,
+  "per_rank": {
+   "d_armor": 0.1
+  }
+ },
+ "d_might": {
+  "name": "Urgewalt",
+  "desc": "+10% Schaden in Dämonengestalt pro Rang.",
+  "max": 3,
+  "kind": "passive",
+  "level": 1,
+  "per_rank": {
+   "d_dmg": 0.1
+  }
+ },
+ "d_wings": {
+  "name": "Schwingen der Tiefe",
+  "desc": "Dämonenflügel erlauben Gleitflug; Rang 2: echter Flug.",
+  "max": 2,
+  "kind": "passive",
+  "level": 3
+ },
+ "d_elements": {
+  "name": "Elementarkern",
+  "desc": "Gewählte Elementar-Rune färbt deine Dämonenkräfte.",
+  "max": 1,
+  "kind": "passive",
+  "level": 6
+ }
+}

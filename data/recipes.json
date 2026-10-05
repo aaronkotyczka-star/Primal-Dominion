@@ -1,0 +1,1562 @@
+{
+ "r_torch": {
+  "kind": "fixed",
+  "name": "Fackel",
+  "station": "hand",
+  "inputs": {
+   "wood": 1,
+   "fiber": 2
+  },
+  "output": "torch",
+  "count": 1,
+  "research": null,
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_bandage": {
+  "kind": "fixed",
+  "name": "Verband",
+  "station": "hand",
+  "inputs": {
+   "fiber": 4,
+   "herb_healing": 1
+  },
+  "output": "bandage",
+  "count": 1,
+  "research": null,
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_thatch": {
+  "kind": "fixed",
+  "name": "Stroh",
+  "station": "hand",
+  "inputs": {
+   "fiber": 4
+  },
+  "output": "thatch",
+  "count": 2,
+  "research": null,
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_arrow_stone": {
+  "kind": "fixed",
+  "name": "Steinpfeile",
+  "station": "hand",
+  "inputs": {
+   "wood": 1,
+   "flint": 1,
+   "fiber": 1
+  },
+  "output": "arrow_stone",
+  "count": 5,
+  "research": null,
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_arrow_tranq": {
+  "kind": "fixed",
+  "name": "Betäubungspfeile",
+  "station": "hand",
+  "inputs": {
+   "arrow_stone": 2,
+   "narcotic": 1
+  },
+  "output": "arrow_tranq",
+  "count": 2,
+  "research": null,
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_bola": {
+  "kind": "fixed",
+  "name": "Bola",
+  "station": "hand",
+  "inputs": {
+   "fiber": 6,
+   "stone": 2
+  },
+  "output": "bola",
+  "count": 1,
+  "research": null,
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_narcotic": {
+  "kind": "fixed",
+  "name": "Betäubungsmittel",
+  "station": "hand",
+  "inputs": {
+   "narcoberry": 5,
+   "raw_meat": 1
+  },
+  "output": "narcotic",
+  "count": 1,
+  "research": null,
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_javelin": {
+  "kind": "fixed",
+  "name": "Wurfspeer",
+  "station": "hand",
+  "inputs": {
+   "wood": 2,
+   "flint": 1,
+   "fiber": 2
+  },
+  "output": "javelin",
+  "count": 2,
+  "research": null,
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "m_spear": {
+  "kind": "modular",
+  "name": "Speer",
+  "station": "hand",
+  "base": "spear_stone",
+  "slots": {
+   "head": {
+    "tag": "head",
+    "n": 2
+   },
+   "shaft": {
+    "tag": "shaft",
+    "n": 3
+   },
+   "binding": {
+    "tag": "binding",
+    "n": 3
+   }
+  },
+  "inputs": {},
+  "research": null,
+  "xp": 8
+ },
+ "m_axe": {
+  "kind": "modular",
+  "name": "Axt",
+  "station": "hand",
+  "base": "axe_stone",
+  "slots": {
+   "head": {
+    "tag": "head",
+    "n": 3
+   },
+   "shaft": {
+    "tag": "shaft",
+    "n": 2
+   },
+   "binding": {
+    "tag": "binding",
+    "n": 3
+   }
+  },
+  "inputs": {},
+  "research": null,
+  "xp": 8
+ },
+ "m_pick": {
+  "kind": "modular",
+  "name": "Spitzhacke",
+  "station": "hand",
+  "base": "pick_stone",
+  "slots": {
+   "head": {
+    "tag": "head",
+    "n": 3
+   },
+   "shaft": {
+    "tag": "shaft",
+    "n": 2
+   },
+   "binding": {
+    "tag": "binding",
+    "n": 3
+   }
+  },
+  "inputs": {},
+  "research": null,
+  "xp": 8
+ },
+ "m_club": {
+  "kind": "modular",
+  "name": "Keule",
+  "station": "hand",
+  "base": "club_wood",
+  "slots": {
+   "shaft": {
+    "tag": "shaft",
+    "n": 4
+   },
+   "binding": {
+    "tag": "binding",
+    "n": 2
+   }
+  },
+  "inputs": {},
+  "research": null,
+  "xp": 8
+ },
+ "m_sword": {
+  "kind": "modular",
+  "name": "Schwert",
+  "station": "forge",
+  "base": "sword_metal",
+  "slots": {
+   "head": {
+    "tag": "head",
+    "n": 4
+   },
+   "shaft": {
+    "tag": "shaft",
+    "n": 1
+   },
+   "binding": {
+    "tag": "binding",
+    "n": 2
+   }
+  },
+  "inputs": {},
+  "research": "metallurgy",
+  "xp": 8
+ },
+ "m_bow": {
+  "kind": "modular",
+  "name": "Bogen",
+  "station": "workbench",
+  "base": "bow_wood",
+  "slots": {
+   "shaft": {
+    "tag": "shaft",
+    "n": 4
+   },
+   "binding": {
+    "tag": "binding",
+    "n": 5
+   }
+  },
+  "inputs": {},
+  "research": null,
+  "xp": 8
+ },
+ "m_staff": {
+  "kind": "modular",
+  "name": "Stab",
+  "station": "workbench",
+  "base": "staff_wood",
+  "slots": {
+   "shaft": {
+    "tag": "shaft",
+    "n": 3
+   },
+   "focus": {
+    "tag": "focus",
+    "n": 1,
+    "optional": true
+   }
+  },
+  "inputs": {},
+  "research": null,
+  "xp": 8
+ },
+ "r_bow_composite": {
+  "kind": "fixed",
+  "name": "Kompositbogen",
+  "station": "workbench",
+  "inputs": {
+   "hardwood": 4,
+   "sinew": 6,
+   "horn": 2
+  },
+  "output": "bow_composite",
+  "count": 1,
+  "research": "advanced_archery",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_crossbow": {
+  "kind": "fixed",
+  "name": "Armbrust",
+  "station": "forge",
+  "inputs": {
+   "hardwood": 4,
+   "metal_ingot": 4,
+   "sinew": 4
+  },
+  "output": "crossbow",
+  "count": 1,
+  "research": "mechanics",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_blowpipe": {
+  "kind": "fixed",
+  "name": "Blasrohr",
+  "station": "workbench",
+  "inputs": {
+   "wood": 3,
+   "fiber": 4
+  },
+  "output": "blowpipe",
+  "count": 1,
+  "research": "tranquilizers",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_dart_tranq": {
+  "kind": "fixed",
+  "name": "Betäubungspfeilchen",
+  "station": "workbench",
+  "inputs": {
+   "fiber": 2,
+   "narcotic": 1,
+   "feather": 1
+  },
+  "output": "dart_tranq",
+  "count": 4,
+  "research": "tranquilizers",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_shield_wood": {
+  "kind": "fixed",
+  "name": "Holzschild",
+  "station": "workbench",
+  "inputs": {
+   "wood": 8,
+   "hide": 2,
+   "fiber": 4
+  },
+  "output": "shield_wood",
+  "count": 1,
+  "research": null,
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_shield_metal": {
+  "kind": "fixed",
+  "name": "Metallschild",
+  "station": "forge",
+  "inputs": {
+   "metal_ingot": 6,
+   "leather": 2
+  },
+  "output": "shield_metal",
+  "count": 1,
+  "research": "metallurgy",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_leather": {
+  "kind": "fixed",
+  "name": "Leder gerben",
+  "station": "workbench",
+  "inputs": {
+   "hide": 3,
+   "salt": 1
+  },
+  "output": "leather",
+  "count": 2,
+  "research": null,
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_sinew": {
+  "kind": "fixed",
+  "name": "Sehnen gewinnen",
+  "station": "workbench",
+  "inputs": {
+   "hide": 2,
+   "bone": 1
+  },
+  "output": "sinew",
+  "count": 2,
+  "research": null,
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_armor_hide_head": {
+  "kind": "fixed",
+  "name": "Lederkappe",
+  "station": "workbench",
+  "inputs": {
+   "hide": 4,
+   "fiber": 4
+  },
+  "output": "armor_hide_head",
+  "count": 1,
+  "research": null,
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_armor_hide_chest": {
+  "kind": "fixed",
+  "name": "Lederweste",
+  "station": "workbench",
+  "inputs": {
+   "hide": 8,
+   "fiber": 6
+  },
+  "output": "armor_hide_chest",
+  "count": 1,
+  "research": null,
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_armor_hide_legs": {
+  "kind": "fixed",
+  "name": "Lederhose",
+  "station": "workbench",
+  "inputs": {
+   "hide": 6,
+   "fiber": 5
+  },
+  "output": "armor_hide_legs",
+  "count": 1,
+  "research": null,
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_armor_fur_chest": {
+  "kind": "fixed",
+  "name": "Pelzmantel",
+  "station": "workbench",
+  "inputs": {
+   "pelt": 6,
+   "leather": 2,
+   "sinew": 2
+  },
+  "output": "armor_fur_chest",
+  "count": 1,
+  "research": "cold_gear",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_armor_bone_chest": {
+  "kind": "fixed",
+  "name": "Knochenpanzer",
+  "station": "workbench",
+  "inputs": {
+   "bone": 12,
+   "large_bone": 2,
+   "leather": 3
+  },
+  "output": "armor_bone_chest",
+  "count": 1,
+  "research": "bone_craft",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_armor_bone_head": {
+  "kind": "fixed",
+  "name": "Knochenhelm",
+  "station": "workbench",
+  "inputs": {
+   "bone": 6,
+   "leather": 1
+  },
+  "output": "armor_bone_head",
+  "count": 1,
+  "research": "bone_craft",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_armor_chitin_chest": {
+  "kind": "fixed",
+  "name": "Chitinpanzer",
+  "station": "workbench",
+  "inputs": {
+   "chitin": 10,
+   "silk": 4
+  },
+  "output": "armor_chitin_chest",
+  "count": 1,
+  "research": "chitin_craft",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_armor_chitin_legs": {
+  "kind": "fixed",
+  "name": "Chitinbeinlinge",
+  "station": "workbench",
+  "inputs": {
+   "chitin": 7,
+   "silk": 3
+  },
+  "output": "armor_chitin_legs",
+  "count": 1,
+  "research": "chitin_craft",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_saddle_small": {
+  "kind": "fixed",
+  "name": "Leichter Sattel",
+  "station": "workbench",
+  "inputs": {
+   "leather": 6,
+   "fiber": 10,
+   "wood": 4
+  },
+  "output": "saddle_small",
+  "count": 1,
+  "research": "saddlery",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_saddle_large": {
+  "kind": "fixed",
+  "name": "Schwerer Sattel",
+  "station": "workbench",
+  "inputs": {
+   "leather": 14,
+   "sinew": 6,
+   "hardwood": 6
+  },
+  "output": "saddle_large",
+  "count": 1,
+  "research": "saddlery",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_saddle_huge": {
+  "kind": "fixed",
+  "name": "Kolosssattel",
+  "station": "workbench",
+  "inputs": {
+   "leather": 24,
+   "sinew": 12,
+   "metal_ingot": 6,
+   "hardwood": 10
+  },
+  "output": "saddle_huge",
+  "count": 1,
+  "research": "saddlery_2",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_saddle_flyer": {
+  "kind": "fixed",
+  "name": "Flugsattel",
+  "station": "workbench",
+  "inputs": {
+   "leather": 10,
+   "silk": 4,
+   "feather": 10
+  },
+  "output": "saddle_flyer",
+  "count": 1,
+  "research": "flight_harness",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_saddle_sea": {
+  "kind": "fixed",
+  "name": "Seesattel",
+  "station": "workbench",
+  "inputs": {
+   "leather": 10,
+   "scales": 6,
+   "silk": 2
+  },
+  "output": "saddle_sea",
+  "count": 1,
+  "research": "sea_harness",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_trap_bear": {
+  "kind": "fixed",
+  "name": "Fußfalle",
+  "station": "workbench",
+  "inputs": {
+   "wood": 4,
+   "flint": 4,
+   "sinew": 2
+  },
+  "output": "trap_bear",
+  "count": 1,
+  "research": "trapping",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_trap_net": {
+  "kind": "fixed",
+  "name": "Netzfalle",
+  "station": "workbench",
+  "inputs": {
+   "fiber": 20,
+   "wood": 4,
+   "narcotic": 2
+  },
+  "output": "trap_net",
+  "count": 1,
+  "research": "trapping",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_trap_spike": {
+  "kind": "fixed",
+  "name": "Stachelgrube",
+  "station": "workbench",
+  "inputs": {
+   "wood": 10,
+   "flint": 4
+  },
+  "output": "trap_spike",
+  "count": 1,
+  "research": "trapping",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_firebomb": {
+  "kind": "fixed",
+  "name": "Feuertopf",
+  "station": "workbench",
+  "inputs": {
+   "clay": 2,
+   "sulfur": 2,
+   "fiber": 2
+  },
+  "output": "firebomb",
+  "count": 2,
+  "research": "incendiaries",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_arrow_fire": {
+  "kind": "fixed",
+  "name": "Brandpfeile",
+  "station": "workbench",
+  "inputs": {
+   "arrow_stone": 4,
+   "sulfur": 1
+  },
+  "output": "arrow_fire",
+  "count": 4,
+  "research": "incendiaries",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_trinket_beast": {
+  "kind": "fixed",
+  "name": "Bestienzahn-Amulett",
+  "station": "workbench",
+  "inputs": {
+   "raptor_claw": 2,
+   "trex_tooth": 1,
+   "sinew": 2
+  },
+  "output": "trinket_beast",
+  "count": 1,
+  "research": "beast_lore",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_metal_ingot": {
+  "kind": "fixed",
+  "name": "Metall schmelzen",
+  "station": "forge",
+  "inputs": {
+   "metal_ore": 2,
+   "charcoal": 1
+  },
+  "output": "metal_ingot",
+  "count": 1,
+  "research": null,
+  "skill": null,
+  "time": 2.0,
+  "xp": 4
+ },
+ "r_charcoal": {
+  "kind": "fixed",
+  "name": "Holzkohle",
+  "station": "campfire",
+  "inputs": {
+   "wood": 2
+  },
+  "output": "charcoal",
+  "count": 2,
+  "research": null,
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_cement": {
+  "kind": "fixed",
+  "name": "Mörtel",
+  "station": "workbench",
+  "inputs": {
+   "stone": 3,
+   "clay": 2
+  },
+  "output": "cement",
+  "count": 2,
+  "research": null,
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_arrow_metal": {
+  "kind": "fixed",
+  "name": "Metallpfeile",
+  "station": "forge",
+  "inputs": {
+   "metal_ingot": 1,
+   "wood": 2,
+   "feather": 2
+  },
+  "output": "arrow_metal",
+  "count": 8,
+  "research": "metallurgy",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_bolt_metal": {
+  "kind": "fixed",
+  "name": "Metallbolzen",
+  "station": "forge",
+  "inputs": {
+   "metal_ingot": 1,
+   "hardwood": 1
+  },
+  "output": "bolt_metal",
+  "count": 6,
+  "research": "mechanics",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_bolt_tranq": {
+  "kind": "fixed",
+  "name": "Betäubungsbolzen",
+  "station": "forge",
+  "inputs": {
+   "bolt_metal": 2,
+   "narcotic": 2
+  },
+  "output": "bolt_tranq",
+  "count": 2,
+  "research": "mechanics",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_armor_metal_chest": {
+  "kind": "fixed",
+  "name": "Metallharnisch",
+  "station": "forge",
+  "inputs": {
+   "metal_ingot": 14,
+   "leather": 4
+  },
+  "output": "armor_metal_chest",
+  "count": 1,
+  "research": "metallurgy",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_armor_metal_head": {
+  "kind": "fixed",
+  "name": "Metallhelm",
+  "station": "forge",
+  "inputs": {
+   "metal_ingot": 6,
+   "leather": 1
+  },
+  "output": "armor_metal_head",
+  "count": 1,
+  "research": "metallurgy",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_armor_wyvern": {
+  "kind": "fixed",
+  "name": "Wyvernschuppenrüstung",
+  "station": "forge",
+  "inputs": {
+   "wyvern_scale": 12,
+   "silk": 6,
+   "metal_ingot": 4
+  },
+  "output": "armor_wyvern_chest",
+  "count": 1,
+  "research": "dragon_smith",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_gunpowder": {
+  "kind": "fixed",
+  "name": "Schwarzpulver",
+  "station": "alchemy",
+  "inputs": {
+   "sulfur": 2,
+   "charcoal": 2,
+   "salt": 1
+  },
+  "output": "gunpowder",
+  "count": 3,
+  "research": "black_powder",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_donnerrohr": {
+  "kind": "fixed",
+  "name": "Donnerrohr",
+  "station": "forge",
+  "inputs": {
+   "metal_ingot": 12,
+   "hardwood": 4,
+   "gunpowder": 4
+  },
+  "output": "donnerrohr",
+  "count": 1,
+  "research": "black_powder",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_shot_iron": {
+  "kind": "fixed",
+  "name": "Eisenkugeln",
+  "station": "forge",
+  "inputs": {
+   "metal_ingot": 1,
+   "gunpowder": 2
+  },
+  "output": "shot_iron",
+  "count": 6,
+  "research": "black_powder",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_runenbuechse": {
+  "kind": "fixed",
+  "name": "Runenbüchse",
+  "station": "forge",
+  "inputs": {
+   "metal_ingot": 10,
+   "crystal": 6,
+   "elemental_essence": 4,
+   "hardwood": 4
+  },
+  "output": "runenbuechse",
+  "count": 1,
+  "research": "runetech",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_rune_charge": {
+  "kind": "fixed",
+  "name": "Runenladung",
+  "station": "alchemy",
+  "inputs": {
+   "crystal": 1,
+   "elemental_essence": 1
+  },
+  "output": "rune_charge",
+  "count": 5,
+  "research": "runetech",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_staff_crystal": {
+  "kind": "fixed",
+  "name": "Kristallstab",
+  "station": "workbench",
+  "inputs": {
+   "hardwood": 4,
+   "crystal": 4,
+   "silk": 2
+  },
+  "output": "staff_crystal",
+  "count": 1,
+  "research": "crystal_focus",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_cooked_meat": {
+  "kind": "fixed",
+  "name": "Fleisch braten",
+  "station": "campfire",
+  "inputs": {
+   "raw_meat": 1
+  },
+  "output": "cooked_meat",
+  "count": 1,
+  "research": null,
+  "skill": null,
+  "time": 0.5,
+  "xp": 1
+ },
+ "r_cooked_prime": {
+  "kind": "fixed",
+  "name": "Edelfleisch braten",
+  "station": "campfire",
+  "inputs": {
+   "raw_prime_meat": 1
+  },
+  "output": "cooked_prime",
+  "count": 1,
+  "research": null,
+  "skill": null,
+  "time": 0.5,
+  "xp": 1
+ },
+ "r_cooked_fish": {
+  "kind": "fixed",
+  "name": "Fisch braten",
+  "station": "campfire",
+  "inputs": {
+   "raw_fish": 1
+  },
+  "output": "cooked_fish",
+  "count": 1,
+  "research": null,
+  "skill": null,
+  "time": 0.5,
+  "xp": 1
+ },
+ "r_cooked_prime_fish": {
+  "kind": "fixed",
+  "name": "Edelfisch braten",
+  "station": "campfire",
+  "inputs": {
+   "raw_prime_fish": 1
+  },
+  "output": "cooked_prime",
+  "count": 1,
+  "research": null,
+  "skill": null,
+  "time": 0.5,
+  "xp": 1
+ },
+ "r_jerky": {
+  "kind": "fixed",
+  "name": "Trockenfleisch",
+  "station": "kitchen",
+  "inputs": {
+   "cooked_meat": 2,
+   "salt": 1
+  },
+  "output": "jerky",
+  "count": 2,
+  "research": null,
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_stew": {
+  "kind": "fixed",
+  "name": "Jägereintopf",
+  "station": "kitchen",
+  "inputs": {
+   "cooked_meat": 2,
+   "veggies": 3,
+   "mushroom": 1
+  },
+  "output": "stew",
+  "count": 1,
+  "research": null,
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_kibble": {
+  "kind": "fixed",
+  "name": "Bestienfutter",
+  "station": "kitchen",
+  "inputs": {
+   "raw_meat": 2,
+   "veggies": 2,
+   "berries": 4
+  },
+  "output": "kibble",
+  "count": 2,
+  "research": "beast_lore",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_healing_salve": {
+  "kind": "fixed",
+  "name": "Heilsalbe",
+  "station": "alchemy",
+  "inputs": {
+   "herb_healing": 3,
+   "mushroom": 1
+  },
+  "output": "healing_salve",
+  "count": 1,
+  "research": null,
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_healing_potion": {
+  "kind": "fixed",
+  "name": "Heiltrank",
+  "station": "alchemy",
+  "inputs": {
+   "herb_healing": 4,
+   "rare_flower": 1,
+   "crystal": 1
+  },
+  "output": "healing_potion",
+  "count": 1,
+  "research": "potency",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_stamina_tonic": {
+  "kind": "fixed",
+  "name": "Ausdauertonikum",
+  "station": "alchemy",
+  "inputs": {
+   "berries": 6,
+   "mushroom": 2
+  },
+  "output": "stamina_tonic",
+  "count": 1,
+  "research": null,
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_antidote": {
+  "kind": "fixed",
+  "name": "Gegengift",
+  "station": "alchemy",
+  "inputs": {
+   "venom_gland": 1,
+   "herb_healing": 2
+  },
+  "output": "antidote",
+  "count": 1,
+  "research": null,
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_creature_medicine": {
+  "kind": "fixed",
+  "name": "Tiermedizin",
+  "station": "alchemy",
+  "inputs": {
+   "herb_healing": 4,
+   "veggies": 2,
+   "salt": 1
+  },
+  "output": "creature_medicine",
+  "count": 1,
+  "research": "veterinary",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_purify_tonic": {
+  "kind": "fixed",
+  "name": "Reinigungstrank",
+  "station": "alchemy",
+  "inputs": {
+   "rare_flower": 2,
+   "crystal": 1,
+   "essence_light": 1
+  },
+  "output": "purify_tonic",
+  "count": 1,
+  "research": "gene_therapy",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_gene_stabilizer": {
+  "kind": "fixed",
+  "name": "Genstabilisator",
+  "station": "alchemy",
+  "inputs": {
+   "crystal": 1,
+   "elemental_essence": 1,
+   "blood_crystal": 1
+  },
+  "output": "gene_stabilizer",
+  "count": 1,
+  "research": "gene_therapy",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_forget_potion": {
+  "kind": "fixed",
+  "name": "Trank des Vergessens",
+  "station": "alchemy",
+  "inputs": {
+   "rare_flower": 3,
+   "shadow_shard": 1,
+   "mushroom": 4
+  },
+  "output": "forget_potion",
+  "count": 1,
+  "research": "potency",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_repel_musk": {
+  "kind": "fixed",
+  "name": "Moschussalbe",
+  "station": "alchemy",
+  "inputs": {
+   "herb_healing": 2,
+   "venom_gland": 1
+  },
+  "output": "repel_musk",
+  "count": 1,
+  "research": null,
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_binding_rune": {
+  "kind": "fixed",
+  "name": "Bindungsrune",
+  "station": "alchemy",
+  "inputs": {
+   "crystal": 2,
+   "elemental_essence": 2,
+   "silk": 1
+  },
+  "output": "binding_rune",
+  "count": 1,
+  "research": "binding_magic",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_pact_sigil": {
+  "kind": "fixed",
+  "name": "Paktsiegel",
+  "station": "alchemy",
+  "inputs": {
+   "demon_essence": 4,
+   "blood_crystal": 1,
+   "rift_shard": 1
+  },
+  "output": "pact_sigil",
+  "count": 1,
+  "research": "pact_lore",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_soul_crystal": {
+  "kind": "fixed",
+  "name": "Seelenkristall",
+  "station": "alchemy",
+  "inputs": {
+   "crystal": 6,
+   "elemental_essence": 3,
+   "rift_shard": 1
+  },
+  "output": "soul_crystal",
+  "count": 1,
+  "research": "crystal_2",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_trinket_rift": {
+  "kind": "fixed",
+  "name": "Rissamulett",
+  "station": "alchemy",
+  "inputs": {
+   "rift_shard": 2,
+   "crystal": 2,
+   "essence_light": 1
+  },
+  "output": "trinket_rift",
+  "count": 1,
+  "research": "rift_analysis",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_rune_fire": {
+  "kind": "fixed",
+  "name": "Feuerrune",
+  "station": "alchemy",
+  "inputs": {
+   "stone": 2,
+   "crystal": 1,
+   "essence_fire": 2
+  },
+  "output": "rune_fire",
+  "count": 1,
+  "research": "runecraft",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_essence_fire": {
+  "kind": "fixed",
+  "name": "Feueressenz destillieren",
+  "station": "alchemy",
+  "inputs": {
+   "elemental_essence": 2
+  },
+  "output": "essence_fire",
+  "count": 1,
+  "research": "element_theory",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_rune_water": {
+  "kind": "fixed",
+  "name": "Wasserrune",
+  "station": "alchemy",
+  "inputs": {
+   "stone": 2,
+   "crystal": 1,
+   "essence_water": 2
+  },
+  "output": "rune_water",
+  "count": 1,
+  "research": "runecraft",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_essence_water": {
+  "kind": "fixed",
+  "name": "Wasseressenz destillieren",
+  "station": "alchemy",
+  "inputs": {
+   "elemental_essence": 2
+  },
+  "output": "essence_water",
+  "count": 1,
+  "research": "element_theory",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_rune_ice": {
+  "kind": "fixed",
+  "name": "Eisrune",
+  "station": "alchemy",
+  "inputs": {
+   "stone": 2,
+   "crystal": 1,
+   "essence_ice": 2
+  },
+  "output": "rune_ice",
+  "count": 1,
+  "research": "runecraft",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_essence_ice": {
+  "kind": "fixed",
+  "name": "Eisessenz destillieren",
+  "station": "alchemy",
+  "inputs": {
+   "elemental_essence": 2
+  },
+  "output": "essence_ice",
+  "count": 1,
+  "research": "element_theory",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_rune_lightning": {
+  "kind": "fixed",
+  "name": "Blitzrune",
+  "station": "alchemy",
+  "inputs": {
+   "stone": 2,
+   "crystal": 1,
+   "essence_lightning": 2
+  },
+  "output": "rune_lightning",
+  "count": 1,
+  "research": "runecraft",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_essence_lightning": {
+  "kind": "fixed",
+  "name": "Blitzessenz destillieren",
+  "station": "alchemy",
+  "inputs": {
+   "elemental_essence": 2
+  },
+  "output": "essence_lightning",
+  "count": 1,
+  "research": "element_theory",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_rune_earth": {
+  "kind": "fixed",
+  "name": "Erderune",
+  "station": "alchemy",
+  "inputs": {
+   "stone": 2,
+   "crystal": 1,
+   "essence_earth": 2
+  },
+  "output": "rune_earth",
+  "count": 1,
+  "research": "runecraft",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_essence_earth": {
+  "kind": "fixed",
+  "name": "Erdeessenz destillieren",
+  "station": "alchemy",
+  "inputs": {
+   "elemental_essence": 2
+  },
+  "output": "essence_earth",
+  "count": 1,
+  "research": "element_theory",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_rune_wind": {
+  "kind": "fixed",
+  "name": "Windrune",
+  "station": "alchemy",
+  "inputs": {
+   "stone": 2,
+   "crystal": 1,
+   "essence_wind": 2
+  },
+  "output": "rune_wind",
+  "count": 1,
+  "research": "runecraft",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_essence_wind": {
+  "kind": "fixed",
+  "name": "Windessenz destillieren",
+  "station": "alchemy",
+  "inputs": {
+   "elemental_essence": 2
+  },
+  "output": "essence_wind",
+  "count": 1,
+  "research": "element_theory",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_rune_nature": {
+  "kind": "fixed",
+  "name": "Naturrune",
+  "station": "alchemy",
+  "inputs": {
+   "stone": 2,
+   "crystal": 1,
+   "essence_nature": 2
+  },
+  "output": "rune_nature",
+  "count": 1,
+  "research": "runecraft",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_essence_nature": {
+  "kind": "fixed",
+  "name": "Naturessenz destillieren",
+  "station": "alchemy",
+  "inputs": {
+   "elemental_essence": 2
+  },
+  "output": "essence_nature",
+  "count": 1,
+  "research": "element_theory",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_rune_poison": {
+  "kind": "fixed",
+  "name": "Giftrune",
+  "station": "alchemy",
+  "inputs": {
+   "stone": 2,
+   "crystal": 1,
+   "essence_poison": 2
+  },
+  "output": "rune_poison",
+  "count": 1,
+  "research": "runecraft",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_essence_poison": {
+  "kind": "fixed",
+  "name": "Giftessenz destillieren",
+  "station": "alchemy",
+  "inputs": {
+   "elemental_essence": 2
+  },
+  "output": "essence_poison",
+  "count": 1,
+  "research": "element_theory",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_rune_light": {
+  "kind": "fixed",
+  "name": "Lichtrune",
+  "station": "alchemy",
+  "inputs": {
+   "stone": 2,
+   "crystal": 1,
+   "essence_light": 2
+  },
+  "output": "rune_light",
+  "count": 1,
+  "research": "runecraft_2",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_essence_light": {
+  "kind": "fixed",
+  "name": "Lichtessenz destillieren",
+  "station": "alchemy",
+  "inputs": {
+   "elemental_essence": 2
+  },
+  "output": "essence_light",
+  "count": 1,
+  "research": "element_theory",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_rune_shadow": {
+  "kind": "fixed",
+  "name": "Schattenrune",
+  "station": "alchemy",
+  "inputs": {
+   "stone": 2,
+   "crystal": 1,
+   "essence_shadow": 2
+  },
+  "output": "rune_shadow",
+  "count": 1,
+  "research": "runecraft_2",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_essence_shadow": {
+  "kind": "fixed",
+  "name": "Schattenessenz destillieren",
+  "station": "alchemy",
+  "inputs": {
+   "elemental_essence": 2
+  },
+  "output": "essence_shadow",
+  "count": 1,
+  "research": "element_theory",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_rune_blood": {
+  "kind": "fixed",
+  "name": "Blutrune",
+  "station": "alchemy",
+  "inputs": {
+   "stone": 2,
+   "crystal": 1,
+   "essence_blood": 2
+  },
+  "output": "rune_blood",
+  "count": 1,
+  "research": "runecraft_2",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ },
+ "r_essence_blood": {
+  "kind": "fixed",
+  "name": "Blutessenz destillieren",
+  "station": "alchemy",
+  "inputs": {
+   "elemental_essence": 2
+  },
+  "output": "essence_blood",
+  "count": 1,
+  "research": "element_theory",
+  "skill": null,
+  "time": 1.0,
+  "xp": 4
+ }
+}

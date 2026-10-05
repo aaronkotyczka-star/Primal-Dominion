@@ -1,0 +1,145 @@
+[
+ {
+  "id": "electrolysis",
+  "name": "Elektrolyse",
+  "status": "wet",
+  "element": "lightning",
+  "dmg_mult": 1.5,
+  "aoe": 4.0,
+  "apply": "shocked",
+  "consume": true
+ },
+ {
+  "id": "freeze",
+  "name": "Schockfrost",
+  "status": "wet",
+  "element": "ice",
+  "apply": "frozen",
+  "consume": true
+ },
+ {
+  "id": "steam",
+  "name": "Dampfstoß",
+  "status": "burning",
+  "element": "water",
+  "dmg_mult": 1.2,
+  "apply": "steam",
+  "consume": true,
+  "aoe": 3.0
+ },
+ {
+  "id": "shatter",
+  "name": "Frostbruch",
+  "status": "frozen",
+  "element": "fire",
+  "dmg_mult": 1.8,
+  "consume": true
+ },
+ {
+  "id": "shatter2",
+  "name": "Zerschmettern",
+  "status": "frozen",
+  "element": "earth",
+  "dmg_mult": 2.0,
+  "consume": true
+ },
+ {
+  "id": "firestorm",
+  "name": "Feuersturm",
+  "status": "burning",
+  "element": "wind",
+  "aoe": 5.0,
+  "apply": "burning",
+  "dmg_mult": 1.3
+ },
+ {
+  "id": "explosion",
+  "name": "Giftexplosion",
+  "status": "poisoned",
+  "element": "fire",
+  "dmg_mult": 1.4,
+  "aoe": 3.5,
+  "consume": true
+ },
+ {
+  "id": "wildfire",
+  "name": "Flächenbrand",
+  "status": "rooted",
+  "element": "fire",
+  "apply": "burning",
+  "dur_mult": 2.0
+ },
+ {
+  "id": "mud",
+  "name": "Schlammfalle",
+  "status": "shaken",
+  "element": "water",
+  "apply": "slowed"
+ },
+ {
+  "id": "sandblast",
+  "name": "Sandschleier",
+  "status": "shaken",
+  "element": "wind",
+  "apply": "blinded",
+  "aoe": 3.0
+ },
+ {
+  "id": "overload",
+  "name": "Überladung",
+  "status": "shocked",
+  "element": "wind",
+  "chain": 2,
+  "dmg_mult": 1.2
+ },
+ {
+  "id": "twilight",
+  "name": "Zwielicht",
+  "status": "feared",
+  "element": "light",
+  "dmg_mult": 1.6,
+  "true_damage": true,
+  "consume": true
+ },
+ {
+  "id": "twilight2",
+  "name": "Zwielicht",
+  "status": "blinded",
+  "element": "shadow",
+  "dmg_mult": 1.6,
+  "true_damage": true,
+  "consume": true
+ },
+ {
+  "id": "corruption",
+  "name": "Verderbnis",
+  "status": "bleeding",
+  "element": "shadow",
+  "lifesteal": 0.3,
+  "dmg_mult": 1.2
+ },
+ {
+  "id": "sepsis",
+  "name": "Sepsis",
+  "status": "bleeding",
+  "element": "poison",
+  "apply": "septic",
+  "dmg_mult": 1.2
+ },
+ {
+  "id": "overgrowth",
+  "name": "Wucherung",
+  "status": "wet",
+  "element": "nature",
+  "apply": "entangled",
+  "consume": true
+ },
+ {
+  "id": "purge",
+  "name": "Läuterung",
+  "status": "burning",
+  "element": "light",
+  "dmg_mult": 1.3,
+  "vs_demonic": 1.5
+ }
+]

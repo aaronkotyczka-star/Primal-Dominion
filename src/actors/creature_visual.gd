@@ -91,15 +91,16 @@ func _process(delta: float) -> void:
 			m.set_shader_parameter("hurt_flash", _hurt)
 
 
-## Attach gear (weapon/armor) meshes to a socket; replaces existing gear on that socket.
-func set_gear(socket: String, mesh: Mesh, xform: Transform3D = Transform3D(), material: Material = null) -> void:
+## Attach a gear node (weapon/shield) to a socket; replaces existing gear there.
+func set_gear(socket: String, node: Node3D, xform: Transform3D = Transform3D(Basis(Vector3.RIGHT, -PI * 0.5), Vector3.ZERO)) -> void:
 	if gear_nodes.has(socket):
 		gear_nodes[socket].queue_free()
 		gear_nodes.erase(socket)
-	if mesh == null:
+	if node == null:
 		return
 	var st := RigLibrary.socket_transform(meta, socket)
 	if st.is_empty():
+		node.queue_free()
 		return
 	var att := BoneAttachment3D.new()
 	att.bone_name = st["bone"]
@@ -107,13 +108,14 @@ func set_gear(socket: String, mesh: Mesh, xform: Transform3D = Transform3D(), ma
 	var pivot := Node3D.new()
 	att.add_child(pivot)
 	pivot.position = (st["local"] as Transform3D).origin
-	var mi := MeshInstance3D.new()
-	mi.mesh = mesh
-	mi.transform = xform
-	if material:
-		mi.material_override = material
-	pivot.add_child(mi)
+	node.transform = xform
+	pivot.add_child(node)
 	gear_nodes[socket] = att
+
+
+func set_shadow_only(v: bool) -> void:
+	for n in find_children("*", "GeometryInstance3D", true, false):
+		(n as GeometryInstance3D).cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY if v else GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 
 
 func get_socket_global(socket: String) -> Vector3:

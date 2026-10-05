@@ -91,7 +91,7 @@ ISLANDS = [
 ]
 
 POIS = {
-    "start_beach": dict(x=60, z=398, kind="spawn", name="Treibgutstrand"),
+    "start_beach": dict(x=60, z=398, kind="spawn", name="Treibgutstrand", flatten=22),
     "morgengrau": dict(x=-130, z=390, kind="village", faction="morgengrau", name="Morgengrau", flatten=46),
     "moosfell": dict(x=340, z=120, kind="village", faction="moosfell", name="Moosfell-Dorf", flatten=50),
     "knochenbrecher": dict(x=-390, z=150, kind="camp", faction="knochenbrecher", name="Knochenbrecher-Lager", flatten=48),

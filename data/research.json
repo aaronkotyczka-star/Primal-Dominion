@@ -1,0 +1,511 @@
+{
+ "carpentry": {
+  "name": "Zimmerei",
+  "cost": 3,
+  "desc": "Betten, große Lager, stabile Bauten.",
+  "req": [],
+  "source": "start",
+  "items": {},
+  "unlocks": [
+   "bed",
+   "storage_large"
+  ],
+  "cat": "Handwerk"
+ },
+ "masonry": {
+  "name": "Steinbau",
+  "cost": 5,
+  "desc": "Steinmauern und Mörtel.",
+  "req": [
+   "carpentry"
+  ],
+  "source": "start",
+  "items": {},
+  "unlocks": [
+   "stone_wall"
+  ],
+  "cat": "Handwerk"
+ },
+ "fortification": {
+  "name": "Befestigung",
+  "cost": 6,
+  "desc": "Wachtürme.",
+  "req": [
+   "masonry"
+  ],
+  "source": "start",
+  "items": {},
+  "unlocks": [
+   "watchtower"
+  ],
+  "cat": "Handwerk"
+ },
+ "agriculture": {
+  "name": "Ackerbau",
+  "cost": 4,
+  "desc": "Feldbeete für Bewohner.",
+  "req": [],
+  "source": "start",
+  "items": {},
+  "unlocks": [
+   "farm_plot"
+  ],
+  "cat": "Siedlung"
+ },
+ "cooking": {
+  "name": "Kochkunst",
+  "cost": 3,
+  "desc": "Kochstelle, Trockenfleisch, Eintopf.",
+  "req": [],
+  "source": "start",
+  "items": {},
+  "unlocks": [
+   "kitchen"
+  ],
+  "cat": "Überleben"
+ },
+ "alchemy_basics": {
+  "name": "Alchemie",
+  "cost": 3,
+  "desc": "Alchemietisch, Salben, Tonika.",
+  "req": [],
+  "source": "start",
+  "items": {},
+  "unlocks": [
+   "alchemy_table"
+  ],
+  "cat": "Überleben"
+ },
+ "potency": {
+  "name": "Wirkstofflehre",
+  "cost": 6,
+  "desc": "Heiltränke, Trank des Vergessens.",
+  "req": [
+   "alchemy_basics"
+  ],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Überleben"
+ },
+ "veterinary": {
+  "name": "Tierheilkunde",
+  "cost": 5,
+  "desc": "Krankenstation, Tiermedizin.",
+  "req": [
+   "alchemy_basics"
+  ],
+  "source": "teacher:ilsa",
+  "items": {},
+  "unlocks": [],
+  "cat": "Bestien"
+ },
+ "beast_lore": {
+  "name": "Bestienkunde",
+  "cost": 4,
+  "desc": "Bestienfutter und Zahnamulett.",
+  "req": [],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Bestien"
+ },
+ "tranquilizers": {
+  "name": "Betäubungskunde",
+  "cost": 3,
+  "desc": "Blasrohr und Betäubungspfeilchen.",
+  "req": [],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Bestien"
+ },
+ "trapping": {
+  "name": "Fallenbau",
+  "cost": 4,
+  "desc": "Fuß-, Netz- und Stachelfallen.",
+  "req": [],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Jagd"
+ },
+ "saddlery": {
+  "name": "Sattlerei",
+  "cost": 4,
+  "desc": "Leichte und schwere Sättel.",
+  "req": [],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Bestien"
+ },
+ "saddlery_2": {
+  "name": "Kolosssattel",
+  "cost": 8,
+  "desc": "Sättel für riesige Kreaturen.",
+  "req": [
+   "saddlery",
+   "metallurgy"
+  ],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Bestien"
+ },
+ "flight_harness": {
+  "name": "Fluggeschirr",
+  "cost": 7,
+  "desc": "Flugsattel und Flugplattform.",
+  "req": [
+   "saddlery"
+  ],
+  "source": "investigate:pteranodon",
+  "items": {},
+  "unlocks": [],
+  "cat": "Bestien"
+ },
+ "sea_harness": {
+  "name": "Seegeschirr",
+  "cost": 7,
+  "desc": "Seesattel und Wassergehege.",
+  "req": [
+   "saddlery"
+  ],
+  "source": "investigate:plesiosaurus",
+  "items": {},
+  "unlocks": [],
+  "cat": "Bestien"
+ },
+ "husbandry_2": {
+  "name": "Großtierhaltung",
+  "cost": 6,
+  "desc": "Großgehege.",
+  "req": [
+   "carpentry"
+  ],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Siedlung"
+ },
+ "crystal_2": {
+  "name": "Kristallresonanz",
+  "cost": 8,
+  "desc": "Seelenkristall +2 Kapazität; Kristalle herstellbar.",
+  "req": [],
+  "source": "quest:q5_spuren",
+  "items": {},
+  "unlocks": [],
+  "cat": "Magie"
+ },
+ "crystal_3": {
+  "name": "Kristallharmonie",
+  "cost": 14,
+  "desc": "Seelenkristall +3 Kapazität.",
+  "req": [
+   "crystal_2"
+  ],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Magie"
+ },
+ "metallurgy": {
+  "name": "Metallurgie",
+  "cost": 6,
+  "desc": "Schmiede, Metallwaffen und -rüstungen.",
+  "req": [],
+  "source": "teacher:tomas",
+  "items": {},
+  "unlocks": [],
+  "cat": "Handwerk"
+ },
+ "mechanics": {
+  "name": "Mechanik",
+  "cost": 8,
+  "desc": "Armbrust und Bolzen.",
+  "req": [
+   "metallurgy"
+  ],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Handwerk"
+ },
+ "black_powder": {
+  "name": "Schwarzpulver",
+  "cost": 12,
+  "desc": "Donnerrohr: primitive Feuerwaffe.",
+  "req": [
+   "mechanics"
+  ],
+  "source": "teacher:brannoc",
+  "items": {},
+  "unlocks": [],
+  "cat": "Handwerk"
+ },
+ "runetech": {
+  "name": "Runentechnik",
+  "cost": 18,
+  "desc": "Runenbüchse: magisch-technische Waffe.",
+  "req": [
+   "black_powder",
+   "runecraft"
+  ],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Magie"
+ },
+ "incendiaries": {
+  "name": "Brandmittel",
+  "cost": 5,
+  "desc": "Feuertöpfe und Brandpfeile.",
+  "req": [
+   "alchemy_basics"
+  ],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Jagd"
+ },
+ "bone_craft": {
+  "name": "Knochenschnitzerei",
+  "cost": 3,
+  "desc": "Knochenrüstung.",
+  "req": [],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Handwerk"
+ },
+ "chitin_craft": {
+  "name": "Chitinverarbeitung",
+  "cost": 6,
+  "desc": "Chitinrüstung.",
+  "req": [],
+  "source": "investigate:spider",
+  "items": {},
+  "unlocks": [],
+  "cat": "Handwerk"
+ },
+ "cold_gear": {
+  "name": "Winterausrüstung",
+  "cost": 3,
+  "desc": "Pelzmantel.",
+  "req": [],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Überleben"
+ },
+ "advanced_archery": {
+  "name": "Bogenbaukunst",
+  "cost": 6,
+  "desc": "Kompositbogen.",
+  "req": [],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Jagd"
+ },
+ "dragon_smith": {
+  "name": "Drachenschmiede",
+  "cost": 16,
+  "desc": "Wyvernschuppenrüstung.",
+  "req": [
+   "metallurgy"
+  ],
+  "source": "investigate:wyvern",
+  "items": {},
+  "unlocks": [],
+  "cat": "Handwerk"
+ },
+ "element_theory": {
+  "name": "Elementlehre",
+  "cost": 5,
+  "desc": "Essenzen destillieren; Elementplätze für Kreaturen.",
+  "req": [],
+  "source": "teacher:nixa",
+  "items": {},
+  "unlocks": [],
+  "cat": "Magie"
+ },
+ "runecraft": {
+  "name": "Runenkunde",
+  "cost": 6,
+  "desc": "Elementarrunen (Feuer bis Gift).",
+  "req": [
+   "element_theory"
+  ],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Magie"
+ },
+ "runecraft_2": {
+  "name": "Hohe Runen",
+  "cost": 10,
+  "desc": "Licht-, Schatten- und Blutrunen.",
+  "req": [
+   "runecraft"
+  ],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Magie"
+ },
+ "element_fusion_1": {
+  "name": "Elementfusion I",
+  "cost": 8,
+  "desc": "Elementplätze mit Zweiermischungen.",
+  "req": [
+   "element_theory"
+  ],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Magie"
+ },
+ "element_fusion_2": {
+  "name": "Elementfusion II",
+  "cost": 14,
+  "desc": "Dreiermischungen.",
+  "req": [
+   "element_fusion_1"
+  ],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Magie"
+ },
+ "element_fusion_3": {
+  "name": "Elementfusion III",
+  "cost": 22,
+  "desc": "Vier- und Fünfermischungen (hohe Instabilität).",
+  "req": [
+   "element_fusion_2"
+  ],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Magie"
+ },
+ "crystal_focus": {
+  "name": "Kristallfokus",
+  "cost": 8,
+  "desc": "Kristallstab.",
+  "req": [
+   "element_theory"
+  ],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Magie"
+ },
+ "binding_magic": {
+  "name": "Bindungsmagie",
+  "cost": 6,
+  "desc": "Bindungsrunen für magische Kreaturen.",
+  "req": [],
+  "source": "teacher:nixa",
+  "items": {},
+  "unlocks": [],
+  "cat": "Magie"
+ },
+ "rift_analysis": {
+  "name": "Rissanalyse",
+  "cost": 6,
+  "desc": "Verstehe die Risse. Rissamulett.",
+  "req": [],
+  "source": "quest:q5_spuren",
+  "items": {
+   "rift_shard": 3
+  },
+  "unlocks": [],
+  "cat": "Magie"
+ },
+ "pact_lore": {
+  "name": "Paktkunde",
+  "cost": 12,
+  "desc": "Rissaltar, Paktsiegel – Monster durch Pakte gewinnen.",
+  "req": [
+   "rift_analysis"
+  ],
+  "source": "ruin:schrein",
+  "items": {},
+  "unlocks": [],
+  "cat": "Magie"
+ },
+ "genetics_1": {
+  "name": "Genetik",
+  "cost": 6,
+  "desc": "Genlabor: Kreuzungen innerhalb einer Körperfamilie.",
+  "req": [],
+  "source": "quest:q6_blut",
+  "items": {},
+  "unlocks": [],
+  "cat": "Genetik"
+ },
+ "genetics_2": {
+  "name": "Vererbungslehre",
+  "cost": 10,
+  "desc": "Manueller Hybrid-Editor, gespeicherte Rezepte.",
+  "req": [
+   "genetics_1"
+  ],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Genetik"
+ },
+ "chimera": {
+  "name": "Chimärenforschung",
+  "cost": 16,
+  "desc": "Familienübergreifende Kreuzungen, Flügel als Hybridteil.",
+  "req": [
+   "genetics_2"
+  ],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Genetik"
+ },
+ "monster_genes": {
+  "name": "Monstergenetik",
+  "cost": 18,
+  "desc": "Monsteressenzen in Hybriden – sichtbare Monster-Dino-Hybriden.",
+  "req": [
+   "chimera",
+   "rift_analysis"
+  ],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Genetik"
+ },
+ "gene_therapy": {
+  "name": "Gentherapie",
+  "cost": 10,
+  "desc": "Reinigungstrank und Genstabilisator.",
+  "req": [
+   "genetics_1",
+   "alchemy_basics"
+  ],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Genetik"
+ },
+ "cartography": {
+  "name": "Kartografie",
+  "cost": 4,
+  "desc": "Zeigt alle Orte einer Insel auf der Karte nach Betreten.",
+  "req": [],
+  "source": "start",
+  "items": {},
+  "unlocks": [],
+  "cat": "Erkundung"
+ }
+}

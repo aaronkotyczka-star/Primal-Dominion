@@ -1,0 +1,694 @@
+{
+ "q1_gestrandet": {
+  "name": "Gestrandet",
+  "act": 1,
+  "giver": "",
+  "main": true,
+  "desc": "Ein Mosasaurus hat dein Schiff zerschmettert. Du bist allein am Treibgutstrand der Insel Grünkrone gestrandet.",
+  "stages": [
+   {
+    "text": "Sammle Holz, Stein und Fasern (Bäume, Steine und Büsche mit E oder Werkzeug bearbeiten).",
+    "obj": [
+     {
+      "type": "have",
+      "item": "wood",
+      "n": 6
+     },
+     {
+      "type": "have",
+      "item": "stone",
+      "n": 6
+     },
+     {
+      "type": "have",
+      "item": "fiber",
+      "n": 10
+     }
+    ]
+   },
+   {
+    "text": "Baue ein Lagerfeuer (Baumodus: B) und brate rohes Fleisch oder Fisch daran.",
+    "obj": [
+     {
+      "type": "build",
+      "what": "campfire",
+      "n": 1
+     },
+     {
+      "type": "craft",
+      "item": "cooked_meat|cooked_fish",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "text": "Rauch steigt im Westen auf. Folge dem Pfad zur Siedlung Morgengrau.",
+    "obj": [
+     {
+      "type": "visit",
+      "poi": "morgengrau"
+     }
+    ]
+   }
+  ],
+  "rewards": {
+   "xp": 80,
+   "amber": 10
+  },
+  "next": [
+   "q2_zuflucht"
+  ]
+ },
+ "q2_zuflucht": {
+  "name": "Zuflucht",
+  "act": 1,
+  "giver": "ilsa",
+  "main": true,
+  "desc": "Ilsa Varn, die Anführerin von Morgengrau, braucht einen Bestienbändiger. Beweise, dass du einer bist.",
+  "stages": [
+   {
+    "text": "Sprich mit Ilsa Varn in Morgengrau.",
+    "obj": [
+     {
+      "type": "talk",
+      "npc": "ilsa"
+     }
+    ]
+   },
+   {
+    "text": "Gewinne deinen ersten Gefährten. Ilsa rät: Gallimimus und Parasaurolophus vertrauen dir, wenn du dich geduckt näherst und Beeren anbietest. Raubtiere lassen sich mit Keule oder Betäubungspfeilen bezwingen.",
+    "obj": [
+     {
+      "type": "tame",
+      "species": "any",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "text": "Kehre mit deinem Gefährten zu Ilsa zurück.",
+    "obj": [
+     {
+      "type": "talk",
+      "npc": "ilsa"
+     }
+    ]
+   }
+  ],
+  "rewards": {
+   "xp": 150,
+   "items": [
+    [
+     "soul_crystal",
+     1
+    ],
+    [
+     "kibble",
+     4
+    ]
+   ],
+   "research_points": 3,
+   "rep": [
+    [
+     "morgengrau",
+     10
+    ]
+   ]
+  },
+  "next": [
+   "q3_lager"
+  ]
+ },
+ "q3_lager": {
+  "name": "Ein eigenes Lager",
+  "act": 1,
+  "giver": "ilsa",
+  "main": true,
+  "desc": "Morgengrau ist zu klein für deine Bestien. Errichte ein eigenes Lager.",
+  "stages": [
+   {
+    "text": "Errichte einen Lagerstein (Baumodus) an einem Ort deiner Wahl – nicht in Siedlungen.",
+    "obj": [
+     {
+      "type": "build",
+      "what": "camp_totem",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "text": "Baue Schlaflager, Werkbank und ein Gehege im Lager.",
+    "obj": [
+     {
+      "type": "build",
+      "what": "bedroll|bed",
+      "n": 1
+     },
+     {
+      "type": "build",
+      "what": "workbench",
+      "n": 1
+     },
+     {
+      "type": "build",
+      "what": "pen",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "text": "Berichte Ilsa von deinem Lager.",
+    "obj": [
+     {
+      "type": "talk",
+      "npc": "ilsa"
+     }
+    ]
+   }
+  ],
+  "rewards": {
+   "xp": 200,
+   "amber": 30,
+   "research_points": 4
+  },
+  "next": [
+   "q4_moosfell"
+  ]
+ },
+ "q4_moosfell": {
+  "name": "Die Moosfell",
+  "act": 1,
+  "giver": "ilsa",
+  "main": true,
+  "desc": "Die Moosfell-Goblins im Osten kennen das Moor besser als jeder Mensch. Ilsa braucht ihre Hilfe – aber Häuptling Grukk traut keinem Menschen.",
+  "stages": [
+   {
+    "text": "Reise ins Moosfell-Dorf im Smaragddschungel und sprich mit Häuptling Grukk.",
+    "obj": [
+     {
+      "type": "talk",
+      "npc": "grukk"
+     }
+    ]
+   },
+   {
+    "text": "Rette den Jäger Zibbel bei der Teergrube: Vertreibe die Höllenhunde, die ihn umzingelt haben.",
+    "obj": [
+     {
+      "type": "kill",
+      "tag": "hellhound",
+      "n": 3,
+      "at": "teergrube"
+     }
+    ]
+   },
+   {
+    "text": "Sprich mit Zibbel bei der Teergrube.",
+    "obj": [
+     {
+      "type": "talk",
+      "npc": "zibbel"
+     }
+    ]
+   },
+   {
+    "text": "Bringe Grukk die Nachricht von Zibbels Rettung.",
+    "obj": [
+     {
+      "type": "talk",
+      "npc": "grukk"
+     }
+    ]
+   }
+  ],
+  "rewards": {
+   "xp": 300,
+   "amber": 40,
+   "rep": [
+    [
+     "moosfell",
+     25
+    ]
+   ],
+   "items": [
+    [
+     "grukk_totem",
+     1
+    ]
+   ]
+  },
+  "next": [
+   "q5_spuren"
+  ]
+ },
+ "q5_spuren": {
+  "name": "Spuren des Risses",
+  "act": 1,
+  "giver": "ilsa",
+  "main": true,
+  "desc": "Die Höllenhunde kamen aus dem Nordwesten. Ilsa will verstehen, was dort geschieht.",
+  "stages": [
+   {
+    "text": "Sammle 3 Risssplitter im Narbenschlund (von Rissbestien oder Risskristallen).",
+    "obj": [
+     {
+      "type": "have",
+      "item": "rift_shard",
+      "n": 3
+     }
+    ]
+   },
+   {
+    "text": "Untersuche die Alte Warte im Flüsterwald – Ewald soll dort geforscht haben.",
+    "obj": [
+     {
+      "type": "visit",
+      "poi": "alte_warte"
+     }
+    ]
+   },
+   {
+    "text": "Erforsche „Rissanalyse“ an einem Forschungstisch.",
+    "obj": [
+     {
+      "type": "research",
+      "id": "rift_analysis"
+     }
+    ]
+   },
+   {
+    "text": "Sprich mit Ilsa über deine Erkenntnisse.",
+    "obj": [
+     {
+      "type": "talk",
+      "npc": "ilsa"
+     }
+    ]
+   }
+  ],
+  "rewards": {
+   "xp": 350,
+   "research_points": 6,
+   "research": [
+    "crystal_2"
+   ]
+  },
+  "next": [
+   "q6_blut"
+  ]
+ },
+ "q6_blut": {
+  "name": "Blut und Gene",
+  "act": 1,
+  "giver": "ilsa",
+  "main": true,
+  "desc": "Der Riss ist durch einen Bann geschützt, den nur eine außergewöhnliche Kreatur brechen kann. Ilsa lehrt dich die alte Kunst der Kreuzung.",
+  "stages": [
+   {
+    "text": "Baue ein Genlabor in deinem Lager.",
+    "obj": [
+     {
+      "type": "build",
+      "what": "gene_lab",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "text": "Erschaffe deinen ersten Hybriden im Genlabor und brüte ihn aus.",
+    "obj": [
+     {
+      "type": "hybrid",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "text": "Zeige Ilsa deine Schöpfung.",
+    "obj": [
+     {
+      "type": "talk",
+      "npc": "ilsa"
+     }
+    ]
+   }
+  ],
+  "rewards": {
+   "xp": 400,
+   "research": [
+    "genetics_2"
+   ],
+   "amber": 50
+  },
+  "next": [
+   "q7_pakt"
+  ],
+  "on_start_research": [
+   "genetics_1"
+  ]
+ },
+ "q7_pakt": {
+  "name": "Der Bannschlüssel",
+  "act": 1,
+  "giver": "ilsa",
+  "main": true,
+  "desc": "Das Siegel des Narbenschlunds öffnet nur der Bannschlüssel. Skarza Blutzahn, Häuptling der Knochenbrecher, hat ihn an sich gerissen.",
+  "stages": [
+   {
+    "text": "Finde Skarza im Knochenbrecher-Lager auf der Knochenebene und beschaffe den Bannschlüssel – mit Handel, Diplomatie, Gewalt oder … anderen Mitteln.",
+    "obj": [
+     {
+      "type": "have",
+      "item": "ward_key",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "rewards": {
+   "xp": 450
+  },
+  "next": [
+   "q8_herz"
+  ]
+ },
+ "q8_herz": {
+  "name": "Das Herz des Risses",
+  "act": 1,
+  "giver": "ilsa",
+  "main": true,
+  "desc": "Mit dem Bannschlüssel kannst du in den Narbenschlund vordringen. Dort wartet Vashrak – und etwas Größeres.",
+  "stages": [
+   {
+    "text": "Öffne das Siegel im Narbenschlund mit dem Bannschlüssel.",
+    "obj": [
+     {
+      "type": "flag",
+      "flag": "seal_opened"
+     }
+    ]
+   },
+   {
+    "text": "Besiege Vashrak den Rissprophet.",
+    "obj": [
+     {
+      "type": "kill",
+      "tag": "vashrak",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "text": "Besiege Gorrath, den Verderbten.",
+    "obj": [
+     {
+      "type": "kill",
+      "tag": "gorrath",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "text": "Entscheide am Herz des Risses über sein Schicksal.",
+    "obj": [
+     {
+      "type": "flag",
+      "flag": "rift_choice"
+     }
+    ]
+   }
+  ],
+  "rewards": {
+   "xp": 1200,
+   "amber": 200,
+   "research_points": 12
+  },
+  "next": [
+   "q9_aschenkamm"
+  ]
+ },
+ "q9_aschenkamm": {
+  "name": "Feuer über dem Meer",
+  "act": 2,
+  "giver": "ilsa",
+  "main": true,
+  "desc": "Der Narbenschlund war nicht der einzige Riss. Über dem Vulkan Aschenkamm brennt der Himmel rot, und Brannocs Söldner sammeln sich am Fischerkap.",
+  "stages": [
+   {
+    "text": "Sprich mit Hauptmann Brannoc am Fischerkap.",
+    "obj": [
+     {
+      "type": "talk",
+      "npc": "brannoc"
+     }
+    ]
+   },
+   {
+    "text": "Erreiche den Aschenkamm (Flug- oder Seereittier nötig) und finde den Wyvernhorst.",
+    "obj": [
+     {
+      "type": "visit",
+      "poi": "wyvern_nest"
+     }
+    ]
+   },
+   {
+    "text": "Gewinne eine Wyvern – durch ein Ei, eine Bindungsrune oder rohe Gewalt.",
+    "obj": [
+     {
+      "type": "tame",
+      "species": "wyvern",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "rewards": {
+   "xp": 1500,
+   "amber": 150
+  },
+  "next": [
+   "q10_narbe"
+  ]
+ },
+ "q10_narbe": {
+  "name": "Die Narbe",
+  "act": 3,
+  "giver": "ilsa",
+  "main": true,
+  "desc": "Alle Spuren führen zur Zitadelle auf der Narbe, wo Azh'Morath durch den letzten Riss greift.",
+  "stages": [
+   {
+    "text": "Erreiche die Zitadelle der Narbe.",
+    "obj": [
+     {
+      "type": "visit",
+      "poi": "narbe_zitadelle"
+     }
+    ]
+   },
+   {
+    "text": "Besiege den Herold Azh'Moraths.",
+    "obj": [
+     {
+      "type": "kill",
+      "tag": "herald",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "text": "Triff deine letzte Entscheidung.",
+    "obj": [
+     {
+      "type": "flag",
+      "flag": "final_choice"
+     }
+    ]
+   }
+  ],
+  "rewards": {
+   "xp": 3000
+  }
+ },
+ "sq_raptor_ei": {
+  "name": "Diebesgut",
+  "act": 1,
+  "giver": "ilsa",
+  "desc": "Velociraptoren lassen sich nur von Geburt an prägen. Stiehl ein Ei aus einem Raptorennest und brüte es aus.",
+  "stages": [
+   {
+    "text": "Stiehl ein Raptorenei aus einem Nest (Vorsicht – die Eltern bewachen es).",
+    "obj": [
+     {
+      "type": "have",
+      "item": "egg",
+      "n": 1
+     }
+    ]
+   },
+   {
+    "text": "Brüte das Ei in einer Brutstätte aus.",
+    "obj": [
+     {
+      "type": "hatch",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "rewards": {
+   "xp": 250,
+   "items": [
+    [
+     "kibble",
+     6
+    ]
+   ]
+  }
+ },
+ "sq_teer": {
+  "name": "Gefangen im Teer",
+  "act": 1,
+  "giver": "",
+  "desc": "Ein Stegosaurus steckt in der Teergrube fest. Raubtiere kreisen.",
+  "stages": [
+   {
+    "text": "Befreie den Stegosaurus in der Teergrube: Vertreibe die Raubtiere und ziehe ihn heraus (E).",
+    "obj": [
+     {
+      "type": "flag",
+      "flag": "stego_rescued"
+     }
+    ]
+   }
+  ],
+  "rewards": {
+   "xp": 200
+  }
+ },
+ "sq_wolf": {
+  "name": "Der verwundete Wolf",
+  "act": 1,
+  "giver": "",
+  "desc": "In der Wolfsschlucht jault ein Schreckenswolf in einer Fußfalle der Knochenbrecher.",
+  "stages": [
+   {
+    "text": "Befreie den Wolf (E) und versorge seine Wunde mit einem Verband.",
+    "obj": [
+     {
+      "type": "flag",
+      "flag": "wolf_rescued"
+     }
+    ]
+   }
+  ],
+  "rewards": {
+   "xp": 200,
+   "rep": [
+    [
+     "knochenbrecher",
+     -5
+    ]
+   ]
+  }
+ },
+ "sq_tomas_erz": {
+  "name": "Erz für die Esse",
+  "act": 1,
+  "giver": "tomas",
+  "desc": "Tomas braucht Metallerz aus dem Nordgrat, um wieder schmieden zu können.",
+  "stages": [
+   {
+    "text": "Bringe Tomas 10 Metallerz.",
+    "obj": [
+     {
+      "type": "deliver",
+      "item": "metal_ore",
+      "n": 10,
+      "npc": "tomas"
+     }
+    ]
+   }
+  ],
+  "rewards": {
+   "xp": 200,
+   "research": [
+    "metallurgy"
+   ],
+   "rep": [
+    [
+     "morgengrau",
+     10
+    ]
+   ]
+  }
+ },
+ "sq_nixa_blueten": {
+  "name": "Blüten für die Schamanin",
+  "act": 1,
+  "giver": "nixa",
+  "desc": "Nixa lehrt dich die Sprache der Elemente – gegen drei seltene Blüten.",
+  "stages": [
+   {
+    "text": "Bringe Nixa 3 seltene Blüten.",
+    "obj": [
+     {
+      "type": "deliver",
+      "item": "rare_flower",
+      "n": 3,
+      "npc": "nixa"
+     }
+    ]
+   }
+  ],
+  "rewards": {
+   "xp": 200,
+   "research": [
+    "element_theory"
+   ],
+   "skill_points": 1,
+   "rep": [
+    [
+     "moosfell",
+     10
+    ]
+   ],
+   "flags": [
+    "elemental_taught"
+   ]
+  }
+ },
+ "sq_ewald": {
+  "name": "Ewalds Aufzeichnungen",
+  "act": 1,
+  "giver": "",
+  "desc": "Verstreute Tagebuchseiten von Ilsas Bruder Ewald. Was hat er im Narbenschlund gesucht?",
+  "stages": [
+   {
+    "text": "Finde Ewalds Tagebuchseiten (Alte Warte, Teergrube, Adlerhorst).",
+    "obj": [
+     {
+      "type": "have",
+      "item": "journal_page_1",
+      "n": 1
+     },
+     {
+      "type": "have",
+      "item": "journal_page_2",
+      "n": 1
+     },
+     {
+      "type": "have",
+      "item": "journal_page_3",
+      "n": 1
+     }
+    ]
+   }
+  ],
+  "rewards": {
+   "xp": 300,
+   "research_points": 4
+  }
+ }
+}

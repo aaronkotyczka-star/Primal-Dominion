@@ -9,7 +9,8 @@
    "z": 398,
    "kind": "spawn",
    "name": "Treibgutstrand",
-   "y": 13.839335041903935
+   "flatten": 22,
+   "y": 14.561459347823025
   },
   "morgengrau": {
    "x": -130,

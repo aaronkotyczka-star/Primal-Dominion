@@ -20,7 +20,7 @@ if __name__ == "__main__":
         m = load(f[:-3])
         exports = getattr(m, "EXPORT", None)
         if exports is None:
-            exports = {k.lower(): getattr(m, k) for k in dir(m) if k.isupper() and isinstance(getattr(m, k), (dict, list))}
+            exports = {k.lower(): getattr(m, k) for k in dir(m) if k.isupper() and isinstance(getattr(m, k), (dict, list)) and k not in ("EL_DE", "ELEMENTS_LIST", "ALL", "LAND")}
         for k, v in exports.items():
             dump(k, v)
             print("wrote", k)

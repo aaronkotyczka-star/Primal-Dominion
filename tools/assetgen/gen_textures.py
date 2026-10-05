@@ -107,18 +107,25 @@ def terrain():
     leaves = tile_noise(n, 48, 112, 3)
     col = np.stack([0.24 + 0.08 * soil, 0.18 + 0.06 * soil, 0.12 + 0.04 * soil], -1)
     col = col * (0.8 + 0.3 * leaves[..., None])
-    col = np.where((peb > 0.35)[..., None] & (peb_id > 0.6)[..., None], col * 0.6 + np.array([0.18, 0.17, 0.15]) * (0.6 + peb[..., None] * 0.5), col)
-    hgt = soil * 0.5 + np.where(peb_id > 0.6, peb, 0) * 0.5
+    pm = (np.clip((peb - 0.35) * 3.0, 0, 1) * (peb_id > 0.82))[..., None]
+    col = col * (1 - pm * 0.5) + np.array([0.2, 0.19, 0.17]) * (0.6 + peb[..., None] * 0.4) * pm * 0.5
+    twig = np.clip((tile_noise(n, 96, 113, 2) - 0.62) * 6, 0, 1)
+    col = col * (1 - 0.25 * twig[..., None])
+    hgt = soil * 0.6 + np.where(peb_id > 0.82, peb, 0) * 0.3 + leaves * 0.1
     write_set("dirt", col, hgt, 0.9 - peb * 0.2, 4.0)
-    # rock: layered strata + cracks
-    r1, r2, rid = voronoi(n, 10, 120)
-    crack = np.clip((r2 - r1) * 6, 0, 1)
+    # rock: domain-warped cells + strata + fine grain (natural, not paving-like)
+    r1, r2, rid = voronoi(n, 7, 120, jitter=1.0)
+    crack = np.clip((r2 - r1) * 3.0, 0, 1)
     st = tile_noise(n, 4, 121, 7)
-    lay = np.sin((np.mgrid[0:n, 0:n][0] / n * 18 + st * 6) * np.pi) * 0.5 + 0.5
-    hgt = crack ** 0.4 * 0.5 + st * 0.35 + lay * 0.15
-    col = np.stack([0.36 + 0.12 * st, 0.34 + 0.11 * st, 0.31 + 0.1 * st], -1) * (0.7 + 0.4 * hgt[..., None])
-    col *= (0.85 + 0.2 * rid[..., None])
-    write_set("rock", col, hgt, 0.75 + 0.2 * (1 - crack), 6.0)
+    grain = tile_noise(n, 64, 122, 3)
+    warp = tile_noise(n, 8, 123, 5)
+    lay = np.sin((np.mgrid[0:n, 0:n][0] / n * 10 + st * 9 + warp * 4) * np.pi) * 0.5 + 0.5
+    hgt = crack ** 0.7 * 0.25 + st * 0.45 + lay * 0.15 + grain * 0.15
+    base = 0.30 + 0.12 * st + 0.05 * lay
+    col = np.stack([base * 1.02, base * 0.98, base * 0.92], -1) * (0.75 + 0.35 * hgt[..., None])
+    col *= (0.9 + 0.12 * rid[..., None])
+    col *= (0.85 + 0.15 * grain[..., None])
+    write_set("rock", col, hgt, 0.78 + 0.15 * (1 - crack), 4.0)
     # sand
     s1 = tile_noise(n, 64, 130, 3)
     dunes = np.sin((np.mgrid[0:n, 0:n][1] / n * 24 + tile_noise(n, 4, 131, 3) * 8) * np.pi) * 0.5 + 0.5
@@ -210,10 +217,24 @@ def bark_and_leaves():
     save("leaves_atlas.png", u8(img))
 
 
+def build_strips():
+    layers = ["grass", "dirt", "rock", "sand", "mud", "snow", "ash", "corrupt"]
+    for kind in ["albedo", "nrm"]:
+        ims = [Image.open(os.path.join(OUT, f"t_{l}_{kind}.png")).convert("RGBA") for l in layers]
+        w, h = ims[0].size
+        strip = Image.new("RGBA", (w, h * len(ims)))
+        for i, im in enumerate(ims):
+            strip.paste(im, (0, i * h))
+        strip.save(os.path.join(OUT, f"terrain_{kind}_array.png"), optimize=True)
+    for l in layers:
+        for kind in ["albedo", "nrm"]:
+            os.remove(os.path.join(OUT, f"t_{l}_{kind}.png"))
+
+
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     import sys
-    which = sys.argv[1:] or ["creature_skin", "terrain", "bark_and_leaves"]
+    which = sys.argv[1:] or ["creature_skin", "terrain", "bark_and_leaves", "build_strips"]
     for w in which:
         globals()[w]()
     print("textures done")

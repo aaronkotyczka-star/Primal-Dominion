@@ -1,0 +1,516 @@
+{
+ "ilsa": {
+  "name": "Ilsa Varn",
+  "faction": "morgengrau",
+  "rig": "human_f",
+  "poi": "morgengrau",
+  "offset": [
+   4,
+   0,
+   -3
+  ],
+  "role": "Kräuterkundige & Forscherin",
+  "colors": {
+   "top_color": [
+    0.28,
+    0.32,
+    0.25
+   ],
+   "bottom_color": [
+    0.25,
+    0.2,
+    0.15
+   ],
+   "hair_color": [
+    0.55,
+    0.5,
+    0.45
+   ]
+  },
+  "bio": "Leitet Morgengrau seit dem Verschwinden ihres Bruders Ewald. Sucht nach einer Möglichkeit, den Riss zu schließen.",
+  "trades": [
+   "herb_healing",
+   "bandage",
+   "healing_salve",
+   "research_notes",
+   "creature_medicine",
+   "kibble"
+  ],
+  "teaches": [
+   "veterinary",
+   "genetics_1"
+  ]
+ },
+ "tomas": {
+  "name": "Tomas Kessler",
+  "faction": "morgengrau",
+  "rig": "human_m",
+  "poi": "morgengrau",
+  "offset": [
+   -6,
+   0,
+   2
+  ],
+  "role": "Schmied",
+  "colors": {
+   "top_color": [
+    0.2,
+    0.18,
+    0.16
+   ],
+   "bottom_color": [
+    0.2,
+    0.17,
+    0.14
+   ],
+   "hair_color": [
+    0.1,
+    0.08,
+    0.06
+   ]
+  },
+  "bio": "Ehemaliger Schiffsschmied. Ohne Erz kann er nichts schmieden.",
+  "trades": [
+   "metal_ingot",
+   "arrow_stone",
+   "spear_stone",
+   "axe_stone",
+   "pick_stone",
+   "saddle_small"
+  ],
+  "teaches": [
+   "metallurgy"
+  ]
+ },
+ "grukk": {
+  "name": "Häuptling Grukk",
+  "faction": "moosfell",
+  "rig": "goblin",
+  "poi": "moosfell",
+  "offset": [
+   3,
+   0,
+   0
+  ],
+  "role": "Häuptling der Moosfell",
+  "colors": {
+   "color_main": [
+    0.32,
+    0.42,
+    0.24
+   ],
+   "top_color": [
+    0.3,
+    0.25,
+    0.15
+   ],
+   "bottom_color": [
+    0.25,
+    0.2,
+    0.12
+   ]
+  },
+  "bio": "Alt, listig und misstrauisch gegenüber Menschen. Seine Jäger verschwinden im Moor.",
+  "trades": [
+   "berries",
+   "veggies",
+   "rare_flower",
+   "fiber",
+   "hide",
+   "narcoberry",
+   "venom_gland"
+  ]
+ },
+ "nixa": {
+  "name": "Nixa Moosauge",
+  "faction": "moosfell",
+  "rig": "goblin",
+  "poi": "moosfell",
+  "offset": [
+   -5,
+   0,
+   4
+  ],
+  "role": "Schamanin",
+  "colors": {
+   "color_main": [
+    0.38,
+    0.45,
+    0.3
+   ],
+   "top_color": [
+    0.2,
+    0.3,
+    0.35
+   ],
+   "bottom_color": [
+    0.15,
+    0.2,
+    0.2
+   ]
+  },
+  "bio": "Spürt die Elemente in jedem Lebewesen. Hält Vashrak für ihren gescheiterten Schüler.",
+  "trades": [
+   "elemental_essence",
+   "crystal",
+   "narcotic",
+   "antidote",
+   "binding_rune"
+  ],
+  "teaches": [
+   "element_theory",
+   "binding_magic"
+  ]
+ },
+ "skarza": {
+  "name": "Skarza Blutzahn",
+  "faction": "knochenbrecher",
+  "rig": "goblin",
+  "poi": "knochenbrecher",
+  "offset": [
+   0,
+   0,
+   -6
+  ],
+  "role": "Kriegshäuptling",
+  "colors": {
+   "color_main": [
+    0.42,
+    0.36,
+    0.22
+   ],
+   "top_color": [
+    0.45,
+    0.15,
+    0.1
+   ],
+   "bottom_color": [
+    0.25,
+    0.15,
+    0.1
+   ]
+  },
+  "bio": "Hat den Bannschlüssel des Narbenschlunds an sich gerissen. Respektiert nur Stärke – oder Bernstein.",
+  "boss_scale": 1.25,
+  "trades": [
+   "large_bone",
+   "horn",
+   "raptor_claw",
+   "javelin",
+   "bola"
+  ],
+  "weapon": "club",
+  "level": 20,
+  "hp": 1100,
+  "atk": 38
+ },
+ "brannoc": {
+  "name": "Hauptmann Brannoc Eisenhand",
+  "faction": "eisenhand",
+  "rig": "human_m",
+  "poi": "fischerkap",
+  "offset": [
+   3,
+   0,
+   3
+  ],
+  "role": "Söldnerführer",
+  "colors": {
+   "top_color": [
+    0.4,
+    0.4,
+    0.42
+   ],
+   "bottom_color": [
+    0.18,
+    0.16,
+    0.15
+   ],
+   "hair_color": [
+    0.3,
+    0.22,
+    0.12
+   ]
+  },
+  "bio": "Kam mit drei Schiffen und dem Auftrag, die Inseln für die Krone zu sichern. Sieht im Riss eine Waffe.",
+  "trades": [
+   "metal_ingot",
+   "crossbow",
+   "bolt_metal",
+   "gunpowder",
+   "shot_iron",
+   "armor_metal_chest"
+  ],
+  "teaches": [
+   "black_powder"
+  ]
+ },
+ "vashrak": {
+  "name": "Vashrak der Rissprophet",
+  "faction": "daemonengoblins",
+  "rig": "goblin",
+  "poi": "riss_narbenschlund",
+  "offset": [
+   0,
+   0,
+   0
+  ],
+  "role": "Prophet der Rissbrut",
+  "colors": {
+   "color_main": [
+    0.28,
+    0.12,
+    0.14
+   ],
+   "top_color": [
+    0.2,
+    0.05,
+    0.08
+   ],
+   "bottom_color": [
+    0.1,
+    0.05,
+    0.05
+   ]
+  },
+  "corruption": 0.9,
+  "bio": "Ein verstoßener Moosfell-Schamane, der dem Flüstern aus dem Riss verfiel.",
+  "hostile": true,
+  "boss_scale": 1.3,
+  "weapon": "staff",
+  "level": 26,
+  "hp": 1400,
+  "atk": 45
+ },
+ "zibbel": {
+  "name": "Zibbel",
+  "faction": "moosfell",
+  "rig": "goblin",
+  "poi": "teergrube",
+  "offset": [
+   10,
+   0,
+   6
+  ],
+  "role": "Moosfell-Jäger",
+  "colors": {
+   "color_main": [
+    0.35,
+    0.4,
+    0.25
+   ],
+   "top_color": [
+    0.35,
+    0.3,
+    0.2
+   ],
+   "bottom_color": [
+    0.3,
+    0.25,
+    0.15
+   ]
+  },
+  "bio": "Wurde von Höllenhunden in die Enge getrieben.",
+  "hidden_until": "q4_moosfell"
+ },
+ "siedler": {
+  "name": "Siedler",
+  "faction": "morgengrau",
+  "rig": "human_m",
+  "role": "Morgengrau",
+  "generic": true,
+  "colors": {
+   "top_color": [
+    0.4,
+    0.35,
+    0.28
+   ],
+   "bottom_color": [
+    0.28,
+    0.24,
+    0.2
+   ],
+   "hair_color": [
+    0.25,
+    0.18,
+    0.1
+   ]
+  }
+ },
+ "siedlerin": {
+  "name": "Siedlerin",
+  "faction": "morgengrau",
+  "rig": "human_f",
+  "role": "Morgengrau",
+  "generic": true,
+  "colors": {
+   "top_color": [
+    0.35,
+    0.3,
+    0.32
+   ],
+   "bottom_color": [
+    0.3,
+    0.25,
+    0.2
+   ],
+   "hair_color": [
+    0.45,
+    0.3,
+    0.15
+   ]
+  }
+ },
+ "moosfell_goblin": {
+  "name": "Moosfell-Goblin",
+  "faction": "moosfell",
+  "rig": "goblin",
+  "role": "Moosfell",
+  "generic": true,
+  "colors": {
+   "color_main": [
+    0.33,
+    0.43,
+    0.25
+   ],
+   "top_color": [
+    0.35,
+    0.28,
+    0.18
+   ],
+   "bottom_color": [
+    0.28,
+    0.22,
+    0.14
+   ]
+  }
+ },
+ "knochenbrecher_krieger": {
+  "name": "Knochenbrecher",
+  "faction": "knochenbrecher",
+  "rig": "goblin",
+  "role": "Krieger",
+  "generic": true,
+  "weapon": "club",
+  "level": 10,
+  "colors": {
+   "color_main": [
+    0.42,
+    0.38,
+    0.24
+   ],
+   "top_color": [
+    0.5,
+    0.18,
+    0.12
+   ],
+   "bottom_color": [
+    0.25,
+    0.15,
+    0.1
+   ]
+  }
+ },
+ "soeldner": {
+  "name": "Söldner",
+  "faction": "eisenhand",
+  "rig": "human_m",
+  "role": "Eisenhand",
+  "generic": true,
+  "weapon": "spear",
+  "level": 14,
+  "colors": {
+   "top_color": [
+    0.45,
+    0.45,
+    0.48
+   ],
+   "bottom_color": [
+    0.2,
+    0.18,
+    0.16
+   ],
+   "hair_color": [
+    0.2,
+    0.15,
+    0.1
+   ]
+  }
+ },
+ "rissbrut": {
+  "name": "Rissbrut-Goblin",
+  "faction": "daemonengoblins",
+  "rig": "goblin",
+  "role": "",
+  "generic": true,
+  "hostile": true,
+  "weapon": "spear",
+  "level": 14,
+  "corruption": 0.8,
+  "colors": {
+   "color_main": [
+    0.3,
+    0.12,
+    0.14
+   ],
+   "top_color": [
+    0.15,
+    0.05,
+    0.06
+   ],
+   "bottom_color": [
+    0.1,
+    0.04,
+    0.05
+   ]
+  },
+  "parts": [
+   {
+    "id": "horns_short",
+    "socket": "head_top",
+    "size": 0.25
+   }
+  ]
+ },
+ "herold": {
+  "name": "Herold Azh'Moraths",
+  "faction": "daemonengoblins",
+  "rig": "demon",
+  "role": "",
+  "hostile": true,
+  "boss_scale": 1.6,
+  "level": 45,
+  "hp": 6000,
+  "atk": 90,
+  "corruption": 1.0,
+  "colors": {
+   "color_main": [
+    0.15,
+    0.04,
+    0.05
+   ],
+   "top_color": [
+    0.15,
+    0.04,
+    0.05
+   ],
+   "bottom_color": [
+    0.08,
+    0.02,
+    0.02
+   ]
+  },
+  "parts": [
+   {
+    "id": "horns_demon",
+    "socket": "head_top",
+    "size": 0.7
+   },
+   {
+    "id": "tail_demon",
+    "socket": "tail_tip",
+    "size": 1.0
+   }
+  ]
+ }
+}

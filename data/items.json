@@ -1,0 +1,1811 @@
+{
+ "wood": {
+  "name": "Holz",
+  "cat": "material",
+  "weight": 0.8,
+  "stack": 100,
+  "value": 1,
+  "desc": "Grundmaterial für Werkzeuge und Bauten.",
+  "mat": {
+   "tags": [
+    "shaft",
+    "wood"
+   ],
+   "dmg": 1.0,
+   "tier": 1
+  }
+ },
+ "hardwood": {
+  "name": "Hartholz",
+  "cat": "material",
+  "weight": 1.0,
+  "stack": 100,
+  "value": 3,
+  "desc": "Dichtes Holz aus alten Dschungelbäumen.",
+  "mat": {
+   "tags": [
+    "shaft",
+    "wood"
+   ],
+   "dmg": 1.1,
+   "tier": 2
+  }
+ },
+ "stone": {
+  "name": "Stein",
+  "cat": "material",
+  "weight": 1.0,
+  "stack": 100,
+  "value": 1,
+  "desc": "Überall zu finden.",
+  "mat": {
+   "tags": [
+    "head",
+    "stone"
+   ],
+   "dmg": 1.0,
+   "tier": 1
+  }
+ },
+ "flint": {
+  "name": "Feuerstein",
+  "cat": "material",
+  "weight": 0.5,
+  "stack": 100,
+  "value": 2,
+  "desc": "Scharfkantiger Stein für Klingen und Spitzen.",
+  "mat": {
+   "tags": [
+    "head",
+    "stone"
+   ],
+   "dmg": 1.2,
+   "tier": 1
+  }
+ },
+ "fiber": {
+  "name": "Fasern",
+  "cat": "material",
+  "weight": 0.1,
+  "stack": 100,
+  "value": 1,
+  "desc": "Aus Büschen und Gräsern.",
+  "mat": {
+   "tags": [
+    "binding"
+   ],
+   "dmg": 1.0,
+   "tier": 1
+  }
+ },
+ "hide": {
+  "name": "Rohhaut",
+  "cat": "material",
+  "weight": 0.6,
+  "stack": 100,
+  "value": 2,
+  "desc": "Von fast allen Tieren."
+ },
+ "leather": {
+  "name": "Leder",
+  "cat": "material",
+  "weight": 0.5,
+  "stack": 100,
+  "value": 4,
+  "desc": "Gegerbte Haut.",
+  "mat": {
+   "tags": [
+    "binding",
+    "padding"
+   ],
+   "dmg": 1.05,
+   "tier": 2
+  }
+ },
+ "pelt": {
+  "name": "Fell",
+  "cat": "material",
+  "weight": 0.8,
+  "stack": 100,
+  "value": 5,
+  "desc": "Warm – schützt vor Kälte."
+ },
+ "bone": {
+  "name": "Knochen",
+  "cat": "material",
+  "weight": 0.5,
+  "stack": 100,
+  "value": 2,
+  "desc": "",
+  "mat": {
+   "tags": [
+    "head"
+   ],
+   "dmg": 1.1,
+   "tier": 1
+  }
+ },
+ "large_bone": {
+  "name": "Großer Knochen",
+  "cat": "material",
+  "weight": 2.0,
+  "stack": 100,
+  "value": 6,
+  "desc": "Von großen Bestien.",
+  "mat": {
+   "tags": [
+    "head",
+    "shaft"
+   ],
+   "dmg": 1.25,
+   "tier": 2
+  }
+ },
+ "sinew": {
+  "name": "Sehne",
+  "cat": "material",
+  "weight": 0.1,
+  "stack": 100,
+  "value": 3,
+  "desc": "Zähes Bindematerial.",
+  "mat": {
+   "tags": [
+    "binding"
+   ],
+   "dmg": 1.1,
+   "tier": 2
+  }
+ },
+ "silk": {
+  "name": "Spinnenseide",
+  "cat": "material",
+  "weight": 0.1,
+  "stack": 100,
+  "value": 8,
+  "desc": "Extrem reißfest.",
+  "mat": {
+   "tags": [
+    "binding",
+    "padding"
+   ],
+   "dmg": 1.2,
+   "tier": 3
+  }
+ },
+ "feather": {
+  "name": "Feder",
+  "cat": "material",
+  "weight": 0.05,
+  "stack": 100,
+  "value": 2,
+  "desc": "Für Pfeile und Zierde."
+ },
+ "scales": {
+  "name": "Schuppen",
+  "cat": "material",
+  "weight": 0.4,
+  "stack": 100,
+  "value": 6,
+  "desc": "Leichte Panzerung.",
+  "mat": {
+   "tags": [
+    "plating"
+   ],
+   "dmg": 1.0,
+   "tier": 2,
+   "armor": 1.2
+  }
+ },
+ "keratin_plate": {
+  "name": "Hornplatte",
+  "cat": "material",
+  "weight": 1.0,
+  "stack": 100,
+  "value": 10,
+  "desc": "Panzerplatten großer Pflanzenfresser.",
+  "mat": {
+   "tags": [
+    "plating"
+   ],
+   "dmg": 1.0,
+   "tier": 2,
+   "armor": 1.5
+  }
+ },
+ "horn": {
+  "name": "Horn",
+  "cat": "material",
+  "weight": 1.0,
+  "stack": 100,
+  "value": 10,
+  "desc": "",
+  "mat": {
+   "tags": [
+    "head"
+   ],
+   "dmg": 1.35,
+   "tier": 2
+  }
+ },
+ "chitin": {
+  "name": "Chitin",
+  "cat": "material",
+  "weight": 0.5,
+  "stack": 100,
+  "value": 8,
+  "desc": "Panzer von Gliederfüßern.",
+  "mat": {
+   "tags": [
+    "plating"
+   ],
+   "dmg": 1.0,
+   "tier": 3,
+   "armor": 1.6
+  }
+ },
+ "metal_ore": {
+  "name": "Metallerz",
+  "cat": "material",
+  "weight": 1.5,
+  "stack": 100,
+  "value": 6,
+  "desc": "Wird in der Schmiede geschmolzen."
+ },
+ "metal_ingot": {
+  "name": "Metallbarren",
+  "cat": "material",
+  "weight": 1.0,
+  "stack": 100,
+  "value": 15,
+  "desc": "",
+  "mat": {
+   "tags": [
+    "head",
+    "plating"
+   ],
+   "dmg": 1.6,
+   "tier": 3,
+   "armor": 2.0
+  }
+ },
+ "obsidian": {
+  "name": "Obsidian",
+  "cat": "material",
+  "weight": 0.8,
+  "stack": 100,
+  "value": 12,
+  "desc": "Vulkanglas – rasiermesserscharf.",
+  "mat": {
+   "tags": [
+    "head"
+   ],
+   "dmg": 1.75,
+   "tier": 3
+  }
+ },
+ "crystal": {
+  "name": "Kristall",
+  "cat": "material",
+  "weight": 0.3,
+  "stack": 100,
+  "value": 15,
+  "desc": "Leitet magische Energie.",
+  "mat": {
+   "tags": [
+    "focus"
+   ],
+   "dmg": 1.3,
+   "tier": 3
+  }
+ },
+ "sulfur": {
+  "name": "Schwefel",
+  "cat": "material",
+  "weight": 0.3,
+  "stack": 100,
+  "value": 5,
+  "desc": ""
+ },
+ "salt": {
+  "name": "Salz",
+  "cat": "material",
+  "weight": 0.2,
+  "stack": 100,
+  "value": 3,
+  "desc": ""
+ },
+ "clay": {
+  "name": "Lehm",
+  "cat": "material",
+  "weight": 1.0,
+  "stack": 100,
+  "value": 2,
+  "desc": ""
+ },
+ "charcoal": {
+  "name": "Holzkohle",
+  "cat": "material",
+  "weight": 0.2,
+  "stack": 100,
+  "value": 2,
+  "desc": ""
+ },
+ "cement": {
+  "name": "Mörtel",
+  "cat": "material",
+  "weight": 1.0,
+  "stack": 100,
+  "value": 4,
+  "desc": "Für Steinbauten."
+ },
+ "gunpowder": {
+  "name": "Schwarzpulver",
+  "cat": "material",
+  "weight": 0.1,
+  "stack": 100,
+  "value": 10,
+  "desc": "Explosiv."
+ },
+ "thatch": {
+  "name": "Stroh",
+  "cat": "material",
+  "weight": 0.3,
+  "stack": 100,
+  "value": 1,
+  "desc": "Aus Fasern und Schilf."
+ },
+ "sail_membrane": {
+  "name": "Segelhaut",
+  "cat": "material",
+  "weight": 1.0,
+  "stack": 100,
+  "value": 20,
+  "desc": "Flexibel und hitzebeständig."
+ },
+ "venom_gland": {
+  "name": "Giftdrüse",
+  "cat": "material",
+  "weight": 0.2,
+  "stack": 100,
+  "value": 12,
+  "desc": ""
+ },
+ "raptor_claw": {
+  "name": "Raptorklaue",
+  "cat": "material",
+  "weight": 0.2,
+  "stack": 100,
+  "value": 10,
+  "desc": "Trophäe und Klingenmaterial.",
+  "mat": {
+   "tags": [
+    "head"
+   ],
+   "dmg": 1.45,
+   "tier": 2
+  }
+ },
+ "trex_tooth": {
+  "name": "Tyrannenzahn",
+  "cat": "material",
+  "weight": 0.3,
+  "stack": 100,
+  "value": 40,
+  "desc": "Begehrte Trophäe.",
+  "mat": {
+   "tags": [
+    "head"
+   ],
+   "dmg": 1.8,
+   "tier": 3
+  }
+ },
+ "saber_fang": {
+  "name": "Säbelzahn",
+  "cat": "material",
+  "weight": 0.3,
+  "stack": 100,
+  "value": 30,
+  "desc": "",
+  "mat": {
+   "tags": [
+    "head"
+   ],
+   "dmg": 1.6,
+   "tier": 3
+  }
+ },
+ "ivory": {
+  "name": "Elfenbein",
+  "cat": "material",
+  "weight": 2.0,
+  "stack": 100,
+  "value": 40,
+  "desc": ""
+ },
+ "shark_tooth": {
+  "name": "Haizahn",
+  "cat": "material",
+  "weight": 0.1,
+  "stack": 100,
+  "value": 12,
+  "desc": "",
+  "mat": {
+   "tags": [
+    "head"
+   ],
+   "dmg": 1.5,
+   "tier": 2
+  }
+ },
+ "wyvern_scale": {
+  "name": "Wyvernschuppe",
+  "cat": "material",
+  "weight": 0.5,
+  "stack": 100,
+  "value": 45,
+  "desc": "",
+  "mat": {
+   "tags": [
+    "plating"
+   ],
+   "dmg": 1.0,
+   "tier": 4,
+   "armor": 2.6
+  }
+ },
+ "charred_bone": {
+  "name": "Verkohlter Knochen",
+  "cat": "material",
+  "weight": 0.5,
+  "stack": 100,
+  "value": 8,
+  "desc": ""
+ },
+ "berries": {
+  "name": "Beeren",
+  "cat": "food",
+  "weight": 0.05,
+  "stack": 100,
+  "value": 1,
+  "food": 6,
+  "desc": "Essbar. Pflanzenfresser lieben sie."
+ },
+ "veggies": {
+  "name": "Wurzelknollen",
+  "cat": "food",
+  "weight": 0.2,
+  "stack": 50,
+  "value": 2,
+  "food": 10,
+  "desc": "Nahrhaft für Mensch und Tier."
+ },
+ "narcoberry": {
+  "name": "Schlafbeere",
+  "cat": "material",
+  "weight": 0.05,
+  "stack": 100,
+  "value": 2,
+  "desc": "Leicht betäubend."
+ },
+ "rare_flower": {
+  "name": "Seltene Blüte",
+  "cat": "material",
+  "weight": 0.05,
+  "stack": 50,
+  "value": 8,
+  "desc": "Lockt scheue Pflanzenfresser an."
+ },
+ "herb_healing": {
+  "name": "Heilkraut",
+  "cat": "consumable",
+  "weight": 0.05,
+  "stack": 50,
+  "value": 3,
+  "heal": 12,
+  "desc": "Lindert kleine Wunden."
+ },
+ "mushroom": {
+  "name": "Pilz",
+  "cat": "material",
+  "weight": 0.1,
+  "stack": 50,
+  "value": 3,
+  "desc": "Zutat für Alchemie."
+ },
+ "raw_meat": {
+  "name": "Rohes Fleisch",
+  "cat": "food",
+  "weight": 0.3,
+  "stack": 40,
+  "value": 2,
+  "food": 8,
+  "sick": 0.25,
+  "spoil": true,
+  "desc": "Besser gebraten. Raubtiere fressen es gern."
+ },
+ "raw_prime_meat": {
+  "name": "Edles rohes Fleisch",
+  "cat": "food",
+  "weight": 0.4,
+  "stack": 40,
+  "value": 6,
+  "food": 12,
+  "sick": 0.25,
+  "desc": "Großraubtiere bevorzugen es."
+ },
+ "raw_fish": {
+  "name": "Roher Fisch",
+  "cat": "food",
+  "weight": 0.2,
+  "stack": 40,
+  "value": 2,
+  "food": 7,
+  "sick": 0.15
+ },
+ "raw_prime_fish": {
+  "name": "Edler roher Fisch",
+  "cat": "food",
+  "weight": 0.3,
+  "stack": 40,
+  "value": 6,
+  "food": 11,
+  "sick": 0.15
+ },
+ "cooked_meat": {
+  "name": "Gebratenes Fleisch",
+  "cat": "food",
+  "weight": 0.25,
+  "stack": 40,
+  "value": 4,
+  "food": 25,
+  "desc": "Sättigt gut."
+ },
+ "cooked_prime": {
+  "name": "Gebratenes Edelfleisch",
+  "cat": "food",
+  "weight": 0.3,
+  "stack": 40,
+  "value": 10,
+  "food": 35,
+  "buff": "stark",
+  "desc": "Sättigt sehr gut und stärkt."
+ },
+ "cooked_fish": {
+  "name": "Gebratener Fisch",
+  "cat": "food",
+  "weight": 0.2,
+  "stack": 40,
+  "value": 4,
+  "food": 22
+ },
+ "jerky": {
+  "name": "Trockenfleisch",
+  "cat": "food",
+  "weight": 0.15,
+  "stack": 60,
+  "value": 8,
+  "food": 30,
+  "desc": "Haltbare Reiseverpflegung."
+ },
+ "stew": {
+  "name": "Jägereintopf",
+  "cat": "food",
+  "weight": 0.5,
+  "stack": 20,
+  "value": 15,
+  "food": 50,
+  "buff": "satt",
+  "desc": "Lange satt, erhöhte Ausdauer-Regeneration."
+ },
+ "kibble": {
+  "name": "Bestienfutter",
+  "cat": "food",
+  "weight": 0.2,
+  "stack": 40,
+  "value": 12,
+  "food": 15,
+  "tame_bonus": 2.0,
+  "desc": "Von allen zähmbaren Kreaturen geschätzt; beschleunigt die Zähmung stark."
+ },
+ "wyvern_milk": {
+  "name": "Wyvernmilch",
+  "cat": "food",
+  "weight": 0.3,
+  "stack": 10,
+  "value": 60,
+  "food": 20,
+  "desc": "Einzige Nahrung junger Wyvern."
+ },
+ "bandage": {
+  "name": "Verband",
+  "cat": "consumable",
+  "weight": 0.1,
+  "stack": 20,
+  "value": 4,
+  "heal": 25,
+  "desc": "Stoppt Blutungen, heilt 25 LP."
+ },
+ "healing_salve": {
+  "name": "Heilsalbe",
+  "cat": "consumable",
+  "weight": 0.1,
+  "stack": 20,
+  "value": 10,
+  "heal": 50,
+  "desc": "Heilt 50 LP über Zeit."
+ },
+ "healing_potion": {
+  "name": "Heiltrank",
+  "cat": "consumable",
+  "weight": 0.2,
+  "stack": 10,
+  "value": 25,
+  "heal": 100,
+  "desc": "Heilt 100 LP sofort."
+ },
+ "stamina_tonic": {
+  "name": "Ausdauertonikum",
+  "cat": "consumable",
+  "weight": 0.2,
+  "stack": 10,
+  "value": 15,
+  "buff": "ausdauer",
+  "desc": "Ausdauer regeneriert 60 s doppelt."
+ },
+ "narcotic": {
+  "name": "Betäubungsmittel",
+  "cat": "consumable",
+  "weight": 0.1,
+  "stack": 50,
+  "value": 6,
+  "torpor_feed": 40,
+  "desc": "Hält eine betäubte Kreatur länger bewusstlos (verfüttern)."
+ },
+ "antidote": {
+  "name": "Gegengift",
+  "cat": "consumable",
+  "weight": 0.1,
+  "stack": 20,
+  "value": 10,
+  "cure": "poison",
+  "desc": "Heilt Vergiftungen bei Mensch und Tier."
+ },
+ "creature_medicine": {
+  "name": "Tiermedizin",
+  "cat": "consumable",
+  "weight": 0.2,
+  "stack": 20,
+  "value": 20,
+  "creature_heal": 200,
+  "cure": "injury",
+  "desc": "Heilt Kreaturen und behandelt Verletzungen."
+ },
+ "purify_tonic": {
+  "name": "Reinigungstrank",
+  "cat": "consumable",
+  "weight": 0.2,
+  "stack": 10,
+  "value": 40,
+  "cure": "mutation",
+  "desc": "Kann einen negativen Erbdefekt einer Kreatur lindern."
+ },
+ "gene_stabilizer": {
+  "name": "Genstabilisator",
+  "cat": "consumable",
+  "weight": 0.1,
+  "stack": 10,
+  "value": 50,
+  "stabilize": 0.2,
+  "desc": "Senkt die Instabilität eines Hybriden."
+ },
+ "forget_potion": {
+  "name": "Trank des Vergessens",
+  "cat": "consumable",
+  "weight": 0.2,
+  "stack": 5,
+  "value": 80,
+  "respec": true,
+  "desc": "Setzt alle Fähigkeitenpunkte zurück."
+ },
+ "repel_musk": {
+  "name": "Moschussalbe",
+  "cat": "consumable",
+  "weight": 0.1,
+  "stack": 10,
+  "value": 8,
+  "buff": "moschus",
+  "desc": "Kleine Räuber meiden dich 3 Minuten."
+ },
+ "research_notes": {
+  "name": "Forschungsnotizen",
+  "cat": "consumable",
+  "weight": 0.05,
+  "stack": 50,
+  "value": 10,
+  "research": 2,
+  "desc": "Gibt 2 Forschungspunkte."
+ },
+ "ancient_tablet": {
+  "name": "Uralte Steintafel",
+  "cat": "consumable",
+  "weight": 1.0,
+  "stack": 10,
+  "value": 30,
+  "research": 5,
+  "desc": "Inschriften der Vorfahren. Gibt 5 Forschungspunkte."
+ },
+ "demon_essence": {
+  "name": "Dämonenessenz",
+  "cat": "essence",
+  "weight": 0.1,
+  "stack": 50,
+  "value": 20,
+  "desc": "Pulsierende Rissmaterie. Basis für Pakte und Monster-Gene."
+ },
+ "elemental_essence": {
+  "name": "Elementaressenz",
+  "cat": "essence",
+  "weight": 0.1,
+  "stack": 50,
+  "value": 18,
+  "desc": "Ungebundene Elementarkraft."
+ },
+ "rift_shard": {
+  "name": "Risssplitter",
+  "cat": "essence",
+  "weight": 0.3,
+  "stack": 20,
+  "value": 25,
+  "desc": "Ein Splitter aus dem Riss. Flüstert."
+ },
+ "shadow_shard": {
+  "name": "Schattensplitter",
+  "cat": "essence",
+  "weight": 0.2,
+  "stack": 20,
+  "value": 30
+ },
+ "blood_crystal": {
+  "name": "Blutkristall",
+  "cat": "essence",
+  "weight": 0.3,
+  "stack": 20,
+  "value": 40
+ },
+ "demon_heart": {
+  "name": "Dämonenherz",
+  "cat": "essence",
+  "weight": 1.0,
+  "stack": 5,
+  "value": 120,
+  "desc": "Schlägt noch. Uralte Rituale verlangen danach."
+ },
+ "essence_hellhound": {
+  "name": "Höllenhund-Essenz",
+  "cat": "essence",
+  "weight": 0.1,
+  "stack": 20,
+  "value": 40,
+  "monster": "hellhound"
+ },
+ "essence_shadowstalker": {
+  "name": "Pirscher-Essenz",
+  "cat": "essence",
+  "weight": 0.1,
+  "stack": 20,
+  "value": 55,
+  "monster": "shadowstalker"
+ },
+ "essence_bonewyrm": {
+  "name": "Wyrm-Essenz",
+  "cat": "essence",
+  "weight": 0.1,
+  "stack": 20,
+  "value": 80,
+  "monster": "bonewyrm"
+ },
+ "essence_riftspider": {
+  "name": "Weberinnen-Essenz",
+  "cat": "essence",
+  "weight": 0.1,
+  "stack": 20,
+  "value": 60,
+  "monster": "riftspider"
+ },
+ "spear_stone": {
+  "name": "Steinspeer",
+  "cat": "weapon",
+  "wtype": "spear",
+  "weight": 2.5,
+  "stack": 1,
+  "value": 8,
+  "stats": {
+   "dmg": 16,
+   "kind": "pierce",
+   "speed": 1.0,
+   "stam": 10,
+   "reach": 2.6,
+   "torpor": 0
+  },
+  "desc": "Reichweite und Stoßangriffe."
+ },
+ "club_wood": {
+  "name": "Holzkeule",
+  "cat": "weapon",
+  "wtype": "club",
+  "weight": 3.0,
+  "stack": 1,
+  "value": 5,
+  "stats": {
+   "dmg": 10,
+   "kind": "blunt",
+   "speed": 0.9,
+   "stam": 12,
+   "reach": 2.0,
+   "torpor": 18
+  },
+  "desc": "Betäubt Ziele (Bewusstlosigkeit)."
+ },
+ "axe_stone": {
+  "name": "Steinaxt",
+  "cat": "weapon",
+  "wtype": "axe",
+  "weight": 2.5,
+  "stack": 1,
+  "value": 8,
+  "stats": {
+   "dmg": 14,
+   "kind": "cut",
+   "speed": 0.95,
+   "stam": 12,
+   "reach": 2.0,
+   "torpor": 0,
+   "harvest_wood": 2.0,
+   "harvest_stone": 0.6
+  }
+ },
+ "pick_stone": {
+  "name": "Steinspitzhacke",
+  "cat": "weapon",
+  "wtype": "pick",
+  "weight": 3.0,
+  "stack": 1,
+  "value": 8,
+  "stats": {
+   "dmg": 11,
+   "kind": "pierce",
+   "speed": 0.85,
+   "stam": 13,
+   "reach": 2.0,
+   "torpor": 0,
+   "harvest_wood": 0.5,
+   "harvest_stone": 2.2,
+   "harvest_ore": 1.5
+  }
+ },
+ "sword_metal": {
+  "name": "Metallschwert",
+  "cat": "weapon",
+  "wtype": "sword",
+  "weight": 3.0,
+  "stack": 1,
+  "value": 40,
+  "stats": {
+   "dmg": 30,
+   "kind": "cut",
+   "speed": 1.15,
+   "stam": 11,
+   "reach": 2.3,
+   "torpor": 0
+  },
+  "desc": "Schnelle Kombos."
+ },
+ "bow_wood": {
+  "name": "Jagdbogen",
+  "cat": "weapon",
+  "wtype": "bow",
+  "weight": 1.5,
+  "stack": 1,
+  "value": 12,
+  "stats": {
+   "dmg": 18,
+   "kind": "pierce",
+   "speed": 1.0,
+   "stam": 6,
+   "reach": 60,
+   "ammo": [
+    "arrow_stone",
+    "arrow_tranq",
+    "arrow_metal",
+    "arrow_fire"
+   ]
+  }
+ },
+ "bow_composite": {
+  "name": "Kompositbogen",
+  "cat": "weapon",
+  "wtype": "bow",
+  "weight": 1.8,
+  "stack": 1,
+  "value": 45,
+  "stats": {
+   "dmg": 30,
+   "kind": "pierce",
+   "speed": 1.1,
+   "stam": 6,
+   "reach": 80,
+   "ammo": [
+    "arrow_stone",
+    "arrow_tranq",
+    "arrow_metal",
+    "arrow_fire"
+   ]
+  }
+ },
+ "crossbow": {
+  "name": "Armbrust",
+  "cat": "weapon",
+  "wtype": "crossbow",
+  "weight": 4.0,
+  "stack": 1,
+  "value": 60,
+  "stats": {
+   "dmg": 48,
+   "kind": "pierce",
+   "speed": 0.5,
+   "stam": 4,
+   "reach": 90,
+   "ammo": [
+    "bolt_metal",
+    "bolt_tranq"
+   ]
+  }
+ },
+ "blowpipe": {
+  "name": "Blasrohr",
+  "cat": "weapon",
+  "wtype": "blowpipe",
+  "weight": 0.6,
+  "stack": 1,
+  "value": 15,
+  "stats": {
+   "dmg": 4,
+   "kind": "pierce",
+   "speed": 1.3,
+   "stam": 3,
+   "reach": 35,
+   "ammo": [
+    "dart_tranq"
+   ]
+  },
+  "desc": "Leise und präzise für Betäubungspfeile."
+ },
+ "staff_wood": {
+  "name": "Wanderstab",
+  "cat": "weapon",
+  "wtype": "staff",
+  "weight": 2.0,
+  "stack": 1,
+  "value": 6,
+  "stats": {
+   "dmg": 9,
+   "kind": "blunt",
+   "speed": 1.0,
+   "stam": 8,
+   "reach": 2.2,
+   "torpor": 8,
+   "spell_power": 1.0
+  },
+  "desc": "Fokus für Unterstützungsmagie."
+ },
+ "staff_crystal": {
+  "name": "Kristallstab",
+  "cat": "weapon",
+  "wtype": "staff",
+  "weight": 2.2,
+  "stack": 1,
+  "value": 60,
+  "stats": {
+   "dmg": 12,
+   "kind": "blunt",
+   "speed": 1.0,
+   "stam": 8,
+   "reach": 2.2,
+   "torpor": 8,
+   "spell_power": 1.6,
+   "bolt": 24
+  },
+  "desc": "Verstärkt Magie, verschießt Elementarblitze."
+ },
+ "donnerrohr": {
+  "name": "Donnerrohr",
+  "cat": "weapon",
+  "wtype": "gun",
+  "weight": 5.0,
+  "stack": 1,
+  "value": 120,
+  "stats": {
+   "dmg": 85,
+   "kind": "pierce",
+   "speed": 0.3,
+   "stam": 2,
+   "reach": 70,
+   "ammo": [
+    "shot_iron"
+   ]
+  },
+  "desc": "Primitive Schusswaffe. Laut – lockt Raubtiere an."
+ },
+ "runenbuechse": {
+  "name": "Runenbüchse",
+  "cat": "weapon",
+  "wtype": "gun",
+  "weight": 4.0,
+  "stack": 1,
+  "value": 300,
+  "stats": {
+   "dmg": 70,
+   "kind": "pierce",
+   "speed": 0.6,
+   "stam": 2,
+   "reach": 90,
+   "ammo": [
+    "rune_charge"
+   ],
+   "spell_power": 1.4
+  },
+  "desc": "Magisch-technische Waffe, verschießt Elementarladungen."
+ },
+ "shield_wood": {
+  "name": "Holzschild",
+  "cat": "weapon",
+  "wtype": "shield",
+  "slot": "offhand",
+  "weight": 3.0,
+  "stack": 1,
+  "value": 8,
+  "stats": {
+   "block": 0.6,
+   "parry": 0.25
+  }
+ },
+ "shield_metal": {
+  "name": "Metallschild",
+  "cat": "weapon",
+  "wtype": "shield",
+  "slot": "offhand",
+  "weight": 5.0,
+  "stack": 1,
+  "value": 50,
+  "stats": {
+   "block": 0.85,
+   "parry": 0.3
+  }
+ },
+ "torch": {
+  "name": "Fackel",
+  "cat": "tool",
+  "wtype": "torch",
+  "weight": 0.5,
+  "stack": 5,
+  "value": 2,
+  "stats": {
+   "dmg": 6,
+   "kind": "blunt",
+   "speed": 1.0,
+   "stam": 8,
+   "reach": 1.8,
+   "element": "fire"
+  },
+  "desc": "Licht. Hält manche Tiere auf Abstand."
+ },
+ "bola": {
+  "name": "Bola",
+  "cat": "ammo",
+  "wtype": "throw",
+  "weight": 0.4,
+  "stack": 20,
+  "value": 4,
+  "stats": {
+   "dmg": 2,
+   "entangle": 6.0,
+   "reach": 30
+  },
+  "desc": "Fesselt kleine und mittlere Kreaturen kurzzeitig."
+ },
+ "javelin": {
+  "name": "Wurfspeer",
+  "cat": "ammo",
+  "wtype": "throw",
+  "weight": 1.2,
+  "stack": 10,
+  "value": 6,
+  "stats": {
+   "dmg": 28,
+   "kind": "pierce",
+   "reach": 40
+  }
+ },
+ "firebomb": {
+  "name": "Feuertopf",
+  "cat": "ammo",
+  "wtype": "throw",
+  "weight": 0.8,
+  "stack": 10,
+  "value": 12,
+  "stats": {
+   "dmg": 30,
+   "kind": "fire",
+   "reach": 30,
+   "aoe": 4.0,
+   "element": "fire"
+  }
+ },
+ "arrow_stone": {
+  "name": "Steinpfeil",
+  "cat": "ammo",
+  "weight": 0.05,
+  "stack": 100,
+  "value": 1,
+  "stats": {
+   "dmg_mult": 1.0
+  }
+ },
+ "arrow_metal": {
+  "name": "Metallpfeil",
+  "cat": "ammo",
+  "weight": 0.06,
+  "stack": 100,
+  "value": 3,
+  "stats": {
+   "dmg_mult": 1.5
+  }
+ },
+ "arrow_tranq": {
+  "name": "Betäubungspfeil",
+  "cat": "ammo",
+  "weight": 0.05,
+  "stack": 100,
+  "value": 4,
+  "stats": {
+   "dmg_mult": 0.4,
+   "torpor": 45
+  }
+ },
+ "arrow_fire": {
+  "name": "Brandpfeil",
+  "cat": "ammo",
+  "weight": 0.06,
+  "stack": 100,
+  "value": 4,
+  "stats": {
+   "dmg_mult": 1.0,
+   "element": "fire"
+  }
+ },
+ "bolt_metal": {
+  "name": "Metallbolzen",
+  "cat": "ammo",
+  "weight": 0.08,
+  "stack": 100,
+  "value": 4,
+  "stats": {
+   "dmg_mult": 1.0
+  }
+ },
+ "bolt_tranq": {
+  "name": "Betäubungsbolzen",
+  "cat": "ammo",
+  "weight": 0.08,
+  "stack": 100,
+  "value": 6,
+  "stats": {
+   "dmg_mult": 0.35,
+   "torpor": 110
+  }
+ },
+ "dart_tranq": {
+  "name": "Betäubungspfeilchen",
+  "cat": "ammo",
+  "weight": 0.02,
+  "stack": 100,
+  "value": 3,
+  "stats": {
+   "dmg_mult": 1.0,
+   "torpor": 60
+  }
+ },
+ "shot_iron": {
+  "name": "Eisenkugel",
+  "cat": "ammo",
+  "weight": 0.1,
+  "stack": 50,
+  "value": 5,
+  "stats": {
+   "dmg_mult": 1.0
+  }
+ },
+ "rune_charge": {
+  "name": "Runenladung",
+  "cat": "ammo",
+  "weight": 0.05,
+  "stack": 50,
+  "value": 8,
+  "stats": {
+   "dmg_mult": 1.0
+  }
+ },
+ "armor_hide_head": {
+  "name": "Lederkappe",
+  "cat": "armor",
+  "slot": "head",
+  "weight": 1.0,
+  "stack": 1,
+  "value": 6,
+  "stats": {
+   "armor": 3,
+   "cold": 2
+  },
+  "color": [
+   0.35,
+   0.25,
+   0.17
+  ]
+ },
+ "armor_hide_chest": {
+  "name": "Lederweste",
+  "cat": "armor",
+  "slot": "chest",
+  "weight": 3.0,
+  "stack": 1,
+  "value": 10,
+  "stats": {
+   "armor": 6,
+   "cold": 4
+  },
+  "color": [
+   0.38,
+   0.27,
+   0.18
+  ]
+ },
+ "armor_hide_legs": {
+  "name": "Lederhose",
+  "cat": "armor",
+  "slot": "legs",
+  "weight": 2.0,
+  "stack": 1,
+  "value": 8,
+  "stats": {
+   "armor": 4,
+   "cold": 3
+  },
+  "color": [
+   0.3,
+   0.22,
+   0.15
+  ]
+ },
+ "armor_fur_chest": {
+  "name": "Pelzmantel",
+  "cat": "armor",
+  "slot": "chest",
+  "weight": 4.0,
+  "stack": 1,
+  "value": 20,
+  "stats": {
+   "armor": 6,
+   "cold": 14,
+   "heat": -6
+  },
+  "color": [
+   0.42,
+   0.34,
+   0.26
+  ]
+ },
+ "armor_bone_chest": {
+  "name": "Knochenpanzer",
+  "cat": "armor",
+  "slot": "chest",
+  "weight": 6.0,
+  "stack": 1,
+  "value": 25,
+  "stats": {
+   "armor": 12,
+   "cold": 2
+  },
+  "color": [
+   0.7,
+   0.66,
+   0.56
+  ]
+ },
+ "armor_bone_head": {
+  "name": "Knochenhelm",
+  "cat": "armor",
+  "slot": "head",
+  "weight": 2.0,
+  "stack": 1,
+  "value": 15,
+  "stats": {
+   "armor": 6
+  },
+  "color": [
+   0.72,
+   0.68,
+   0.58
+  ]
+ },
+ "armor_chitin_chest": {
+  "name": "Chitinpanzer",
+  "cat": "armor",
+  "slot": "chest",
+  "weight": 5.0,
+  "stack": 1,
+  "value": 45,
+  "stats": {
+   "armor": 18,
+   "poison": 0.3
+  },
+  "color": [
+   0.15,
+   0.12,
+   0.1
+  ]
+ },
+ "armor_chitin_legs": {
+  "name": "Chitinbeinlinge",
+  "cat": "armor",
+  "slot": "legs",
+  "weight": 3.5,
+  "stack": 1,
+  "value": 35,
+  "stats": {
+   "armor": 12
+  },
+  "color": [
+   0.15,
+   0.12,
+   0.1
+  ]
+ },
+ "armor_metal_chest": {
+  "name": "Metallharnisch",
+  "cat": "armor",
+  "slot": "chest",
+  "weight": 10.0,
+  "stack": 1,
+  "value": 90,
+  "stats": {
+   "armor": 26
+  },
+  "color": [
+   0.45,
+   0.45,
+   0.47
+  ]
+ },
+ "armor_metal_head": {
+  "name": "Metallhelm",
+  "cat": "armor",
+  "slot": "head",
+  "weight": 4.0,
+  "stack": 1,
+  "value": 60,
+  "stats": {
+   "armor": 12
+  },
+  "color": [
+   0.45,
+   0.45,
+   0.47
+  ]
+ },
+ "armor_wyvern_chest": {
+  "name": "Wyvernschuppenrüstung",
+  "cat": "armor",
+  "slot": "chest",
+  "weight": 6.0,
+  "stack": 1,
+  "value": 250,
+  "stats": {
+   "armor": 32,
+   "fire": 0.5
+  },
+  "color": [
+   0.5,
+   0.15,
+   0.1
+  ]
+ },
+ "trinket_beast": {
+  "name": "Bestienzahn-Amulett",
+  "cat": "armor",
+  "slot": "trinket",
+  "weight": 0.1,
+  "stack": 1,
+  "value": 40,
+  "stats": {
+   "bond_gain": 0.25
+  },
+  "desc": "Gefährten fassen schneller Vertrauen."
+ },
+ "trinket_rift": {
+  "name": "Rissamulett",
+  "cat": "armor",
+  "slot": "trinket",
+  "weight": 0.1,
+  "stack": 1,
+  "value": 90,
+  "stats": {
+   "corruption_resist": 0.5
+  },
+  "desc": "Schützt vor Verderbnis."
+ },
+ "binding_rune": {
+  "name": "Bindungsrune",
+  "cat": "tool",
+  "weight": 0.2,
+  "stack": 10,
+  "value": 60,
+  "desc": "Bindet geschwächte magische Kreaturen (unter 30% LP)."
+ },
+ "pact_sigil": {
+  "name": "Paktsiegel",
+  "cat": "tool",
+  "weight": 0.2,
+  "stack": 10,
+  "value": 80,
+  "desc": "Ermöglicht einen Pakt mit einem Monster am Rissaltar."
+ },
+ "soul_crystal": {
+  "name": "Seelenkristall",
+  "cat": "special",
+  "weight": 0.5,
+  "stack": 1,
+  "value": 200,
+  "desc": "Tragbarer magischer Speicher für gebundene Kreaturen."
+ },
+ "saddle_small": {
+  "name": "Leichter Sattel",
+  "cat": "saddle",
+  "weight": 4.0,
+  "stack": 1,
+  "value": 15,
+  "size": [
+   "medium"
+  ],
+  "desc": "Für mittelgroße Reittiere."
+ },
+ "saddle_large": {
+  "name": "Schwerer Sattel",
+  "cat": "saddle",
+  "weight": 10.0,
+  "stack": 1,
+  "value": 40,
+  "size": [
+   "large"
+  ],
+  "desc": "Für große Reittiere."
+ },
+ "saddle_huge": {
+  "name": "Kolosssattel",
+  "cat": "saddle",
+  "weight": 18.0,
+  "stack": 1,
+  "value": 90,
+  "size": [
+   "huge"
+  ],
+  "desc": "Für riesige Reittiere."
+ },
+ "saddle_flyer": {
+  "name": "Flugsattel",
+  "cat": "saddle",
+  "weight": 5.0,
+  "stack": 1,
+  "value": 50,
+  "mount": "fly",
+  "desc": "Für Flugkreaturen."
+ },
+ "saddle_sea": {
+  "name": "Seesattel",
+  "cat": "saddle",
+  "weight": 6.0,
+  "stack": 1,
+  "value": 45,
+  "mount": "swim",
+  "desc": "Für Wasserkreaturen; mit Luftblase."
+ },
+ "egg": {
+  "name": "Ei",
+  "cat": "special",
+  "weight": 2.0,
+  "stack": 1,
+  "value": 30,
+  "desc": "Muss in einer Brutstätte ausgebrütet werden."
+ },
+ "trap_bear": {
+  "name": "Fußfalle",
+  "cat": "trap",
+  "weight": 4.0,
+  "stack": 5,
+  "value": 12,
+  "stats": {
+   "dmg": 30,
+   "hold": 8.0
+  },
+  "desc": "Hält kleine bis mittlere Kreaturen fest."
+ },
+ "trap_net": {
+  "name": "Netzfalle",
+  "cat": "trap",
+  "weight": 3.0,
+  "stack": 5,
+  "value": 15,
+  "stats": {
+   "dmg": 0,
+   "hold": 12.0,
+   "torpor": 30
+  },
+  "desc": "Fängt unverletzt – ideal zum Zähmen."
+ },
+ "trap_spike": {
+  "name": "Stachelgrube",
+  "cat": "trap",
+  "weight": 5.0,
+  "stack": 5,
+  "value": 10,
+  "stats": {
+   "dmg": 60,
+   "hold": 2.0
+  },
+  "desc": "Verletzt schwer, auch große Tiere."
+ },
+ "map_fragment": {
+  "name": "Kartenfragment",
+  "cat": "quest",
+  "weight": 0.05,
+  "stack": 10,
+  "value": 0
+ },
+ "journal_page_1": {
+  "name": "Tagebuchseite (Ewald I)",
+  "cat": "quest",
+  "weight": 0.05,
+  "stack": 1,
+  "value": 0,
+  "read": true
+ },
+ "journal_page_2": {
+  "name": "Tagebuchseite (Ewald II)",
+  "cat": "quest",
+  "weight": 0.05,
+  "stack": 1,
+  "value": 0,
+  "read": true
+ },
+ "journal_page_3": {
+  "name": "Tagebuchseite (Ewald III)",
+  "cat": "quest",
+  "weight": 0.05,
+  "stack": 1,
+  "value": 0,
+  "read": true
+ },
+ "ward_key": {
+  "name": "Bannschlüssel",
+  "cat": "quest",
+  "weight": 0.3,
+  "stack": 1,
+  "value": 0,
+  "desc": "Öffnet das Siegel des Narbenschlunds."
+ },
+ "grukk_totem": {
+  "name": "Moosfell-Totem",
+  "cat": "quest",
+  "weight": 0.5,
+  "stack": 1,
+  "value": 0
+ },
+ "rune_fire": {
+  "name": "Feuerrune",
+  "cat": "rune",
+  "weight": 0.1,
+  "stack": 20,
+  "value": 35,
+  "element": "fire",
+  "desc": "Verleiht Waffen das Element Feuer."
+ },
+ "essence_fire": {
+  "name": "Feueressenz",
+  "cat": "essence",
+  "weight": 0.1,
+  "stack": 50,
+  "value": 25,
+  "element": "fire",
+  "desc": "Konzentrierte Feuerkraft. Für Runen und elementare Gene."
+ },
+ "rune_water": {
+  "name": "Wasserrune",
+  "cat": "rune",
+  "weight": 0.1,
+  "stack": 20,
+  "value": 35,
+  "element": "water",
+  "desc": "Verleiht Waffen das Element Wasser."
+ },
+ "essence_water": {
+  "name": "Wasseressenz",
+  "cat": "essence",
+  "weight": 0.1,
+  "stack": 50,
+  "value": 25,
+  "element": "water",
+  "desc": "Konzentrierte Wasserkraft. Für Runen und elementare Gene."
+ },
+ "rune_ice": {
+  "name": "Eisrune",
+  "cat": "rune",
+  "weight": 0.1,
+  "stack": 20,
+  "value": 35,
+  "element": "ice",
+  "desc": "Verleiht Waffen das Element Eis."
+ },
+ "essence_ice": {
+  "name": "Eisessenz",
+  "cat": "essence",
+  "weight": 0.1,
+  "stack": 50,
+  "value": 25,
+  "element": "ice",
+  "desc": "Konzentrierte Eiskraft. Für Runen und elementare Gene."
+ },
+ "rune_lightning": {
+  "name": "Blitzrune",
+  "cat": "rune",
+  "weight": 0.1,
+  "stack": 20,
+  "value": 35,
+  "element": "lightning",
+  "desc": "Verleiht Waffen das Element Blitz."
+ },
+ "essence_lightning": {
+  "name": "Blitzessenz",
+  "cat": "essence",
+  "weight": 0.1,
+  "stack": 50,
+  "value": 25,
+  "element": "lightning",
+  "desc": "Konzentrierte Blitzkraft. Für Runen und elementare Gene."
+ },
+ "rune_earth": {
+  "name": "Erderune",
+  "cat": "rune",
+  "weight": 0.1,
+  "stack": 20,
+  "value": 35,
+  "element": "earth",
+  "desc": "Verleiht Waffen das Element Erde."
+ },
+ "essence_earth": {
+  "name": "Erdeessenz",
+  "cat": "essence",
+  "weight": 0.1,
+  "stack": 50,
+  "value": 25,
+  "element": "earth",
+  "desc": "Konzentrierte Erdekraft. Für Runen und elementare Gene."
+ },
+ "rune_wind": {
+  "name": "Windrune",
+  "cat": "rune",
+  "weight": 0.1,
+  "stack": 20,
+  "value": 35,
+  "element": "wind",
+  "desc": "Verleiht Waffen das Element Wind."
+ },
+ "essence_wind": {
+  "name": "Windessenz",
+  "cat": "essence",
+  "weight": 0.1,
+  "stack": 50,
+  "value": 25,
+  "element": "wind",
+  "desc": "Konzentrierte Windkraft. Für Runen und elementare Gene."
+ },
+ "rune_nature": {
+  "name": "Naturrune",
+  "cat": "rune",
+  "weight": 0.1,
+  "stack": 20,
+  "value": 35,
+  "element": "nature",
+  "desc": "Verleiht Waffen das Element Natur."
+ },
+ "essence_nature": {
+  "name": "Naturessenz",
+  "cat": "essence",
+  "weight": 0.1,
+  "stack": 50,
+  "value": 25,
+  "element": "nature",
+  "desc": "Konzentrierte Naturkraft. Für Runen und elementare Gene."
+ },
+ "rune_poison": {
+  "name": "Giftrune",
+  "cat": "rune",
+  "weight": 0.1,
+  "stack": 20,
+  "value": 35,
+  "element": "poison",
+  "desc": "Verleiht Waffen das Element Gift."
+ },
+ "essence_poison": {
+  "name": "Giftessenz",
+  "cat": "essence",
+  "weight": 0.1,
+  "stack": 50,
+  "value": 25,
+  "element": "poison",
+  "desc": "Konzentrierte Giftkraft. Für Runen und elementare Gene."
+ },
+ "rune_light": {
+  "name": "Lichtrune",
+  "cat": "rune",
+  "weight": 0.1,
+  "stack": 20,
+  "value": 35,
+  "element": "light",
+  "desc": "Verleiht Waffen das Element Licht."
+ },
+ "essence_light": {
+  "name": "Lichtessenz",
+  "cat": "essence",
+  "weight": 0.1,
+  "stack": 50,
+  "value": 25,
+  "element": "light",
+  "desc": "Konzentrierte Lichtkraft. Für Runen und elementare Gene."
+ },
+ "rune_shadow": {
+  "name": "Schattenrune",
+  "cat": "rune",
+  "weight": 0.1,
+  "stack": 20,
+  "value": 35,
+  "element": "shadow",
+  "desc": "Verleiht Waffen das Element Schatten."
+ },
+ "essence_shadow": {
+  "name": "Schattenessenz",
+  "cat": "essence",
+  "weight": 0.1,
+  "stack": 50,
+  "value": 25,
+  "element": "shadow",
+  "desc": "Konzentrierte Schattenkraft. Für Runen und elementare Gene."
+ },
+ "rune_blood": {
+  "name": "Blutrune",
+  "cat": "rune",
+  "weight": 0.1,
+  "stack": 20,
+  "value": 35,
+  "element": "blood",
+  "desc": "Verleiht Waffen das Element Blut."
+ },
+ "essence_blood": {
+  "name": "Blutessenz",
+  "cat": "essence",
+  "weight": 0.1,
+  "stack": 50,
+  "value": 25,
+  "element": "blood",
+  "desc": "Konzentrierte Blutkraft. Für Runen und elementare Gene."
+ }
+}

@@ -1,0 +1,186 @@
+{
+ "fire": {
+  "name": "Feuer",
+  "color": [
+   1.0,
+   0.45,
+   0.1
+  ],
+  "status": "burning",
+  "weak_to": [
+   "water",
+   "ice"
+  ],
+  "strong_vs": [
+   "nature",
+   "ice"
+  ]
+ },
+ "water": {
+  "name": "Wasser",
+  "color": [
+   0.2,
+   0.5,
+   1.0
+  ],
+  "status": "wet",
+  "weak_to": [
+   "lightning",
+   "nature"
+  ],
+  "strong_vs": [
+   "fire",
+   "earth"
+  ]
+ },
+ "ice": {
+  "name": "Eis",
+  "color": [
+   0.6,
+   0.85,
+   1.0
+  ],
+  "status": "chilled",
+  "weak_to": [
+   "fire",
+   "earth"
+  ],
+  "strong_vs": [
+   "wind",
+   "nature"
+  ]
+ },
+ "lightning": {
+  "name": "Blitz",
+  "color": [
+   0.8,
+   0.8,
+   1.0
+  ],
+  "status": "shocked",
+  "weak_to": [
+   "earth"
+  ],
+  "strong_vs": [
+   "water",
+   "wind"
+  ]
+ },
+ "earth": {
+  "name": "Erde",
+  "color": [
+   0.55,
+   0.42,
+   0.25
+  ],
+  "status": "shaken",
+  "weak_to": [
+   "water",
+   "nature"
+  ],
+  "strong_vs": [
+   "lightning",
+   "fire"
+  ]
+ },
+ "wind": {
+  "name": "Wind",
+  "color": [
+   0.75,
+   0.9,
+   0.8
+  ],
+  "status": "scattered",
+  "weak_to": [
+   "ice",
+   "lightning"
+  ],
+  "strong_vs": [
+   "poison",
+   "earth"
+  ]
+ },
+ "nature": {
+  "name": "Natur",
+  "color": [
+   0.35,
+   0.8,
+   0.25
+  ],
+  "status": "rooted",
+  "weak_to": [
+   "fire",
+   "poison"
+  ],
+  "strong_vs": [
+   "water",
+   "earth"
+  ]
+ },
+ "poison": {
+  "name": "Gift",
+  "color": [
+   0.5,
+   0.85,
+   0.2
+  ],
+  "status": "poisoned",
+  "weak_to": [
+   "wind",
+   "light"
+  ],
+  "strong_vs": [
+   "nature",
+   "blood"
+  ]
+ },
+ "light": {
+  "name": "Licht",
+  "color": [
+   1.0,
+   0.95,
+   0.7
+  ],
+  "status": "blinded",
+  "weak_to": [
+   "shadow"
+  ],
+  "strong_vs": [
+   "shadow",
+   "blood"
+  ],
+  "vs_demonic": 1.5
+ },
+ "shadow": {
+  "name": "Schatten",
+  "color": [
+   0.4,
+   0.2,
+   0.6
+  ],
+  "status": "feared",
+  "weak_to": [
+   "light"
+  ],
+  "strong_vs": [
+   "light",
+   "nature"
+  ]
+ },
+ "blood": {
+  "name": "Blut",
+  "color": [
+   0.7,
+   0.05,
+   0.08
+  ],
+  "status": "bleeding",
+  "weak_to": [
+   "light",
+   "poison"
+  ],
+  "strong_vs": [
+   "shadow"
+  ]
+ }
+}

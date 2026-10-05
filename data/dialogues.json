@@ -1,0 +1,543 @@
+{
+ "ilsa": {
+  "start": {
+   "text": "Ein Überlebender? Bei den Ahnen … Ich bin Ilsa Varn. Morgengrau ist nicht viel, aber hier bist du sicher – solange die Palisade hält.",
+   "options": [
+    {
+     "text": "Mein Schiff wurde von einem Seeungeheuer zerstört.",
+     "goto": "ship",
+     "cond": "stage:q2_zuflucht=0"
+    },
+    {
+     "text": "Gibt es sonst etwas zu tun?",
+     "goto": "side",
+     "cond": "quest:q3_lager=active;!quest:sq_raptor_ei"
+    },
+    {
+     "text": "Ich habe einen Gefährten gewonnen.",
+     "action": "advance:q2_zuflucht",
+     "cond": "stage:q2_zuflucht>=2",
+     "goto": "tamed"
+    },
+    {
+     "text": "Mein Lager steht.",
+     "action": "advance:q3_lager",
+     "cond": "stage:q3_lager>=2",
+     "goto": "camp"
+    },
+    {
+     "text": "Ich habe die Risssplitter untersucht.",
+     "action": "advance:q5_spuren",
+     "cond": "stage:q5_spuren>=3",
+     "goto": "rift"
+    },
+    {
+     "text": "Sieh dir meinen Hybriden an.",
+     "action": "advance:q6_blut",
+     "cond": "stage:q6_blut>=2",
+     "goto": "hybrid"
+    },
+    {
+     "text": "Erzähl mir von Ewald.",
+     "goto": "ewald"
+    },
+    {
+     "text": "Was weißt du über den Riss?",
+     "goto": "riftlore"
+    },
+    {
+     "text": "Lass uns handeln.",
+     "action": "trade"
+    },
+    {
+     "text": "Kannst du mich etwas lehren?",
+     "goto": "teach"
+    },
+    {
+     "text": "Ich möchte meine Fähigkeiten neu ordnen. (Kosten in Bernstein)",
+     "action": "respec"
+    },
+    {
+     "text": "Leb wohl.",
+     "action": "end"
+    }
+   ]
+  },
+  "ship": {
+   "text": "Ein Mosasaurus. Sie jagen in der Tiefsee zwischen den Inseln – deshalb sitzen wir hier fest. Du sagst, du bist Bestienbändiger? Dann beweise es: Gewinne das Vertrauen eines Tieres. Kehr mit einem Gefährten zurück, dann reden wir weiter.",
+   "options": [
+    {
+     "text": "Wie zähme ich ein Tier?",
+     "goto": "howtame"
+    },
+    {
+     "text": "Verstanden.",
+     "action": "advance:q2_zuflucht;end"
+    }
+   ]
+  },
+  "howtame": {
+   "text": "Jede Art ist anders. Pflanzenfresser wie Gallimimus oder Parasaurolophus: geduckt nähern (Strg), langsam, und Beeren anbieten (E). Raubtiere schlägst du mit der Keule oder Betäubungspfeilen bewusstlos und fütterst sie dann mit Fleisch. Velociraptoren nur aus dem Ei. Und manche Tiere … musst du retten.",
+   "options": [
+    {
+     "text": "Danke.",
+     "action": "advance:q2_zuflucht;end"
+    }
+   ]
+  },
+  "tamed": {
+   "text": "Er folgt dir wirklich! Gut. Nimm diesen Seelenkristall – er stammt aus Ewalds Werkstatt. Darin kannst du Gefährten verwahren und rufen. Aber vergiss nie: Tod und Wunden hebt der Kristall nicht auf. Du brauchst ein eigenes Lager. Morgengrau hat keinen Platz für Bestien.",
+   "options": [
+    {
+     "text": "Ich baue ein Lager.",
+     "action": "end"
+    }
+   ]
+  },
+  "camp": {
+   "text": "Ein Lagerstein, Gehege, eine Werkbank … du meinst es ernst. Dann hör zu: Die Moosfell-Goblins im Osten kennen das Moor. Seit Wochen verschwinden ihre Jäger. Wenn wir den Riss verstehen wollen, brauchen wir sie. Häuptling Grukk spricht aber nicht mit Menschen – vielleicht mit dir.",
+   "options": [
+    {
+     "text": "Ich gehe zu den Moosfell.",
+     "action": "end"
+    }
+   ]
+  },
+  "rift": {
+   "text": "Diese Splitter … sie pulsieren wie ein Herz. Ewald hat genau so etwas beschrieben, bevor er verschwand. Der Riss ist durch einen alten Bann versiegelt – ein Bann, den nur eine Kreatur durchdringen kann, die zwei Naturen in sich trägt. Ich lehre dich die Kunst der Kreuzung. Baue ein Genlabor.",
+   "options": [
+    {
+     "text": "Zwei Naturen?",
+     "goto": "twonatures"
+    },
+    {
+     "text": "Ich baue das Labor.",
+     "action": "end"
+    }
+   ]
+  },
+  "twonatures": {
+   "text": "Hybriden. Die Vorfahren dieser Inseln kreuzten Bestien, um gegen die Dämonen der alten Zeit zu bestehen. Sei vorsichtig: Je fremder die Körper, desto instabiler das Blut.",
+   "options": [
+    {
+     "text": "Verstanden.",
+     "action": "end"
+    }
+   ]
+  },
+  "hybrid": {
+   "text": "Unglaublich … Ewald wäre stolz – oder entsetzt. Jetzt fehlt nur der Bannschlüssel. Skarza Blutzahn, der Häuptling der Knochenbrecher, hat ihn den Wächtern abgenommen. Bring ihn mir – wie, überlasse ich dir. Aber Blut zieht weiteres Blut nach sich.",
+   "options": [
+    {
+     "text": "Ich hole den Schlüssel.",
+     "action": "end"
+    }
+   ]
+  },
+  "side": {
+   "text": "Velociraptoren. Sie sind klug – zu klug, um sie als Erwachsene zu zähmen. Aber ein Ei … ein frisch geschlüpfter Raptor prägt sich auf den Ersten, den er sieht. Im Morgengrauwald liegen Nester. Sei vorsichtig.",
+   "options": [
+    {
+     "text": "Ich hole ein Ei.",
+     "action": "start:sq_raptor_ei;end"
+    }
+   ]
+  },
+  "ewald": {
+   "text": "Mein Bruder war Gelehrter. Er glaubte, die Macht der Vorfahren könne uns vor den Bestien schützen. Vor drei Jahren ging er in den Narbenschlund … in der Nacht, als sich der Himmel rot färbte. Seitdem kommen die Monster.",
+   "options": [
+    {
+     "text": "Ich werde herausfinden, was geschah.",
+     "action": "end"
+    },
+    {
+     "text": "Zurück.",
+     "goto": "start"
+    }
+   ]
+  },
+  "riftlore": {
+   "text": "Die Moosfell nennen ihn „die Wunde“. Wer zu lange hinsieht, hört eine Stimme. Manche sagen, sie verspricht Macht. Ich sage: Sie lügt.",
+   "options": [
+    {
+     "text": "Zurück.",
+     "goto": "start"
+    }
+   ]
+  },
+  "teach": {
+   "text": "Ich kann dir Tierheilkunde beibringen. Und wenn du bereit bist, die Grundlagen der Genetik.",
+   "options": [
+    {
+     "text": "Tierheilkunde lernen.",
+     "action": "teach:veterinary",
+     "goto": "start"
+    },
+    {
+     "text": "Genetik lernen.",
+     "action": "teach:genetics_1",
+     "cond": "stage:q6_blut>=0",
+     "goto": "start"
+    },
+    {
+     "text": "Zurück.",
+     "goto": "start"
+    }
+   ]
+  }
+ },
+ "tomas": {
+  "start": {
+   "text": "Hm? Noch so ein Strandgut. Ich bin Tomas. Schmied, wenn ich Erz hätte. Habe ich aber nicht.",
+   "options": [
+    {
+     "text": "Ich bringe dir Erz.",
+     "action": "start:sq_tomas_erz",
+     "cond": "!quest:sq_tomas_erz",
+     "goto": "ore"
+    },
+    {
+     "text": "Hier ist dein Erz. (10 Metallerz)",
+     "action": "take:metal_ore:10;advance:sq_tomas_erz",
+     "cond": "quest:sq_tomas_erz=active;item:metal_ore>=10",
+     "goto": "thanks"
+    },
+    {
+     "text": "Zeig mir deine Waren.",
+     "action": "trade"
+    },
+    {
+     "text": "Leb wohl.",
+     "action": "end"
+    }
+   ]
+  },
+  "ore": {
+   "text": "Im Nordgrat gibt es dunkle Adern im Fels – Metallerz. Nimm eine Spitzhacke. Zehn Brocken, dann bringe ich dir bei, wie man eine Schmiede baut.",
+   "options": [
+    {
+     "text": "Abgemacht.",
+     "action": "end"
+    }
+   ]
+  },
+  "thanks": {
+   "text": "Ha! Das ist gutes Erz. Hör zu, so baust du eine Esse …",
+   "options": [
+    {
+     "text": "Danke.",
+     "action": "end"
+    }
+   ]
+  }
+ },
+ "grukk": {
+  "start": {
+   "text": "Mensch. Riecht nach Salz und Angst. Was willst du im Dorf von Grukk?",
+   "options": [
+    {
+     "text": "Ilsa Varn schickt mich. Wir wollen gegen den Riss kämpfen.",
+     "action": "advance:q4_moosfell",
+     "cond": "stage:q4_moosfell=0",
+     "goto": "hunters"
+    },
+    {
+     "text": "Zibbel ist gerettet.",
+     "action": "advance:q4_moosfell",
+     "cond": "stage:q4_moosfell=3",
+     "goto": "thanks"
+    },
+    {
+     "text": "Sprichst du für mich bei den Knochenbrechern?",
+     "cond": "quest:q7_pakt=active;rep:moosfell>=50;!flag:grukk_mediated",
+     "goto": "mediate"
+    },
+    {
+     "text": "Handeln.",
+     "action": "trade",
+     "cond": "rep:moosfell>=0"
+    },
+    {
+     "text": "Gehen.",
+     "action": "end"
+    }
+   ]
+  },
+  "hunters": {
+   "text": "Ilsa. Die Kräuterfrau. Grukk mag sie. Hör zu, Mensch: Zibbel, mein bester Jäger, ist zur Teergrube gegangen. Dann kamen die Feuerhunde. Bring Zibbel zurück, dann redet Grukk mit dir.",
+   "options": [
+    {
+     "text": "Ich finde ihn.",
+     "action": "end"
+    }
+   ]
+  },
+  "thanks": {
+   "text": "Zibbel lebt! Grukk vergisst das nicht. Nimm das Totem – die Moosfell erkennen dich jetzt als Freund. Und sag Ilsa: Die Feuerhunde kommen aus der Wunde im Nordwesten.",
+   "options": [
+    {
+     "text": "Danke, Häuptling.",
+     "action": "end"
+    }
+   ]
+  },
+  "mediate": {
+   "text": "Skarza ist ein Schädelbrecher, aber er schuldet Grukk drei Ziegen und einen Bruder. Grukk schickt Bote. Skarza wird mit dir reden – und den Schlüssel gegen Frieden tauschen.",
+   "options": [
+    {
+     "text": "Danke.",
+     "action": "flag:grukk_mediated=1;rep:knochenbrecher:30;end"
+    }
+   ]
+  }
+ },
+ "nixa": {
+  "start": {
+   "text": "Du trägst Feuer und Erde in dir … und etwas Dunkles, das schläft. Ich bin Nixa.",
+   "options": [
+    {
+     "text": "Lehre mich die Elemente.",
+     "action": "start:sq_nixa_blueten",
+     "cond": "!quest:sq_nixa_blueten",
+     "goto": "flowers"
+    },
+    {
+     "text": "Hier sind drei seltene Blüten.",
+     "action": "take:rare_flower:3;advance:sq_nixa_blueten",
+     "cond": "quest:sq_nixa_blueten=active;item:rare_flower>=3",
+     "goto": "taught"
+    },
+    {
+     "text": "Kannst du mich Bindungsmagie lehren?",
+     "action": "teach:binding_magic",
+     "cond": "rep:moosfell>=25"
+    },
+    {
+     "text": "Was meinst du mit „etwas Dunkles“?",
+     "goto": "dark"
+    },
+    {
+     "text": "Handeln.",
+     "action": "trade"
+    },
+    {
+     "text": "Leb wohl.",
+     "action": "end"
+    }
+   ]
+  },
+  "flowers": {
+   "text": "Drei seltene Blüten. Sie wachsen im Schatten großer Bäume. Bring sie mir, dann öffne ich dir die Augen.",
+   "options": [
+    {
+     "text": "Ich bringe sie.",
+     "action": "end"
+    }
+   ]
+  },
+  "taught": {
+   "text": "Schließe die Augen. Spürst du die Wärme des Feuers? Das Ziehen der Erde? Jedes Wesen trägt bis zu fünf Elemente. Lerne, sie zu lenken.",
+   "options": [
+    {
+     "text": "Ich spüre es.",
+     "action": "end"
+    }
+   ]
+  },
+  "dark": {
+   "text": "Jeder trägt einen Schatten. Ewald fand einen Weg, seinen zu wecken. Der Gehörnte im Moor kennt das Ritual. Aber ich rate dir: Lass ihn schlafen.",
+   "options": [
+    {
+     "text": "Der Gehörnte?",
+     "goto": "horned"
+    },
+    {
+     "text": "Zurück.",
+     "goto": "start"
+    }
+   ]
+  },
+  "horned": {
+   "text": "Ein Schrein, älter als mein Volk, tief im Moorkessel. Ewald ging oft dorthin. Nachts, wenn die Stimme am lautesten ist.",
+   "options": [
+    {
+     "text": "Zurück.",
+     "goto": "start"
+    }
+   ]
+  }
+ },
+ "skarza": {
+  "start": {
+   "text": "HA! Ein Menschlein im Lager der Knochenbrecher. Mutig oder dumm? Sprich schnell, bevor meine Raptoren Hunger kriegen.",
+   "options": [
+    {
+     "text": "Ich will den Bannschlüssel.",
+     "cond": "quest:q7_pakt=active;!item:ward_key>=1",
+     "goto": "key"
+    },
+    {
+     "text": "Grukk hat mich geschickt.",
+     "cond": "flag:grukk_mediated;quest:q7_pakt=active;!item:ward_key>=1",
+     "goto": "mediated"
+    },
+    {
+     "text": "[Dämonengestalt] KNIE NIEDER.",
+     "cond": "demon_form;quest:q7_pakt=active;!item:ward_key>=1",
+     "goto": "demon"
+    },
+    {
+     "text": "Handeln.",
+     "action": "trade",
+     "cond": "rep:knochenbrecher>=0"
+    },
+    {
+     "text": "Gehen.",
+     "action": "end"
+    }
+   ]
+  },
+  "key": {
+   "text": "Der Schlüssel? Der ist Skarzas Beute! Was bietest du? Einen Tyrannenzahn und hundert Bernstein – dann reden wir. Oder du forderst mich heraus, wie ein echter Krieger.",
+   "options": [
+    {
+     "text": "Hier: Tyrannenzahn und 100 Bernstein.",
+     "cond": "item:trex_tooth>=1;amber>=100",
+     "action": "take:trex_tooth:1;amber:-100;give:ward_key:1;rep:knochenbrecher:25;path:protector:1;end"
+    },
+    {
+     "text": "Ich fordere dich heraus!",
+     "action": "flag:skarza_duel=1;path:conqueror:2;end"
+    },
+    {
+     "text": "Ich komme wieder.",
+     "action": "end"
+    }
+   ]
+  },
+  "mediated": {
+   "text": "Grukk, der alte Ziegendieb … Na gut. Frieden mit den Moosfell ist mehr wert als ein rostiger Schlüssel. Nimm ihn. Aber komm nicht wieder ohne Geschenke.",
+   "options": [
+    {
+     "text": "Danke, Skarza.",
+     "action": "give:ward_key:1;path:protector:2;end"
+    }
+   ]
+  },
+  "demon": {
+   "text": "Bei den Knochen der Ahnen … Der Gehörnte lebt! Skarza dient dir. Nimm den Schlüssel, nimm alles!",
+   "options": [
+    {
+     "text": "Gut.",
+     "action": "give:ward_key:1;rep:knochenbrecher:40;path:demon:2;flag:knochenbrecher_vassal=1;end"
+    }
+   ]
+  }
+ },
+ "brannoc": {
+  "start": {
+   "text": "Ein Zivilist auf meinem Kap? Ich bin Hauptmann Brannoc Eisenhand. Die Krone will diese Inseln, und ich liefere sie. Bist du nützlich?",
+   "options": [
+    {
+     "text": "Ilsa schickt mich wegen des Aschenkamms.",
+     "action": "advance:q9_aschenkamm",
+     "cond": "stage:q9_aschenkamm=0",
+     "goto": "ash"
+    },
+    {
+     "text": "Lehrt mich Schwarzpulver.",
+     "action": "teach:black_powder",
+     "cond": "rep:eisenhand>=20"
+    },
+    {
+     "text": "Handeln.",
+     "action": "trade"
+    },
+    {
+     "text": "Leb wohl.",
+     "action": "end"
+    }
+   ]
+  },
+  "ash": {
+   "text": "Der Vulkan spuckt Wyvern aus. Meine Männer kommen nicht hin – aber ein Bestienbändiger mit Flügeln … Bring mir eine Wyvern, und Eisenhand steht hinter dir. Oder du behältst sie. Dann sind wir Rivalen.",
+   "options": [
+    {
+     "text": "Wir werden sehen.",
+     "action": "end"
+    }
+   ]
+  }
+ },
+ "zibbel": {
+  "start": {
+   "text": "Mensch! Die Feuerhunde … sind sie weg? Zibbel dachte, Zibbel stirbt im Teer!",
+   "options": [
+    {
+     "text": "Du bist sicher. Geh zurück ins Dorf.",
+     "action": "advance:q4_moosfell;flag:zibbel_saved=1;end",
+     "cond": "stage:q4_moosfell=2"
+    },
+    {
+     "text": "Geh nach Hause, Zibbel.",
+     "action": "end"
+    }
+   ]
+  }
+ },
+ "siedler": {
+  "start": {
+   "text": "Ilsa sagt, du kannst mit Bestien umgehen. Halt sie bloß von unseren Ziegen fern.",
+   "options": [
+    {
+     "text": "Leb wohl.",
+     "action": "end"
+    }
+   ]
+  }
+ },
+ "siedlerin": {
+  "start": {
+   "text": "Nachts hört man die Feuerhunde heulen. Seit Ewald fort ist, wird es jedes Jahr schlimmer.",
+   "options": [
+    {
+     "text": "Ich tue, was ich kann.",
+     "action": "end"
+    }
+   ]
+  }
+ },
+ "moosfell_goblin": {
+  "start": {
+   "text": "Mensch riecht nach Rauch. Grukk sagt, Mensch ist Freund … vielleicht.",
+   "options": [
+    {
+     "text": "Gehen.",
+     "action": "end"
+    }
+   ]
+  }
+ },
+ "knochenbrecher_krieger": {
+  "start": {
+   "text": "Skarza ist der Stärkste. Wer stärker ist als Skarza, ist Häuptling. So ist das.",
+   "options": [
+    {
+     "text": "Gehen.",
+     "action": "end"
+    }
+   ]
+  }
+ },
+ "soeldner": {
+  "start": {
+   "text": "Der Hauptmann zahlt in Silber, nicht in Bernstein. Noch.",
+   "options": [
+    {
+     "text": "Gehen.",
+     "action": "end"
+    }
+   ]
+  }
+ }
+}
