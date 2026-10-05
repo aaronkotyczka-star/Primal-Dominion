@@ -67,6 +67,11 @@ func _count(kind: String, what: String, n: int) -> void:
 	for qid in GameState.state["quests"]:
 		if not is_active(qid):
 			continue
+		# remember crafts over the whole quest so a stage switch in between does not lose them
+		if kind == "craft":
+			var seen: Dictionary = GameState.state["quests"][qid].get("crafted", {})
+			seen[what] = int(seen.get(what, 0)) + n
+			GameState.state["quests"][qid]["crafted"] = seen
 		var sd := current_stage_def(qid)
 		var objs: Array = sd.get("obj", [])
 		for i in objs.size():
@@ -121,6 +126,13 @@ static func objective_progress(qid: String, i: int, o: Dictionary) -> Array:
 				if b["type"] in String(o["what"]).split("|"):
 					cnt += 1
 			return [mini(cnt, need), need]
+		"craft":
+			var made := int(c.get(str(i), 0))
+			var seen2: Dictionary = GameState.state["quests"][qid].get("crafted", {})
+			var tot := 0
+			for it in String(o["item"]).split("|"):
+				tot += int(seen2.get(it, 0))
+			return [mini(maxi(made, tot), need), need]
 		"visit":
 			return [1 if o["poi"] in GameState.state["discovered"] else 0, 1]
 		"research":

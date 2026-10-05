@@ -18,12 +18,27 @@ const TYPES_HARVEST := {
 	"rock_small": {"hp": 60, "yield": [["stone", 3], ["flint", 1]], "tool": "stone"},
 	"rock_large": {"hp": 220, "yield": [["stone", 4], ["flint", 2]], "tool": "stone", "rare": ["metal_ore", 0.2]},
 	"crystal_corrupt": {"hp": 80, "yield": [["rift_shard", 1], ["demon_essence", 1]], "tool": "stone"},
+	"tree_broad_b": {"hp": 130, "yield": [["wood", 4], ["fiber", 1]], "tool": "wood"},
+	"tree_broad_c": {"hp": 80, "yield": [["wood", 3], ["fiber", 1]], "tool": "wood"},
+	"tree_conifer_b": {"hp": 150, "yield": [["wood", 4], ["fiber", 1]], "tool": "wood"},
+	"tree_conifer_c": {"hp": 60, "yield": [["wood", 2], ["fiber", 1]], "tool": "wood"},
+	"rock_small_b": {"hp": 45, "yield": [["stone", 2], ["flint", 1]], "tool": "stone"},
+	"rock_medium": {"hp": 130, "yield": [["stone", 4], ["flint", 1]], "tool": "stone", "rare": ["metal_ore", 0.1]},
+	"log": {"hp": 70, "yield": [["wood", 4]], "tool": "wood", "rare": ["mushroom", 0.3]},
+	"stump": {"hp": 50, "yield": [["wood", 2]], "tool": "wood", "rare": ["mushroom", 0.2]},
 }
+## approximate footprint radius (m, at scale 1) for interaction and colliders
+const RADIUS := {"rock_small": 0.75, "rock_small_b": 0.55, "rock_medium": 1.7, "rock_large": 3.6, "rock_spire": 2.6,
+	"boulder": 7.5, "tree_jungle": 0.85, "tree_broad_b": 0.6, "tree_broad_c": 0.3, "tree_conifer_b": 0.5,
+	"tree_conifer_c": 0.22, "stump": 0.55, "log": 0.45, "cactus": 0.4, "crystal_corrupt": 0.8}
 const LOD := {
 	"tree_conifer": [70.0, 900.0], "tree_broad": [70.0, 900.0], "tree_palm": [60.0, 700.0], "tree_jungle": [80.0, 1000.0],
 	"tree_swamp": [60.0, 700.0], "tree_dead": [50.0, 500.0], "bush": [40.0, 160.0], "berry_bush": [40.0, 160.0],
 	"fern": [30.0, 90.0], "reed": [30.0, 90.0], "cactus": [50.0, 400.0], "rock_small": [50.0, 260.0],
 	"rock_large": [90.0, 1200.0], "crystal_corrupt": [60.0, 400.0],
+	"tree_broad_b": [70.0, 900.0], "tree_broad_c": [70.0, 900.0], "tree_conifer_b": [80.0, 1100.0],
+	"tree_conifer_c": [60.0, 600.0], "rock_medium": [70.0, 600.0], "rock_small_b": [40.0, 200.0],
+	"rock_spire": [120.0, 1500.0], "boulder": [150.0, 1600.0], "log": [50.0, 300.0], "stump": [40.0, 220.0],
 }
 
 var types: Array = []
@@ -171,7 +186,7 @@ func nearest(pos: Vector3, dir: Vector3, rng: float, filter_hand: bool = false) 
 					var p := pos_of(i)
 					var to := p - pos
 					to.y = 0
-					var r := 0.5 * scale_of(i) * (3.0 if tname == "rock_large" else 1.0)
+					var r := float(RADIUS.get(tname, 0.5)) * 0.7 * scale_of(i)
 					var d := to.length() - r
 					if d > rng:
 						continue
@@ -259,22 +274,30 @@ func update_colliders(center: Vector3) -> void:
 		col_chunks[k] = body
 		for t in chunk_map[k]:
 			var tname: String = types[t]
-			if not (tname.begins_with("tree") or tname.begins_with("rock") or tname == "cactus" or tname == "crystal_corrupt"):
+			if not (tname.begins_with("tree") or tname.begins_with("rock") or tname in ["cactus", "crystal_corrupt", "boulder", "log", "stump"]):
 				continue
 			for i in chunk_map[k][t]:
 				if is_harvested(i):
 					continue
 				var cs := CollisionShape3D.new()
 				var s := scale_of(i)
-				if tname.begins_with("rock"):
+				var rad: float = float(RADIUS.get(tname, 0.38)) * s
+				if tname.begins_with("rock") or tname == "boulder":
 					var sh := SphereShape3D.new()
-					sh.radius = (0.75 if tname == "rock_small" else 3.6) * s
+					sh.radius = rad
 					cs.shape = sh
-					cs.position = pos_of(i) + Vector3(0, sh.radius * 0.35, 0)
+					cs.position = pos_of(i) + Vector3(0, rad * (1.6 if tname == "rock_spire" else 0.35), 0)
+				elif tname == "log":
+					var cap := CapsuleShape3D.new()
+					cap.radius = rad
+					cap.height = 7.0 * s
+					cs.shape = cap
+					cs.rotation = Vector3(PI * 0.5, records[i * 6 + 4], 0)
+					cs.position = pos_of(i) + Vector3(0, rad, 0)
 				else:
 					var cy := CylinderShape3D.new()
-					cy.radius = (0.85 if tname == "tree_jungle" else 0.38) * s
-					cy.height = 6.0 * s
+					cy.radius = rad
+					cy.height = (1.0 if tname == "stump" else 6.0) * s
 					cs.shape = cy
-					cs.position = pos_of(i) + Vector3(0, 3.0 * s, 0)
+					cs.position = pos_of(i) + Vector3(0, cy.height * 0.5, 0)
 				body.add_child(cs)

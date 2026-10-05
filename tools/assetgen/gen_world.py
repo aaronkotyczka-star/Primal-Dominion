@@ -139,14 +139,19 @@ def build():
     # base relief
     hills = fbm(X / 260.0, Z / 260.0, 6, seed=5)
     detail = fbm(X / 60.0, Z / 60.0, 4, seed=6)
-    H += land * (hills * 26 + detail * 4)
+    calm = np.zeros((N, N))
+    for key, rad in (("start_beach", 260), ("morgengrau", 230), ("moosfell", 180), ("knochenbrecher", 160), ("fischerkap", 120)):
+        p0 = POIS[key]
+        calm = np.maximum(calm, 1 - smoothstep(rad * 0.6, rad, np.sqrt((X - p0["x"]) ** 2 + (Z - p0["z"]) ** 2)))
+    H += land * (hills * (26 + 10 * (1 - calm)) + detail * (4 + 1.5 * (1 - calm)))
     # ---- core island features: warped Voronoi biome seeds
     core = island_id == 0
     seeds = [(2, -420, 200), (2, -330, 400), (2, 120, 420), (2, -40, 20),
-             (3, -170, 160), (3, -260, -60), (3, -10, 260), (3, -90, -120),
+             (3, -170, 160), (3, -260, -60), (3, -10, 260), (3, -90, -120), (3, 110, 140),
              (4, 340, 150), (4, 470, 320), (4, 210, 20), (4, 300, 380),
              (5, 360, -250), (5, 230, -140), (5, 470, -120),
-             (6, 10, -430), (6, -130, -330), (6, 170, -410), (6, -20, -280),
+             (6, 10, -430), (6, -130, -330), (6, 170, -410), (6, -20, -280), (6, -520, 20), (6, 560, 80),
+             (6, 120, -230),
              (10, -310, -270), (10, -430, -140)]
     wx = X + fbm(X / 160.0, Z / 160.0, 4, seed=11) * 90
     wz = Z + fbm(X / 160.0, Z / 160.0, 4, seed=12) * 90
@@ -166,6 +171,9 @@ def build():
     rid = ridged(X / 170.0, Z / 170.0, 6, seed=9)
     H += mmask * (rid * 210 + 30)
     H += gmask * 4.0
+    fmask = bmask(3, 14)
+    outcrop = np.clip(ridged(X / 90.0, Z / 90.0, 5, seed=14) - 0.55, 0, None) * 2.2
+    H += (gmask + fmask) * outcrop * 38 * (1 - calm)
     # plateau Adlerhorst: flat top with cliff walls
     px, pz = POIS["adlerhorst"]["x"], POIS["adlerhorst"]["z"]
     pd = np.sqrt((X - px) ** 2 + (Z - pz) ** 2)
@@ -320,20 +328,27 @@ def slope_deg(H):
 
 
 VEG_TYPES = ["tree_conifer", "tree_broad", "tree_palm", "tree_jungle", "tree_swamp", "tree_dead", "bush",
-             "fern", "rock_small", "rock_large", "cactus", "berry_bush", "reed", "crystal_corrupt"]
+             "fern", "rock_small", "rock_large", "cactus", "berry_bush", "reed", "crystal_corrupt",
+             "tree_broad_b", "tree_broad_c", "tree_conifer_b", "tree_conifer_c", "rock_medium", "rock_small_b",
+             "rock_spire", "boulder", "log", "stump"]
 
 # density per biome per type (instances per 100x100 m)
 DENS = {
-    2: dict(tree_broad=6, bush=30, rock_small=6, rock_large=1.2, berry_bush=3, fern=4),
-    3: dict(tree_conifer=55, tree_broad=40, bush=45, fern=70, rock_small=8, rock_large=1.5, berry_bush=6),
-    4: dict(tree_jungle=40, tree_palm=22, fern=120, bush=50, rock_small=5, berry_bush=6),
-    5: dict(tree_swamp=40, reed=110, bush=15, fern=30, tree_dead=6),
-    1: dict(tree_palm=10, rock_small=4, reed=6),
-    6: dict(tree_conifer=10, rock_small=22, rock_large=5, bush=6),
-    7: dict(tree_conifer=12, rock_small=10, rock_large=4),
-    8: dict(tree_dead=6, rock_small=12, rock_large=5),
-    9: dict(cactus=6, rock_small=8, rock_large=2.5, tree_palm=0.6),
-    10: dict(tree_dead=18, crystal_corrupt=6, rock_small=10, rock_large=2),
+    2: dict(tree_broad=16, tree_broad_b=11, tree_broad_c=8, tree_conifer_c=4, bush=55, rock_small=14, rock_small_b=12, rock_medium=5,
+            rock_large=1.6, boulder=0.35, berry_bush=6, fern=10, log=1.5, stump=2.5),
+    3: dict(tree_conifer=100, tree_conifer_b=45, tree_conifer_c=40, tree_broad=60, tree_broad_b=25, tree_broad_c=30,
+            bush=80, fern=150, rock_small=14, rock_small_b=10, rock_medium=6, rock_large=2.2, boulder=0.4,
+            berry_bush=9, log=9, stump=8),
+    4: dict(tree_jungle=70, tree_palm=30, tree_broad_b=10, fern=230, bush=90, rock_small=8, rock_medium=4,
+            berry_bush=10, log=7, stump=3),
+    5: dict(tree_swamp=60, tree_dead=12, reed=200, bush=30, fern=60, log=10, stump=8, rock_small_b=6),
+    1: dict(tree_palm=18, rock_small=10, rock_small_b=10, rock_medium=3, reed=10, log=1.2),
+    6: dict(tree_conifer=18, tree_conifer_c=14, rock_small=40, rock_small_b=30, rock_medium=16, rock_large=8,
+            rock_spire=2.0, boulder=1.4, bush=10, stump=2),
+    7: dict(tree_conifer=16, tree_conifer_b=6, rock_small=18, rock_medium=8, rock_large=5, rock_spire=1.5, boulder=1.0),
+    8: dict(tree_dead=10, rock_small=22, rock_medium=10, rock_large=7, rock_spire=2.5, boulder=1.2),
+    9: dict(cactus=10, rock_small=14, rock_medium=6, rock_large=3.5, rock_spire=1.8, boulder=0.8, tree_palm=0.8),
+    10: dict(tree_dead=28, crystal_corrupt=10, rock_small=16, rock_medium=6, rock_large=3, rock_spire=1.5, stump=4),
 }
 
 
@@ -351,16 +366,18 @@ def vegetation(H, B, slope, X, Z):
             if count <= 0:
                 continue
             cz_, cx_ = np.nonzero(mask)
-            pick = vrng.integers(0, len(cx_), int(count * 1.6) + 1)
+            pick = vrng.integers(0, len(cx_), int(count * 6) + 1)
             xs = -EXT + (cx_[pick] + vrng.random(len(pick))) * CELL
             zs = -EXT + (cz_[pick] + vrng.random(len(pick))) * CELL
             ix = np.clip(((xs + EXT) / CELL).astype(int), 0, N - 1)
             iz = np.clip(((zs + EXT) / CELL).astype(int), 0, N - 1)
-            ok = (B[iz, ix] == bid) & (slope[iz, ix] < (28 if tname.startswith("tree") else 40)) & (H[iz, ix] > 0.4)
+            ok = (B[iz, ix] == bid) & (slope[iz, ix] < (28 if tname.startswith("tree") or tname in ("log", "stump") else 46)) & (H[iz, ix] > 0.4)
             if tname == "reed":
                 ok = (B[iz, ix] == bid) & (H[iz, ix] > -0.6) & (H[iz, ix] < 1.6)
-            if tname.startswith("tree") or tname in ("fern", "bush"):
-                ok &= vrng.random(len(xs)) < (0.25 + 0.75 * clump[iz, ix])
+            if tname.startswith("tree") or tname in ("fern", "bush", "log", "stump"):
+                ok &= vrng.random(len(xs)) < (0.2 + 0.8 * clump[iz, ix])
+            if tname.startswith("rock") or tname == "boulder":
+                ok &= vrng.random(len(xs)) < (0.35 + 0.65 * (1 - clump[iz, ix]))
             # keep villages / pois clear
             for p in POIS.values():
                 r = p.get("flatten", 0)

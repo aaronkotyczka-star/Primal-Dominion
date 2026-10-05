@@ -134,58 +134,58 @@ def branch_curve(start, direction, length, droop, segs):
 
 
 # ------------------------------------------------------------------ species
-def tree_broad(lod, seed=1):
+def tree_broad(lod, seed=1, H=11.0, crown_r=2.4, nb0=7, spread=1.0, lean=0.25, trunk_r=0.45):
     rng = np.random.default_rng(seed)
     mb = MB()
-    H = 11.0
-    trunk = [np.array([math.sin(t * 2) * 0.25 * t, t * H * 0.6, math.cos(t * 3) * 0.2 * t]) for t in np.linspace(0, 1, 6)]
-    tube(mb, trunk, np.linspace(0.45, 0.28, 6), 10 if lod == 0 else 6, sway1=0.1)
-    # root flare
+    ph = rng.random() * 6
+    trunk = [np.array([math.sin(t * 2 + ph) * lean * t, t * H * 0.6, math.cos(t * 3 + ph) * lean * 0.8 * t]) for t in np.linspace(0, 1, 6)]
+    tube(mb, trunk, np.linspace(trunk_r, trunk_r * 0.62, 6), 10 if lod == 0 else 6, sway1=0.1)
     for k in range(5 if lod == 0 else 0):
-        a = k / 5 * math.tau
+        a = k / 5 * math.tau + ph
         d = np.array([math.cos(a), -0.35, math.sin(a)])
-        tube(mb, [np.array([0, 0.7, 0]), np.array([0, 0.7, 0]) + d * 1.1], [0.25, 0.05], 5)
+        tube(mb, [np.array([0, 0.7, 0]), np.array([0, 0.7, 0]) + d * 1.1 * trunk_r / 0.45], [trunk_r * 0.55, 0.05], 5)
     top = trunk[-1]
     crowns = []
-    nb = 6 if lod == 0 else 4
+    nb = nb0 if lod == 0 else max(3, nb0 - 3)
     for k in range(nb):
         a = k / nb * math.tau + rng.random()
-        d = np.array([math.cos(a), rng.uniform(0.5, 0.9), math.sin(a)])
+        d = np.array([math.cos(a) * spread, rng.uniform(0.5, 0.95), math.sin(a) * spread])
         d /= np.linalg.norm(d)
-        st = top - np.array([0, rng.uniform(0, 2.0), 0])
-        L = rng.uniform(2.5, 4.0)
+        st = top - np.array([0, rng.uniform(0, 2.4), 0])
+        L = rng.uniform(2.3, 3.8) * crown_r / 2.4
         pts = branch_curve(st, d, L, 0.15, 4)
-        tube(mb, pts, np.linspace(0.18, 0.05, 5), 6 if lod == 0 else 4, sway0=0.1, sway1=0.4)
+        tube(mb, pts, np.linspace(trunk_r * 0.4, 0.05, 5), 6 if lod == 0 else 4, sway0=0.1, sway1=0.4)
         crowns.append(pts[-1])
-    crowns.append(top + np.array([0, 1.8, 0]))
+        if lod == 0:
+            mid = pts[2]
+            crowns.append(mid + np.array([0, -0.3, 0]))
+    crowns.append(top + np.array([0, crown_r * 0.75, 0]))
     for c in crowns:
-        crown(mb, rng, c, 2.4, 40 if lod == 0 else 9, 2.2 if lod == 0 else 3.6, 0, sway=0.8)
+        crown(mb, rng, c, crown_r, 46 if lod == 0 else 8, 1.9 if lod == 0 else 3.8, 0, sway=0.8)
     return mb
 
 
-def tree_conifer(lod, seed=2):
+def tree_conifer(lod, seed=2, H=16.0, width=4.2, tiers0=11):
     rng = np.random.default_rng(seed)
     mb = MB()
-    H = 16.0
     trunk = [np.array([0, t * H, 0]) for t in np.linspace(0, 1, 7)]
-    tube(mb, trunk, np.linspace(0.42, 0.04, 7), 9 if lod == 0 else 5, sway1=0.25)
-    tiers = 9 if lod == 0 else 5
+    tube(mb, trunk, np.linspace(0.42 * H / 16, 0.04, 7), 9 if lod == 0 else 5, sway1=0.25)
+    tiers = tiers0 if lod == 0 else 5
     for k in range(tiers):
-        t = 0.22 + 0.76 * k / (tiers - 1)
+        t = 0.18 + 0.8 * k / (tiers - 1)
         y = t * H
-        rad = (1 - t) * 4.2 + 0.6
-        nb = 7 if lod == 0 else 5
+        rad = (1 - t) * width + 0.5
+        nb = 8 if lod == 0 else 5
         for j in range(nb):
-            a = j / nb * math.tau + k * 0.7 + rng.random() * 0.3
+            a = j / nb * math.tau + k * 0.7 + rng.random() * 0.4
             d = np.array([math.cos(a), -0.15, math.sin(a)])
             if lod == 0:
                 tube(mb, branch_curve(np.array([0, y, 0]), d, rad, 0.2, 2), [0.08, 0.05, 0.02], 4, sway0=0.2, sway1=0.6)
-            # needle cards hanging along branch
             for q in range(3 if lod == 0 else 1):
                 f = (q + 1) / 3.5 if lod == 0 else 0.6
                 c = np.array([0, y, 0]) + d * rad * f + np.array([0, -0.2 - rad * 0.08 * f, 0])
-                card(mb, c, np.array([0, 1.0, 0]) + d * 0.3, d, rad * 0.8 if lod == 0 else rad * 1.4,
-                     rad * 0.7 if lod == 0 else rad * 1.2, 1, 0.5 + f * 0.5, rng.random())
+                card(mb, c, np.array([0, 1.0, 0]) + d * 0.3, d, rad * 0.85 if lod == 0 else rad * 1.4,
+                     rad * 0.75 if lod == 0 else rad * 1.2, 1, 0.5 + f * 0.5, rng.random())
     return mb
 
 
@@ -391,6 +391,34 @@ def rock(lod, seed=11, size=1.0, flat=0.7, crystal=False):
     return mb
 
 
+def log(lod, seed=31):
+    rng = np.random.default_rng(seed)
+    mb = MB()
+    L = rng.uniform(6.0, 9.0)
+    pts = [np.array([0.0, 0.42, -L * 0.5 + L * t]) + np.array([math.sin(t * 3) * 0.2, 0, 0]) for t in np.linspace(0, 1, 6)]
+    tube(mb, pts, np.linspace(0.45, 0.32, 6), 10 if lod == 0 else 6, mat="deadwood")
+    for k in range(4 if lod == 0 else 2):
+        st = pts[1 + k]
+        d = np.array([rng.choice([-1, 1]) * 0.8, rng.uniform(0.1, 0.6), rng.uniform(-0.3, 0.3)])
+        tube(mb, branch_curve(st, d / np.linalg.norm(d), rng.uniform(0.8, 1.6), 0.0, 2), [0.12, 0.07, 0.02], 4, mat="deadwood")
+    if lod == 0:
+        for k in range(10):
+            c = pts[rng.integers(0, 6)] + np.array([rng.uniform(-0.3, 0.3), 0.35, 0])
+            card(mb, c, np.array([0, 1.0, 0]), np.array([1.0, 0, 0]), 0.9, 0.6, 2, 0.0, rng.random())
+    return mb
+
+
+def stump(lod, seed=32):
+    rng = np.random.default_rng(seed)
+    mb = MB()
+    tube(mb, [np.array([0, -0.2, 0]), np.array([0, 0.5, 0]), np.array([0.05, 0.9, 0])], [0.55, 0.48, 0.44], 10 if lod == 0 else 6, mat="deadwood")
+    for k in range(5 if lod == 0 else 3):
+        a = k / 5 * math.tau + rng.random()
+        d = np.array([math.cos(a), -0.45, math.sin(a)])
+        tube(mb, [np.array([0, 0.4, 0]), np.array([0, 0.4, 0]) + d * 1.0], [0.25, 0.05], 5, mat="deadwood")
+    return mb
+
+
 def crystal(lod, seed=12):
     rng = np.random.default_rng(seed)
     mb = MB()
@@ -410,6 +438,14 @@ TYPES = {
     "rock_small": lambda lod: rock(lod, 11, 0.8, 0.6), "rock_large": lambda lod: rock(lod, 13, 4.0, 0.7),
     "cactus": cactus, "berry_bush": lambda lod: bush(lod, 21, True), "reed": reed, "crystal_corrupt": crystal,
     "boulder": lambda lod: rock(lod, 17, 9.0, 0.6),
+    "tree_broad_b": lambda lod: tree_broad(lod, 41, H=8.5, crown_r=3.3, nb0=9, spread=1.5, lean=0.4, trunk_r=0.62),
+    "tree_broad_c": lambda lod: tree_broad(lod, 42, H=14.0, crown_r=1.8, nb0=6, spread=0.6, lean=0.15, trunk_r=0.3),
+    "tree_conifer_b": lambda lod: tree_conifer(lod, 43, H=23.0, width=4.8, tiers0=14),
+    "tree_conifer_c": lambda lod: tree_conifer(lod, 44, H=8.0, width=2.6, tiers0=8),
+    "rock_medium": lambda lod: rock(lod, 45, 1.9, 0.65),
+    "rock_small_b": lambda lod: rock(lod, 46, 0.6, 0.45),
+    "rock_spire": lambda lod: rock(lod, 47, 3.2, 2.4),
+    "log": log, "stump": stump,
 }
 
 if __name__ == "__main__":
