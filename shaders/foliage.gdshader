@@ -10,6 +10,7 @@ uniform float translucency = 0.5;
 uniform float fade_start = 0.0;
 uniform float fade_end = 0.0;
 uniform bool is_grass = false;
+uniform float near_fade = 3.0;
 
 varying float v_rand;
 varying float v_ao;
@@ -41,9 +42,15 @@ void fragment() {
 	vec3 col = a.rgb * tint;
 	col *= mix(vec3(0.85, 0.95, 0.8), vec3(1.1, 1.05, 0.85), v_rand);
 	col *= mix(0.55, 1.0, v_ao);
-	if (fade_end > 0.0) {
-		float d = length(VERTEX);
-		if (d > fade_end) discard;
+	float dist = length(VERTEX);
+	if (fade_end > 0.0 && dist > fade_end) {
+		discard;
+	}
+	if (near_fade > 0.0) {
+		float dither = fract(dot(FRAGCOORD.xy, vec2(0.75, 0.375)) + fract(FRAGCOORD.y * 0.5) * 0.5);
+		if (dist < near_fade * (0.35 + 0.65 * dither)) {
+			discard;
+		}
 	}
 	ALBEDO = col;
 	ROUGHNESS = 0.8;

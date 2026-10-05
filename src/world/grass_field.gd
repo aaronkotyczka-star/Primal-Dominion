@@ -46,6 +46,7 @@ func _make_mesh() -> ArrayMesh:
 	mat.set_shader_parameter("tint", Color(0.85, 0.95, 0.7))
 	mat.set_shader_parameter("wind_strength", 0.18)
 	mat.set_shader_parameter("alpha_cut", 0.5)
+	mat.set_shader_parameter("near_fade", 0.7)
 	mat.set_shader_parameter("fade_end", CELL * (radius_cells + 0.5))
 	m.surface_set_material(0, mat)
 	return m
