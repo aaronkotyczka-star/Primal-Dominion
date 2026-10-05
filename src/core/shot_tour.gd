@@ -15,16 +15,23 @@ static func run(main: Node, dir: String) -> void:
 	var views := [
 		["01_start_tps", p.global_position, -0.2, 0.0, false, 9.0],
 		["02_start_fps", p.global_position, -0.05, 2.5, true, 9.0],
-		["03_morgengrau", WorldData.poi_pos("morgengrau") + Vector3(30, 0, 30), -0.25, 0.8, false, 10.0],
-		["04_forest", WorldData.poi_pos("alte_warte") + Vector3(-40, 0, 20), -0.15, 2.0, false, 15.0],
-		["05_jungle_moosfell", WorldData.poi_pos("moosfell") + Vector3(35, 0, -25), -0.2, -2.2, false, 13.0],
-		["06_mountains", Vector3(60, 0, -250), -0.1, 3.14, false, 7.0],
-		["07_night", WorldData.poi_pos("morgengrau") + Vector3(-20, 0, 20), -0.15, -0.6, false, 23.0],
-		["08_rift", WorldData.poi_pos("riss_narbenschlund") + Vector3(0, 0, 110), -0.15, 0.0, false, 21.0],
+		["03_morgengrau", WorldData.poi_pos("morgengrau"), -0.25, 0.0, false, 10.0, [45.0, 90.0]],
+		["04_forest", WorldData.poi_pos("alte_warte"), -0.15, 0.0, false, 15.0, [35.0, 80.0]],
+		["05_jungle_moosfell", WorldData.poi_pos("moosfell"), -0.2, 0.0, false, 13.0, [50.0, 95.0]],
+		["06_mountains", WorldData.poi_pos("adlerhorst"), -0.05, 0.0, false, 7.0, [160.0, 260.0]],
+		["07_night", WorldData.poi_pos("morgengrau"), -0.15, 0.0, false, 23.0, [35.0, 70.0]],
+		["08_rift", WorldData.poi_pos("riss_narbenschlund"), -0.15, 0.0, false, 21.0, [110.0, 170.0]],
 		["09_dinos", WorldData.poi_pos("start_beach") + Vector3(-60, 0, -120), -0.12, 0.6, false, 10.0],
 	]
+	var sky = w.get("sky")
+	if sky:
+		sky.force_weather("clear")
 	for v in views:
 		var pos: Vector3 = v[1]
+		if v.size() > 6:
+			var vp := _vantage(pos, v[6][0], v[6][1])
+			pos = vp[0]
+			v[3] = vp[1]
 		pos.y = WorldData.height_at(pos.x, pos.z) + 1.0
 		p.global_position = pos
 		p.velocity = Vector3.ZERO
@@ -56,3 +63,27 @@ static func run(main: Node, dir: String) -> void:
 				c.queue_free()
 		showcase.clear()
 	tree.quit()
+
+
+## Picks an elevated, fairly flat spot on a ring around `target` and the yaw that faces it.
+static func _vantage(target: Vector3, rmin: float, rmax: float) -> Array:
+	var ty := WorldData.height_at(target.x, target.z)
+	var best := [target + Vector3(rmin, 0, 0), 0.0]
+	var best_score := -1e9
+	for ri in 3:
+		var r := lerpf(rmin, rmax, ri / 2.0)
+		for ai in 24:
+			var a := TAU * ai / 24.0
+			var p := target + Vector3(cos(a) * r, 0, sin(a) * r)
+			var h := WorldData.height_at(p.x, p.z)
+			if h < 1.5:
+				continue
+			var slope := 0.0
+			for o in [Vector2(3, 0), Vector2(-3, 0), Vector2(0, 3), Vector2(0, -3)]:
+				slope = maxf(slope, absf(WorldData.height_at(p.x + o.x, p.z + o.y) - h) / 3.0)
+			var score := (h - ty) * 0.6 - slope * 40.0 - r * 0.05
+			if score > best_score:
+				best_score = score
+				var d := target - p
+				best = [p, atan2(-d.x, -d.z)]
+	return best
