@@ -232,18 +232,25 @@ def terrain():
     crack = up(np.clip((r2 - r1) * 1.6, 0, 1), n)
     crack = warp_field(crack, n, 323, 90, freq=6)
     crack = 0.55 + 0.45 * crack
-    fine_cr = np.clip((1 - np.abs(tile_noise(n, 24, 324, 4) * 2 - 1) - 0.86) * 9, 0, 1)
+    fine_cr = np.clip((1 - np.abs(tile_noise(n, 12, 324, 5) * 2 - 1) - 0.93) * 14, 0, 1)
+    fine_cr *= np.clip((tile_noise(n, 6, 328, 3) - 0.45) * 4, 0, 1)
     grain = tile_noise(n, 256, 325, 2)
+    mgrain = tile_noise(n, 96, 329, 2)
     speck = (rng.random((n, n)) > 0.985).astype(float)
-    hgt = st * 0.45 + lay * 0.18 + crack ** 0.6 * 0.3 - fine_cr * 0.12 + grain * 0.07
-    tone = 0.36 + 0.14 * st + 0.06 * lay
-    col = np.stack([tone * 1.03, tone * 0.99, tone * 0.92], -1)
-    col *= (0.72 + 0.4 * crack[..., None]) * (1 - 0.35 * fine_cr[..., None]) * (0.9 + 0.15 * grain[..., None])
+    from scipy.ndimage import gaussian_filter
+    dspeck = gaussian_filter((np.random.default_rng(331).random((n, n)) > 0.993).astype(float), 0.9, mode="wrap")
+    dspeck = np.clip(dspeck * 5, 0, 1)
+    hgt = st * 0.45 + lay * 0.18 + crack ** 0.6 * 0.3 - fine_cr * 0.1 + grain * 0.07 + mgrain * 0.05
+    tone = 0.34 + 0.12 * st + 0.08 * lay
+    warm = tile_noise(n, 5, 332, 4)
+    col = np.stack([tone * (0.98 + 0.1 * warm), tone * 0.97, tone * (0.97 - 0.08 * warm)], -1)
+    col *= (0.7 + 0.4 * crack[..., None]) * (1 - 0.25 * fine_cr[..., None]) * (0.86 + 0.2 * grain[..., None]) * (0.92 + 0.12 * mgrain[..., None])
+    col = col * (1 - 0.35 * dspeck[..., None])
     col = col * (1 - 0.25 * speck[..., None]) + 0.25 * speck[..., None] * np.array([0.75, 0.73, 0.7])
-    lich = np.clip((tile_noise(n, 10, 326, 5) - 0.62) * 5, 0, 1) * (0.5 + 0.5 * crack)
-    lich2 = np.clip((tile_noise(n, 14, 327, 5) - 0.7) * 6, 0, 1)
-    col = col * (1 - lich[..., None] * 0.6) + np.array([0.48, 0.52, 0.38]) * lich[..., None] * 0.6
-    col = col * (1 - lich2[..., None] * 0.5) + np.array([0.7, 0.5, 0.22]) * lich2[..., None] * 0.5
+    lich = np.clip((tile_noise(n, 10, 326, 5) - 0.64) * 5, 0, 1) * (0.5 + 0.5 * crack)
+    lich2 = np.clip((tile_noise(n, 14, 327, 5) - 0.72) * 6, 0, 1)
+    col = col * (1 - lich[..., None] * 0.55) + np.array([0.46, 0.5, 0.37]) * lich[..., None] * 0.55
+    col = col * (1 - lich2[..., None] * 0.45) + np.array([0.66, 0.5, 0.24]) * lich2[..., None] * 0.45
     write_set("rock", col, hgt, 0.8 + 0.12 * (1 - crack) - 0.1 * speck, 5.0)
 
     # ---------------- sand: grains, wind ripples, pebbles and shell bits
@@ -394,7 +401,7 @@ def bark_and_leaves():
             for _ in range(6):
                 twig(ox, oy, rng.uniform(80, 432) * S, rng.uniform(80, 432) * S, rng.uniform(0, np.pi * 2),
                      rng.uniform(120, 220) * S, rng.uniform(2.5, 4) * S, (0.2, 0.14, 0.09))
-        cnt = {0: 150, 1: 40, 2: 110, 3: 60}[kind]
+        cnt = {0: 150, 1: 85, 2: 110, 3: 60}[kind]
         for _ in range(cnt):
             cx, cy = rng.uniform(60, 452, 2) * S
             ang = rng.uniform(0, np.pi * 2)
@@ -406,9 +413,9 @@ def bark_and_leaves():
                     px, py = cx + np.cos(ang) * tt, cy + np.sin(ang) * tt
                     for sd in (-1, 1):
                         a2 = ang + sd * rng.uniform(0.6, 1.0)
-                        nl = rng.uniform(16, 24) * S * (1 - 0.4 * tt / L)
-                        twig(ox, oy, px, py, a2, nl, 1.3 * S,
-                             np.array([0.07, 0.17, 0.08]) * rng.uniform(0.8, 1.25) + np.array([0.0, 0.02, 0.01]) * (tt / L))
+                        nl = rng.uniform(18, 28) * S * (1 - 0.4 * tt / L)
+                        twig(ox, oy, px, py, a2, nl, 2.0 * S,
+                             np.array([0.09, 0.2, 0.09]) * rng.uniform(0.8, 1.25) + np.array([0.0, 0.02, 0.01]) * (tt / L))
                 continue
             if kind == 0:
                 L, W = rng.uniform(40, 70) * S, rng.uniform(16, 26) * S
