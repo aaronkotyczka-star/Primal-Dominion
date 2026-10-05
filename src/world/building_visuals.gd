@@ -23,7 +23,7 @@ static func stone() -> Material:
 	if not _m.has("stone"):
 		var rm := ShaderMaterial.new()
 		rm.shader = load("res://shaders/rock.gdshader")
-		rm.set_shader_parameter("albedo_arr", load("res://assets/textures/terrain_albedo_array.png"))
+		rm.set_shader_parameter("albedo_arr", load("res://assets/textures/terrain_albedo_array.jpg"))
 		rm.set_shader_parameter("normal_arr", load("res://assets/textures/terrain_nrm_array.png"))
 		rm.set_shader_parameter("moss_amount", 0.15)
 		_m["stone"] = rm

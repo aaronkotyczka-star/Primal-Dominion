@@ -20,7 +20,7 @@ func build(quality: int = 2) -> void:
 	material.set_shader_parameter("heightmap", htex)
 	material.set_shader_parameter("splat0", load("res://assets/world/splat0.png"))
 	material.set_shader_parameter("splat1", load("res://assets/world/splat1.png"))
-	material.set_shader_parameter("albedo_arr", load("res://assets/textures/terrain_albedo_array.png"))
+	material.set_shader_parameter("albedo_arr", load("res://assets/textures/terrain_albedo_array.jpg"))
 	material.set_shader_parameter("normal_arr", load("res://assets/textures/terrain_nrm_array.png"))
 	material.set_shader_parameter("extent", ext)
 	material.set_shader_parameter("hm_size", float(n))

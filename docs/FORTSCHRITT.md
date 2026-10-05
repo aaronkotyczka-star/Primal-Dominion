@@ -5,7 +5,7 @@ Stand: 2026-10-05 · Godot 4.5.1-stable · Branch `claude/fervent-franklin-yjq54
 Legende: ✅ umgesetzt (durch automatischen Test oder Screenshot geprüft) · 🟡 umgesetzt, aber vereinfacht/Platzhalter · ⚪ umgesetzt, nicht automatisch getestet · ❌ fehlt
 
 ## Prüfnachweise
-- `tests/run_all.gd`: skriptgesteuerter Spieltest (Spieler wird über die Eingabe-Abstraktion gesteuert), 113 Prüfungen, lokal und in GitHub Actions: `ALL TESTS PASSED`.
+- `tests/run_all.gd`: skriptgesteuerter Spieltest (Spieler wird über die Eingabe-Abstraktion gesteuert), 120 Prüfungen (inkl. Menü-Zentrierung), lokal und in GitHub Actions: `ALL TESTS PASSED`.
 - GitHub Actions (`.github/workflows/build.yml`): Import, Tests, Windows-Export, Upload als Artefakt `PrimalDominion-Windows` – erfolgreich gelaufen.
 - Screenshots: nur unter Linux mit Software-Vulkan (lavapipe, Xvfb) aufgenommen, Rundgang `--shots`.
 - **Nicht** geprüft: Start der EXE auf echtem Windows, Leistung/FPS auf der Zielhardware (RTX 4060 Ti), Langzeit-Balancing, Bedienung durch echte Spieler.
@@ -16,6 +16,7 @@ Legende: ✅ umgesetzt (durch automatischen Test oder Screenshot geprüft) · �
 | Neues Spiel (Name, Körper, 4 Startausrüstungen, 4 Schwierigkeiten + Einzelregeln) | ✅ | |
 | Bewegung, Sprint, Ducken/Schleichen, Ausweichen, Schwimmen, Ego/Third-Person | ✅ | Klettern nur über Fähigkeit „Kletterer“ (Rang 2), ungetestet |
 | Offene Welt 2048 × 2048 m, 5 Inseln, Biome, LOD-Gelände, Vegetation, Gras | ✅ | ≈34.000 Pflanzen/Felsen (24 Typen inkl. Varianten, Stämme, Stümpfe, Felsnadeln, Findlinge); Kerninsel detailliert, andere Inseln dünner besetzt |
+| Gelände-Texturen (8 Schichten, 2048² Albedo + Normal/Rauheit/Höhe), Höhenüberblendung, Anti-Kachel-Mischung, Triplanar an Hängen | ✅ | prozedural gemalt (Grashalme, Laub, Gesteinsschichten, Sandrippel, Risse …); Rinde 1024², Blattatlas 2048² |
 | Tag/Nacht, Wetter (Regen, Sturm, Dämonensturm), Hunger, Temperatur | ⚪ | |
 | Sammeln (Hand/Werkzeug), Herstellen (102 Rezepte, Stationen, Qualität) | ✅ | |
 | Kampf: Nah-/Fernkampf, Blocken, Zielerfassung, Fähigkeiten, Beute | ✅ | |

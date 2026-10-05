@@ -66,7 +66,7 @@ static func material(kind: String) -> Material:
 		"rock", "crystal":
 			var rm := ShaderMaterial.new()
 			rm.shader = load("res://shaders/rock.gdshader")
-			rm.set_shader_parameter("albedo_arr", load("res://assets/textures/terrain_albedo_array.png"))
+			rm.set_shader_parameter("albedo_arr", load("res://assets/textures/terrain_albedo_array.jpg"))
 			rm.set_shader_parameter("normal_arr", load("res://assets/textures/terrain_nrm_array.png"))
 			if kind == "crystal":
 				var cm := StandardMaterial3D.new()
@@ -101,7 +101,7 @@ static func ore_material(kind: String) -> Material:
 		return _mats[key]
 	var rm := ShaderMaterial.new()
 	rm.shader = load("res://shaders/rock.gdshader")
-	rm.set_shader_parameter("albedo_arr", load("res://assets/textures/terrain_albedo_array.png"))
+	rm.set_shader_parameter("albedo_arr", load("res://assets/textures/terrain_albedo_array.jpg"))
 	rm.set_shader_parameter("normal_arr", load("res://assets/textures/terrain_nrm_array.png"))
 	rm.set_shader_parameter("moss_amount", 0.0)
 	var cols := {"ore_metal": Color(0.75, 0.45, 0.25), "ore_obsidian": Color(0.05, 0.03, 0.08), "flint": Color(0.25, 0.25, 0.28),

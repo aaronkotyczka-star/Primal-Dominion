@@ -3,20 +3,21 @@
 importer="2d_array_texture"
 type="CompressedTexture2DArray"
 uid="uid://d4d2mrg34p1cb"
-path="res://.godot/imported/terrain_nrm_array.png-2125cd613da6b96675b43ae3bff7e8b0.ctexarray"
+path.bptc="res://.godot/imported/terrain_nrm_array.png-2125cd613da6b96675b43ae3bff7e8b0.bptc.ctexarray"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/textures/terrain_nrm_array.png"
-dest_files=["res://.godot/imported/terrain_nrm_array.png-2125cd613da6b96675b43ae3bff7e8b0.ctexarray"]
+dest_files=["res://.godot/imported/terrain_nrm_array.png-2125cd613da6b96675b43ae3bff7e8b0.bptc.ctexarray"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0

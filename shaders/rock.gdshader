@@ -37,7 +37,7 @@ void fragment() {
 	}
 	float veins = 0.0;
 	if (vein_amount > 0.0) {
-		veins = smoothstep(0.62, 0.7, a.a) * vein_amount;
+		veins = smoothstep(0.62, 0.7, nm.a) * vein_amount;
 		col = mix(col, vein_color, veins);
 	}
 	ALBEDO = col;
