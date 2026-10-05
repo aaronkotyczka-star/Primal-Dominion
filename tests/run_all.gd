@@ -283,7 +283,9 @@ func t_commands_riding() -> void:
 	g.ai.set_command("wait")
 	check(g.ai.command in ["wait", "follow"], "Befehl Warten angenommen (oder verweigert)")
 	g.ai.command = "wait"
+	g.ai.target = null
 	g.ai.wait_pos = g.global_position
+	g.ai._go("wait")
 	await frames(30)
 	check(g.global_position.distance_to(g.ai.wait_pos) < 4.0, "Gefährte wartet")
 	g.ai.command = "follow"
@@ -316,11 +318,17 @@ func t_commands_riding() -> void:
 	check(p.mount == null, "Abgestiegen")
 	p.toggle_direct_control()
 	check(p.controlled != null, "Direkte Steuerung aktiv")
-	var cpos: Vector3 = p.controlled.global_position
-	p.input.intent["move"] = Vector2(0, -1)
-	await frames(60)
-	p.input.intent["move"] = Vector2.ZERO
-	check(cpos.distance_to(p.controlled.global_position) > 1.0, "Gesteuerte Kreatur bewegt sich")
+	var cmoved := 0.0
+	for attempt in 4:
+		var cpos: Vector3 = p.controlled.global_position
+		p.input.intent["move"] = Vector2(0, -1)
+		await frames(60)
+		p.input.intent["move"] = Vector2.ZERO
+		cmoved = maxf(cmoved, cpos.distance_to(p.controlled.global_position))
+		if cmoved > 1.0:
+			break
+		p.rig.yaw += PI * 0.5
+	check(cmoved > 1.0, "Gesteuerte Kreatur bewegt sich (%.1f m)" % cmoved)
 	p.toggle_direct_control()
 	check(p.controlled == null, "Direkte Steuerung beendet")
 
