@@ -54,7 +54,8 @@ func setup(q: int) -> void:
 	env.background_mode = Environment.BG_SKY
 	env.sky = sky
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
-	env.ambient_light_sky_contribution = 0.9
+	env.ambient_light_sky_contribution = 0.7
+	env.ambient_light_color = Color(0.55, 0.6, 0.68)
 	env.reflected_light_source = Environment.REFLECTION_SOURCE_SKY
 	env.tonemap_mode = Environment.TONE_MAPPER_ACES
 	env.tonemap_exposure = 1.0
@@ -229,6 +230,7 @@ func _process(delta: float) -> void:
 	sky_mat.set_shader_parameter("demon_storm", cur["demon"])
 	sky_mat.set_shader_parameter("moon_dir", -moon.global_transform.basis.z)
 	env.ambient_light_energy = lerpf(0.25, 1.5, day) * (1.0 - cur["dark"] * 0.4)
+	env.ambient_light_color = Color(0.55, 0.6, 0.68).lerp(Color(0.08, 0.1, 0.16), 1.0 - day)
 	var fog_col := Color(0.5, 0.56, 0.62).lerp(Color(0.04, 0.05, 0.08), 1.0 - day)
 	fog_col = fog_col.lerp(Color(0.35, 0.07, 0.05), cur["demon"] * 0.6)
 	if weather == "sandstorm":
