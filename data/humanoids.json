@@ -1,0 +1,14 @@
+{
+ "human_m": {
+  "rig": "human_m"
+ },
+ "human_f": {
+  "rig": "human_f"
+ },
+ "goblin": {
+  "rig": "goblin"
+ },
+ "demon": {
+  "rig": "demon"
+ }
+}
