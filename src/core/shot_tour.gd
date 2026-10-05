@@ -35,6 +35,8 @@ static func run(main: Node, dir: String) -> void:
 			var vp := _vantage(pos, v[6][0], v[6][1])
 			pos = vp[0]
 			v[3] = vp[1]
+		if v[0] == "09_dinos":
+			pos = _open_spot(w, pos, 400.0)
 		pos.y = WorldData.height_at(pos.x, pos.z) + 1.0
 		p.global_position = pos
 		p.velocity = Vector3.ZERO
@@ -49,7 +51,12 @@ static func run(main: Node, dir: String) -> void:
 		if v[0] == "09_dinos":
 			var specs := [["trex", 22.0, -6.0], ["triceratops", 16.0, 7.0], ["stegosaurus", 30.0, 12.0], ["raptor", 9.0, -2.0]]
 			for sp in specs:
-				showcase.append(w.spawn_wild(sp[0], 8, pos + p.rig.forward_flat() * sp[1] + p.rig.right_flat() * sp[2], {}))
+				var c = w.spawn_wild(sp[0], 8, pos + p.rig.forward_flat() * sp[1] + p.rig.right_flat() * sp[2], {})
+				if c:
+					c.rotation.y = p.rig.yaw + PI * 0.5
+					c.velocity = Vector3.ZERO
+					c.set_physics_process(false)
+					showcase.append(c)
 			for i in 90:
 				await tree.process_frame
 		if v[0] == "01_start_tps":
@@ -89,4 +96,31 @@ static func _vantage(target: Vector3, rmin: float, rmax: float) -> Array:
 				best_score = score
 				var d := target - p
 				best = [p, atan2(-d.x, -d.z)]
+	return best
+
+
+## Finds a flat meadow spot without trees/rocks within ~35 m (for creature showcase shots).
+static func _open_spot(w: Node, center: Vector3, radius: float) -> Vector3:
+	var best := center
+	var best_score := -1e9
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 7
+	for i in 400:
+		var p := center + Vector3(rng.randf_range(-radius, radius), 0, rng.randf_range(-radius, radius))
+		var h := WorldData.height_at(p.x, p.z)
+		if h < 2.0 or WorldData.biome_at(p.x, p.z) != 2:
+			continue
+		var slope := 0.0
+		for o in [Vector2(6, 0), Vector2(-6, 0), Vector2(0, 6), Vector2(0, -6), Vector2(20, 0), Vector2(0, -20)]:
+			slope = maxf(slope, absf(WorldData.height_at(p.x + o.x, p.z + o.y) - h) / o.length())
+		if slope > 0.18:
+			continue
+		var clear := 0.0
+		for o2 in [Vector3.ZERO, Vector3(0, 0, -15), Vector3(0, 0, -30), Vector3(10, 0, -20), Vector3(-10, 0, -20)]:
+			if w.vegetation.nearest(p + o2, Vector3.ZERO, 7.0) == -1:
+				clear += 1.0
+		var score := clear * 10.0 - slope * 50.0
+		if score > best_score:
+			best_score = score
+			best = p
 	return best
