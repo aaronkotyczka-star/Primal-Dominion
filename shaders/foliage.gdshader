@@ -32,6 +32,9 @@ void vertex() {
 
 void fragment() {
 	vec4 a = texture(albedo_tex, UV);
+	vec2 tuv = UV * vec2(textureSize(albedo_tex, 0));
+	float lod = max(0.0, 0.5 * log2(max(dot(dFdx(tuv), dFdx(tuv)), dot(dFdy(tuv), dFdy(tuv)))));
+	a.a *= 1.0 + lod * 0.3;
 	if (a.a < alpha_cut) {
 		discard;
 	}
