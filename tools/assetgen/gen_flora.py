@@ -170,12 +170,12 @@ def tree_conifer(lod, seed=2, H=16.0, width=4.2, tiers0=11):
     mb = MB()
     trunk = [np.array([0, t * H, 0]) for t in np.linspace(0, 1, 7)]
     tube(mb, trunk, np.linspace(0.42 * H / 16, 0.04, 7), 9 if lod == 0 else 5, sway1=0.25)
-    tiers = tiers0 if lod == 0 else 5
+    tiers = tiers0 if lod == 0 else 7
     for k in range(tiers):
         t = 0.18 + 0.8 * k / (tiers - 1)
         y = t * H
         rad = (1 - t) * width + 0.5
-        nb = 8 if lod == 0 else 5
+        nb = 8 if lod == 0 else 6
         for j in range(nb):
             a = j / nb * math.tau + k * 0.7 + rng.random() * 0.4
             d = np.array([math.cos(a), -0.15, math.sin(a)])
@@ -184,8 +184,8 @@ def tree_conifer(lod, seed=2, H=16.0, width=4.2, tiers0=11):
             for q in range(3 if lod == 0 else 1):
                 f = (q + 1) / 3.5 if lod == 0 else 0.6
                 c = np.array([0, y, 0]) + d * rad * f + np.array([0, -0.2 - rad * 0.08 * f, 0])
-                card(mb, c, np.array([0, 1.0, 0]) + d * 0.3, d, rad * 0.85 if lod == 0 else rad * 1.4,
-                     rad * 0.75 if lod == 0 else rad * 1.2, 1, 0.5 + f * 0.5, rng.random())
+                card(mb, c, np.array([0, 1.0, 0]) + d * 0.3, d, rad * 0.85 if lod == 0 else rad * 1.6,
+                     rad * 0.75 if lod == 0 else rad * 1.45, 1, 0.5 + f * 0.5, rng.random())
     return mb
 
 
