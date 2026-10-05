@@ -22,7 +22,8 @@ var vspeed := 0.0
 var block := false
 var crouch := false
 var aiming := false
-var hold_pose := "" # humanoid upper-body hold: "", "bow", "spear", "staff", "torch"
+var hold_pose := "" # humanoid upper-body hold: "", "bow", "spear", "staff", "torch", "melee"
+var straddle := 0.0 # riding: half-width of the mount's body below the saddle (m); legs spread around it
 
 # --- internal
 var phase := 0.0
@@ -607,9 +608,17 @@ func _anim_human(rf: float, delta: float) -> void:
 				rU = Vector3(1.3 + aim_pitch, -0.6, 0.6)
 				rF = 2.0
 				spine_yaw = 0.5
+			else:
+				# bow carried upright at the side, clear of hip and legs
+				lU = Vector3(lU.x * 0.5 + 0.3, 0.0, -0.3)
+				lF = 1.3
 		"spear", "staff", "torch":
 			rU = Vector3(rU.x * 0.5 + 0.3, 0.0, 0.15)
 			rF = 1.0
+		"melee":
+			# one-handed weapon held angled down-forward, away from hip and leg
+			rU = Vector3(rU.x * 0.6 + 0.15, 0.0, 0.2)
+			rF = 1.15
 	if block:
 		rU = Vector3(1.2, -0.4, 0.3)
 		rF = 1.6
@@ -707,12 +716,23 @@ func _anim_human(rf: float, delta: float) -> void:
 		var kn := 0.0
 		var an := 0.0
 		if state == "sit":
+			var sg := -1.0 if side == "L" else 1.0
+			var roll := 0.35
 			th = 1.45
 			kn = -1.5
 			an = 0.1
-			var sg := -1.0 if side == "L" else 1.0
-			_rot(leg[0], th, 0.0, sg * 0.35)
-			_rot(leg[1], kn, 0.0, 0.0)
+			if straddle > 0.0:
+				# straddle the mount: thighs spread around its flanks, shins hang down outside the body
+				var tb: Dictionary = meta["bones"][leg[0]]
+				var thigh_len := Vector3(tb["head"][0], tb["head"][1], tb["head"][2]).distance_to(Vector3(tb["tail"][0], tb["tail"][1], tb["tail"][2]))
+				var hip_x := absf(float(tb["head"][0]))
+				var need := clampf((straddle + 0.06 - hip_x) / maxf(thigh_len, 0.1), 0.0, 0.98)
+				roll = clampf(asin(need) + 0.12, 0.35, 1.35)
+				th = 0.65
+				kn = -0.75 - 0.25 * (1.0 - need)
+				an = 0.25
+			_rot(leg[0], th, 0.0, sg * roll)
+			_rot(leg[1], kn, 0.0, -sg * roll * 0.55)
 			_rot(leg[2], an, 0.0, 0.0)
 			_rot(leg[3], 0.0, 0.0, 0.0)
 			continue
@@ -734,11 +754,13 @@ func _anim_human(rf: float, delta: float) -> void:
 	# arms
 	var ra := _chain("arm_R")
 	var la := _chain("arm_L")
+	# rigs are modelled in a slight A-pose; bring the arms back alongside the body
+	var abd := float(meta.get("arm_abduct", 0.0))
 	if ra.size() >= 4:
-		_rot(ra[1], rU.x, rU.y, rU.z + 0.05)
+		_rot(ra[1], rU.x, rU.y, rU.z + 0.05 - abd)
 		_rot(ra[2], rF, 0.0, 0.0)
 	if la.size() >= 4:
-		_rot(la[1], lU.x, lU.y, lU.z - 0.05)
+		_rot(la[1], lU.x, lU.y, lU.z - 0.05 + abd)
 		_rot(la[2], lF, 0.0, 0.0)
 	if mode == "swim":
 		var sw := sin(phase * TAU)

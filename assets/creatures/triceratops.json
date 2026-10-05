@@ -873,5 +873,6 @@
  ],
  "gait": "quad",
  "hip_height": 2.1,
- "length": 8.65
+ "length": 8.65,
+ "saddle_half_width": 1.0133611174555808
 }

@@ -620,6 +620,7 @@ func mount_creature(c: Creature) -> void:
 	collision_layer = 0
 	collision_mask = 0
 	visual.animator.state = "sit"
+	visual.animator.straddle = float(c.visual.meta.get("saddle_half_width", 0.0)) * float(c.visual.pheno.get("scale", 1.0))
 	visual.set_shadow_only(false)
 	if rig.first_person:
 		visual.set_shadow_only(true)
@@ -634,6 +635,7 @@ func dismount() -> void:
 	var c := mount
 	mount = null
 	c.rider = null
+	visual.animator.straddle = 0.0
 	c.intent["move"] = Vector3.ZERO
 	collision_layer = 2
 	collision_mask = 1 | 4 | 8 | 64
@@ -650,7 +652,9 @@ func dismount() -> void:
 func _saddle_transform() -> Transform3D:
 	var p := mount.visual.get_socket_global("saddle")
 	var b := Basis(Vector3.UP, mount.rotation.y)
-	return Transform3D(b, p - Vector3(0, visual.meta.get("hip_height", 0.95) * 0.95, 0))
+	# hips rest on top of the saddle (its thickness scales with the mount)
+	var saddle_h := 0.05 * float(mount.visual.pheno.get("scale", 1.0)) + 0.04
+	return Transform3D(b, p - Vector3(0, visual.meta.get("hip_height", 0.95) * 0.95 - saddle_h, 0))
 
 
 func toggle_direct_control() -> void:

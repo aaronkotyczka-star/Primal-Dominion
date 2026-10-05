@@ -625,5 +625,6 @@
  ],
  "gait": "serpent",
  "hip_height": 0.38,
- "length": 13.0
+ "length": 13.0,
+ "saddle_half_width": 0.44503687471218806
 }

@@ -15,6 +15,13 @@ func _ready() -> void:
 	add_to_group("main")
 	get_tree().root.theme = UIK.get_theme()
 	var args := OS.get_cmdline_user_args()
+	for a in args:
+		if a.begins_with("--visual="):
+			# visual check scripts (tests/visual/<name>.gd, extends Node) with autoloads but without a world
+			var vs = load("res://tests/visual/" + a.substr(9) + ".gd")
+			if vs:
+				add_child(vs.new())
+			return
 	if "--autostart" in args:
 		var opts := {"name": "Test", "kit": "jaeger", "difficulty": "normal"}
 		for a in args:

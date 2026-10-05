@@ -836,5 +836,6 @@
  "gait": "flyer",
  "hip_height": 0.7,
  "length": 2.0500000000000003,
- "wing_span": 6.5
+ "wing_span": 6.5,
+ "saddle_half_width": 0.17781578331524672
 }

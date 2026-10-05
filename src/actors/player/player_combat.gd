@@ -109,7 +109,7 @@ func refresh_gear() -> void:
 		p.visual.set_gear("hand_R", node)
 		var off := equipped_stack("offhand")
 		p.visual.set_gear("hand_L", GearFactory.make_weapon(off) if not off.is_empty() else null)
-	p.visual.animator.hold_pose = {"bow": "bow", "spear": "spear", "staff": "staff", "torch": "torch"}.get(wt, "")
+	p.visual.animator.hold_pose = {"bow": "bow", "spear": "spear", "staff": "staff", "torch": "torch", "club": "melee", "axe": "melee", "sword": "melee", "pick": "melee"}.get(wt, "")
 	_set_fp_view(GearFactory.make_weapon(st if throw_item == "" else {"id": throw_item, "n": 1}) if not st.is_empty() or throw_item != "" else null)
 
 

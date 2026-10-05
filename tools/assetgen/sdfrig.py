@@ -458,8 +458,25 @@ class Rig:
             s["region"] = np.concatenate([s["region"], np.full(len(e["pos"]), e["region"])])
             s["uv"] = np.concatenate([s["uv"], e["uv"] if e["uv"] is not None else np.zeros((len(e["pos"]), 2))])
             s["ao"] = np.concatenate([s["ao"], self._bake_ao(e["pos"], e["nrm"], max(ext), extra=True)])
+        if "saddle" in self.sockets:
+            self.meta["saddle_half_width"] = self._saddle_half_width()
         self._write(out_dir, [surf0, surf1])
         return len(surf0["idx"]) // 3 + len(surf1["idx"]) // 3
+
+    def _saddle_half_width(self):
+        """Widest half-width of the body below the saddle (riders spread their legs around it)."""
+        sp = np.asarray(self.sockets["saddle"]["pos"], float)
+        top = sp - UP * 0.01
+        bottom = self.surface_hit(top, -UP, 20.0)
+        depth = float(np.linalg.norm(top - bottom)) if bottom is not None else 1.0
+        best = 0.0
+        for f in (0.1, 0.25, 0.4, 0.55):
+            c = top - UP * depth * f
+            for sd in (-1.0, 1.0):
+                hit = self.surface_hit(c, v3(sd, 0, 0), depth * 3 + 2.0)
+                if hit is not None:
+                    best = max(best, abs(hit[0] - c[0]))
+        return float(best)
 
     def _bake_ao(self, pos, nrm, size, extra=False):
         """Ambient occlusion from the SDF (0 = open, 1 = fully occluded). Stored as 1-ao in CUSTOM1.w."""

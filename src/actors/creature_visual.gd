@@ -110,6 +110,10 @@ func set_gear(socket: String, node: Node3D, xform: Transform3D = Transform3D(Bas
 	var pivot := Node3D.new()
 	att.add_child(pivot)
 	pivot.position = (st["local"] as Transform3D).origin
+	if String(node.get_meta("wtype", "")) == "shield":
+		# worn on the outside of the forearm, face pointing outward (never through arm or body)
+		var sg := -1.0 if socket.ends_with("_L") else 1.0
+		xform = Transform3D(Basis(Vector3.UP, sg * PI * 0.5), Vector3(sg * 0.17, -0.02, 0.0))
 	node.transform = xform
 	pivot.add_child(node)
 	gear_nodes[socket] = att

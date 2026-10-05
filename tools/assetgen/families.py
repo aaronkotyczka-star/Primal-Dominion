@@ -579,7 +579,11 @@ def quadruped(rid, Hh=1.0, Hs=0.9, body_len=1.4, body_d=0.4, body_w=0.35, neck_l
     mid = max(1, n_tail // 2)
     surface_socket(r, "tail_mid", f"tail{mid}", r.b(f"tail{mid}").head, v3(0, 1, 0), tail_r * 3, tail_r * 1.5)
     r.socket("mouth", "jaw", r.b("jaw").tail, (0, 0, -1), head_h)
-    r.socket("maw", "head", HB + f * head_len * 0.6 - u * head_h * 0.2, (0, -1, -0.2), head_h * 1.2)
+    if mammal:
+        # sabers/tusks grow from the upper lip edge, so the socket sits on the muzzle's underside
+        surface_socket(r, "maw", "head", HB + f * head_len * 0.8 - u * head_h * 0.1, -u + f * 0.15, head_h * 2, head_h * 1.2, normal=u)
+    else:
+        r.socket("maw", "head", HB + f * head_len * 0.6 - u * head_h * 0.2, (0, -1, -0.2), head_h * 1.2)
     r.meta.update(gait="quad", hip_height=Hh, length=float(Lb + neck_len + head_len + tail_len))
     return r
 
@@ -1018,7 +1022,7 @@ def humanoid(rid, height=1.8, build=1.0, head_scale=1.0, ears=0.0, nose=1.0, gob
     hipw = h * (0.105 if not female else 0.115) * bw
     r.add("pelvis", "root", P + v3(0, -h * 0.01, 0), SP, h * 0.085 * bw, h * 0.075 * bw, sx=1.35, sy=1.0, blend=h * 0.04)
     r.add("spine", "pelvis", SP, CH, h * 0.075 * bw, h * 0.09 * bw, sx=1.4 if not female else 1.3, sy=0.95, blend=h * 0.05)
-    r.add("chest", "spine", CH, NK + v3(0, -h * 0.02, 0), h * 0.095 * bw, h * 0.06 * bw, sx=1.45 if not female else 1.25, sy=0.95, blend=h * 0.04)
+    r.add("chest", "spine", CH, NK + v3(0, -h * 0.02, 0), h * 0.095 * bw, h * 0.06 * bw, sx=1.22 if not female else 1.12, sy=0.95, blend=h * 0.04)
     r.add("neck1", "chest", NK + v3(0, -h * 0.02, 0), HD, h * 0.032 * bw, h * 0.03 * bw, blend=h * 0.02)
     # head: cranium, face, jaw, features (all smooth SDF prims)
     r.add("head", "neck1", HD, HD + v3(0, hr * 1.6, 0), 0, 0, geo=False)
@@ -1053,27 +1057,30 @@ def humanoid(rid, height=1.8, build=1.0, head_scale=1.0, ears=0.0, nose=1.0, gob
     hair = not (goblin or demon)
     if hair:
         r.ell("head", Hc + v3(0, hr * 0.28, hr * 0.12), (hr * 0.93, hr * 0.9, hr * 1.06), k=hr * 0.06, region=R_HAIR)
+        # back hair stays above the neck so it never fuses with neck/shoulders (no stretching when the head turns)
         if female:
-            r.ell("head", Hc + v3(0, -hr * 0.55, hr * 0.62), (hr * 0.85, hr * 1.25, hr * 0.42), k=hr * 0.2, region=R_HAIR)
+            r.ell("head", Hc + v3(0, -hr * 0.3, hr * 0.62), (hr * 0.86, hr * 0.92, hr * 0.42), k=hr * 0.08, region=R_HAIR)
         else:
-            r.ell("head", Hc + v3(0, -hr * 0.15, hr * 0.55), (hr * 0.8, hr * 0.6, hr * 0.42), k=hr * 0.15, region=R_HAIR)
+            r.ell("head", Hc + v3(0, hr * 0.02, hr * 0.52), (hr * 0.8, hr * 0.52, hr * 0.42), k=hr * 0.06, region=R_HAIR)
     if female:
         for s_ in (-1, 1):
             r.ell("chest", CH + v3(s_ * h * 0.05, h * 0.0, -h * 0.07), (h * 0.05, h * 0.05, h * 0.045), k=h * 0.03)
     # musculature & clothing details
-    r.ell("chest", CH + v3(0, h * 0.0, -h * 0.045), (h * 0.12 * bw, h * 0.06, h * 0.05), k=h * 0.03)
+    r.ell("chest", CH + v3(0, h * 0.0, -h * 0.045), (h * 0.09 * bw, h * 0.055, h * 0.05), k=h * 0.025)
     r.ell("neck1", NK + v3(0, -h * 0.005, -h * 0.005), (h * 0.042 * bw, h * 0.02, h * 0.04), k=h * 0.02, region=R_TOP)
     r.ell("pelvis", P + v3(0, h * 0.035, 0), (h * 0.125 * bw, h * 0.022, h * 0.088 * bw), k=h * 0.008, region=R_BOOTS)
     r.ell("pelvis", P + v3(0, -h * 0.03, h * 0.05), (h * 0.1 * bw, h * 0.06, h * 0.05), k=h * 0.03)
     # arms
     for s, sn in ((-1, "L"), (1, "R")):
-        sh = CH + v3(s * h * 0.115 * bw, h * 0.045, 0.01)
-        el = sh + v3(s * h * 0.03, -h * 0.17, 0.01 * h)
-        wr = el + v3(s * h * 0.012, -h * 0.15, -0.02 * h)
-        hn = wr + v3(0, -h * 0.085, -0.005 * h)
+        # slight A-pose: arms hang with a gap to the torso so the SDF union and the skinning
+        # never fuse arm and flank (otherwise moving arms drag skin "webs" out of the body)
+        sh = CH + v3(s * h * 0.118 * bw, h * 0.045, 0.01)
+        el = sh + v3(s * h * 0.055 * bw, -h * 0.165, 0.01 * h)
+        wr = el + v3(s * h * 0.038 * bw, -h * 0.145, -0.02 * h)
+        hn = wr + v3(s * h * 0.018, -h * 0.083, -0.005 * h)
         r.add(f"clav_{sn}", "chest", CH + v3(s * h * 0.02, h * 0.04, 0), sh, h * 0.035 * bw, h * 0.04 * bw, blend=h * 0.03)
-        r.add(f"uarm_{sn}", f"clav_{sn}", sh, el, h * 0.042 * bw, h * 0.032 * bw, blend=h * 0.02)
-        r.add(f"farm_{sn}", f"uarm_{sn}", el, wr, h * 0.032 * bw, h * 0.022 * bw, sx=1.1, blend=h * 0.015)
+        r.add(f"uarm_{sn}", f"clav_{sn}", sh, el, h * 0.04 * bw, h * 0.031 * bw, blend=h * 0.012)
+        r.add(f"farm_{sn}", f"uarm_{sn}", el, wr, h * 0.031 * bw, h * 0.022 * bw, sx=1.1, blend=h * 0.012)
         r.add(f"hand_{sn}", f"farm_{sn}", wr, hn, h * 0.024 * bw, h * 0.02 * bw, sx=1.4, sy=0.6, blend=h * 0.01)
         r.ell(f"uarm_{sn}", sh + v3(s * h * 0.01, -h * 0.01, 0), (h * 0.05 * bw, h * 0.05, h * 0.048 * bw), k=h * 0.02)
         r.ell_along(f"farm_{sn}", el, el + (wr - el) * 0.6, h * 0.033 * bw, h * 0.036 * bw, up=(0, 0, -1), k=h * 0.012)
@@ -1127,5 +1134,6 @@ def humanoid(rid, height=1.8, build=1.0, head_scale=1.0, ears=0.0, nose=1.0, gob
             return None
         return None
     r.region_fn = region_fn
-    r.meta.update(gait="human", hip_height=hipY, length=0.4 * h, height=h)
+    r.meta.update(gait="human", hip_height=hipY, length=0.4 * h, height=h,
+                  arm_abduct=float(math.atan2(h * 0.055 * bw, h * 0.165)))
     return r

@@ -838,5 +838,6 @@
  ],
  "gait": "biped",
  "hip_height": 2.1,
- "length": 8.45
+ "length": 8.45,
+ "saddle_half_width": 0.6012045713558949
 }

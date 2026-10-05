@@ -65,6 +65,7 @@ func setup(id: String, def: Dictionary, pos: Vector3, hostile: bool = false) -> 
 	weapon_kind = def.get("weapon", "spear" if hostile_npc else "")
 	if weapon_kind != "":
 		visual.set_gear("hand_R", GearFactory.make_weapon({"id": {"spear": "spear_stone", "club": "club_wood", "axe": "axe_stone", "staff": "staff_wood"}.get(weapon_kind, "spear_stone"), "n": 1}))
+		visual.animator.hold_pose = {"spear": "spear", "staff": "staff", "club": "melee", "axe": "melee"}.get(weapon_kind, "")
 	combatant = Combatant.new()
 	combatant.name = "Combatant"
 	add_child(combatant)

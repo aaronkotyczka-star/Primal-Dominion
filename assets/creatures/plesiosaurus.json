@@ -824,5 +824,6 @@
  ],
  "gait": "swim",
  "hip_height": 0.0,
- "length": 9.0
+ "length": 9.0,
+ "saddle_half_width": 1.24788140152417
 }

@@ -1043,5 +1043,6 @@
  "gait": "wyvern",
  "hip_height": 1.7,
  "length": 8.7,
- "wing_span": 12.0
+ "wing_span": 12.0,
+ "saddle_half_width": 0.440398839735348
 }
