@@ -32,7 +32,7 @@ static func run(main: Node, dir: String) -> void:
 			continue
 		var pos: Vector3 = v[1]
 		if v.size() > 6:
-			var vp := _vantage(pos, v[6][0], v[6][1])
+			var vp := _vantage(w, pos, v[6][0], v[6][1])
 			pos = vp[0]
 			v[3] = vp[1]
 		if v[0] == "09_dinos":
@@ -76,7 +76,7 @@ static func run(main: Node, dir: String) -> void:
 
 
 ## Picks an elevated, fairly flat spot on a ring around `target` and the yaw that faces it.
-static func _vantage(target: Vector3, rmin: float, rmax: float) -> Array:
+static func _vantage(w: Node, target: Vector3, rmin: float, rmax: float) -> Array:
 	var ty := WorldData.height_at(target.x, target.z)
 	var best := [target + Vector3(rmin, 0, 0), 0.0]
 	var best_score := -1e9
@@ -92,6 +92,11 @@ static func _vantage(target: Vector3, rmin: float, rmax: float) -> Array:
 			for o in [Vector2(3, 0), Vector2(-3, 0), Vector2(0, 3), Vector2(0, -3)]:
 				slope = maxf(slope, absf(WorldData.height_at(p.x + o.x, p.z + o.y) - h) / 3.0)
 			var score := (h - ty) * 0.6 - slope * 40.0 - r * 0.05
+			# keep the camera line free: no trees/rocks next to the player or behind it
+			var d0 := (target - p).normalized()
+			for back in [0.0, 4.0, 8.0]:
+				if w.vegetation.nearest(p - d0 * back, Vector3.ZERO, 4.0) != -1:
+					score -= 25.0
 			if score > best_score:
 				best_score = score
 				var d := target - p
