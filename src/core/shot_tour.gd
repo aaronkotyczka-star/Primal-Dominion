@@ -11,6 +11,7 @@ static func run(main: Node, dir: String) -> void:
 	var p := w.player
 	p.combatant.dmg_taken_mult = 0.0
 	Settings.data["tutorial_hints"] = false
+	var showcase := []
 	var views := [
 		["01_start_tps", p.global_position, -0.2, 0.0, false, 9.0],
 		["02_start_fps", p.global_position, -0.05, 2.5, true, 9.0],
@@ -38,18 +39,20 @@ static func run(main: Node, dir: String) -> void:
 		if v[0] == "09_dinos":
 			var specs := [["trex", 22.0, -6.0], ["triceratops", 16.0, 7.0], ["stegosaurus", 30.0, 12.0], ["raptor", 9.0, -2.0]]
 			for sp in specs:
-				var c = w.spawn_wild(sp[0], 8, pos + p.rig.forward_flat() * sp[1] + p.rig.right_flat() * sp[2], {})
-				if c:
-					c.ai.set_physics_process(false)
+				showcase.append(w.spawn_wild(sp[0], 8, pos + p.rig.forward_flat() * sp[1] + p.rig.right_flat() * sp[2], {}))
 			for i in 90:
 				await tree.process_frame
 		if v[0] == "01_start_tps":
 			for sp in ["raptor", "triceratops", "parasaurolophus"]:
-				w.spawn_wild(sp, 5, pos + p.rig.forward_flat() * (14.0 + randf() * 10.0) + p.rig.right_flat() * randf_range(-8, 8), {})
+				showcase.append(w.spawn_wild(sp, 5, pos + p.rig.forward_flat() * (14.0 + randf() * 10.0) + p.rig.right_flat() * randf_range(-8, 8), {}))
 			for i in 60:
 				await tree.process_frame
 		ui.close_all()
 		await tree.process_frame
 		tree.root.get_texture().get_image().save_png(dir + "/" + v[0] + ".png")
 		print("SHOT ", v[0])
+		for c in showcase:
+			if c and is_instance_valid(c):
+				c.queue_free()
+		showcase.clear()
 	tree.quit()
