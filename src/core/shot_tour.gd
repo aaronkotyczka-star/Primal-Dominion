@@ -20,7 +20,7 @@ static func run(main: Node, dir: String) -> void:
 		["05_jungle_moosfell", WorldData.poi_pos("moosfell"), -0.2, 0.0, false, 13.0, [50.0, 95.0]],
 		["06_mountains", WorldData.poi_pos("adlerhorst"), -0.05, 0.0, false, 7.0, [160.0, 260.0]],
 		["07_night", WorldData.poi_pos("morgengrau"), -0.15, 0.0, false, 23.0, [35.0, 70.0]],
-		["08_rift", WorldData.poi_pos("riss_narbenschlund"), -0.15, 0.0, false, 17.0, [110.0, 170.0]],
+		["08_rift", WorldData.poi_pos("riss_narbenschlund"), -0.15, 0.0, false, 17.0, [180.0, 260.0]],
 		["09_dinos", WorldData.poi_pos("start_beach") + Vector3(-60, 0, -120), -0.12, 0.6, false, 10.0],
 	]
 	var sky = w.get("sky")

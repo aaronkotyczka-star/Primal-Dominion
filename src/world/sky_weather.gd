@@ -222,15 +222,15 @@ func _process(delta: float) -> void:
 	sun.visible = elev > -0.1
 	sun.light_color = Color(1.0, 0.82, 0.62).lerp(Color(1.0, 0.97, 0.92), smoothstep(0.0, 0.5, elev))
 	moon.rotation = Vector3(-(sun_angle + PI) + 0.25, deg_to_rad(-40.0), 0)
-	moon.light_energy = (1.0 - day) * 0.45 * (1.0 - cur["cloud"] * 0.5)
+	moon.light_energy = (1.0 - day) * 0.65 * (1.0 - cur["cloud"] * 0.5)
 	moon.visible = elev < 0.15
 	sky_mat.set_shader_parameter("day_factor", day)
 	sky_mat.set_shader_parameter("cloud_cover", cur["cloud"])
 	sky_mat.set_shader_parameter("cloud_dark", cur["dark"])
 	sky_mat.set_shader_parameter("demon_storm", cur["demon"])
 	sky_mat.set_shader_parameter("moon_dir", -moon.global_transform.basis.z)
-	env.ambient_light_energy = lerpf(0.45, 1.5, day) * (1.0 - cur["dark"] * 0.4)
-	env.ambient_light_color = Color(0.55, 0.6, 0.68).lerp(Color(0.16, 0.2, 0.32), 1.0 - day)
+	env.ambient_light_energy = lerpf(0.75, 1.5, day) * (1.0 - cur["dark"] * 0.4)
+	env.ambient_light_color = Color(0.55, 0.6, 0.68).lerp(Color(0.2, 0.26, 0.42), 1.0 - day)
 	var fog_col := Color(0.5, 0.56, 0.62).lerp(Color(0.04, 0.05, 0.08), 1.0 - day)
 	fog_col = fog_col.lerp(Color(0.35, 0.07, 0.05), cur["demon"] * 0.6)
 	if weather == "sandstorm":
