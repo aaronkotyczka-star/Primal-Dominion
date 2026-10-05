@@ -9,6 +9,8 @@ static func run(main: Node, dir: String) -> void:
 	var ui: GameUI = main.ui
 	ui.close_all()
 	var p := w.player
+	p.combatant.dmg_taken_mult = 0.0
+	Settings.data["tutorial_hints"] = false
 	var views := [
 		["01_start_tps", p.global_position, -0.2, 0.0, false, 9.0],
 		["02_start_fps", p.global_position, -0.05, 2.5, true, 9.0],
@@ -37,6 +39,8 @@ static func run(main: Node, dir: String) -> void:
 				w.spawn_wild(sp, 5, pos + p.rig.forward_flat() * (14.0 + randf() * 10.0) + p.rig.right_flat() * randf_range(-8, 8), {})
 			for i in 60:
 				await tree.process_frame
+		ui.close_all()
+		await tree.process_frame
 		tree.root.get_texture().get_image().save_png(dir + "/" + v[0] + ".png")
 		print("SHOT ", v[0])
 	tree.quit()

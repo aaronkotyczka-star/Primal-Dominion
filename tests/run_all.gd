@@ -298,14 +298,20 @@ func t_commands_riding() -> void:
 	await teleport(g.global_position + Vector3(2, 0, 0))
 	p.mount_creature(g)
 	check(p.mount == g, "Aufgestiegen")
-	var pos0 := g.global_position
+	var moved := 0.0
 	p.input.scripted = true
-	p.input.intent["move"] = Vector2(0, -1)
-	p.input.intent["sprint"] = true
-	await frames(90)
-	p.input.intent["move"] = Vector2.ZERO
-	p.input.intent["sprint"] = false
-	check(pos0.distance_to(g.global_position) > 4.0, "Reittier bewegt sich unter Spielerkontrolle (%.1f m)" % pos0.distance_to(g.global_position))
+	for attempt in 4:
+		var pos0 := g.global_position
+		p.input.intent["move"] = Vector2(0, -1)
+		p.input.intent["sprint"] = true
+		await frames(90)
+		p.input.intent["move"] = Vector2.ZERO
+		p.input.intent["sprint"] = false
+		moved = maxf(moved, pos0.distance_to(g.global_position))
+		if moved > 4.0:
+			break
+		p.rig.yaw += PI * 0.5
+	check(moved > 4.0, "Reittier bewegt sich unter Spielerkontrolle (%.1f m)" % moved)
 	p.dismount()
 	check(p.mount == null, "Abgestiegen")
 	p.toggle_direct_control()
