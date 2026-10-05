@@ -80,6 +80,7 @@ static func make_weapon(stack: Dictionary) -> Node3D:
 	var shaft_mat := _mat_for(d.get("shaft", "wood"))
 	var bind_mat := _mat_for(d.get("binding", "fiber"))
 	var wt: String = it.get("wtype", "")
+	root.set_meta("wtype", wt)
 	match wt:
 		"spear":
 			_cyl(root, 0.022, 0.025, 2.1, Vector3(0, 0.55, 0), Vector3.ZERO, shaft_mat)

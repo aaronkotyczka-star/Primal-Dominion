@@ -121,8 +121,12 @@ func _set_fp_view(node: Node3D) -> void:
 		return
 	fp_view = Node3D.new()
 	p.rig.cam.add_child(fp_view)
-	fp_view.position = Vector3(0.28, -0.32, -0.55)
-	fp_view.rotation_degrees = Vector3(-60, 8, 0)
+	if String(node.get_meta("wtype", "")) in ["spear", "staff"]:
+		fp_view.position = Vector3(0.3, -0.38, -0.25)
+		fp_view.rotation_degrees = Vector3(-82, 3, 0)
+	else:
+		fp_view.position = Vector3(0.28, -0.32, -0.55)
+		fp_view.rotation_degrees = Vector3(-60, 8, 0)
 	fp_view.add_child(node)
 	fp_view.visible = p.rig.first_person
 
