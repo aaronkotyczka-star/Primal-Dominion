@@ -26,7 +26,10 @@ static func run(main: Node, dir: String) -> void:
 	var sky = w.get("sky")
 	if sky:
 		sky.force_weather("clear")
+	var only := OS.get_environment("SHOTS")
 	for v in views:
+		if only != "" and not String(v[0]).substr(0, 2) in only.split(","):
+			continue
 		var pos: Vector3 = v[1]
 		if v.size() > 6:
 			var vp := _vantage(pos, v[6][0], v[6][1])
