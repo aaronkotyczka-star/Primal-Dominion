@@ -78,7 +78,7 @@ func _init() -> void:
 				hsize = maxf(Vector3(hh0[0], hh0[1], hh0[2]).distance_to(Vector3(ht0[0], ht0[1], ht0[2])), 0.05)
 		for view in 3:
 			var dir := Vector3(1, 0.25, 0).normalized() if view == 0 else Vector3(0.8, 0.45, -0.9).normalized()
-			cam.position = center + dir * size * 1.15
+			cam.position = center + dir * size * (1.15 if size > 4.0 else 2.2)
 			cam.look_at(center)
 			if view == 2:
 				cam.position = hpos + Vector3(1.0, 0.35, -0.9).normalized() * hsize * 2.6

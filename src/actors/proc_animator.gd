@@ -429,14 +429,14 @@ func _wings(m: String, rf: float, delta: float) -> void:
 		if w.size() < 4:
 			continue
 		var sg := -1.0 if side == "L" else 1.0
-		var fold := 1.0 - _flap
+		var fold := (1.0 - _flap) * 0.62
 		if wb >= 0.0:
 			fold = 0.0
-		# folded: wing1 down/back, wing2 folds back hard, wing3/4 fold forward
-		_rot(w[0], 0.0, sg * (-0.6 * fold), sg * (f * _flap - 0.9 * fold))
-		_rot(w[1], 0.0, sg * (1.9 * fold) + sg * f * 0.15, sg * (f * 0.25))
-		_rot(w[2], 0.0, sg * (-2.3 * fold), 0.0)
-		_rot(w[3], 0.0, sg * (0.4 * fold) - sg * f * 0.1, sg * f * 0.2)
+		# resting: wings half folded and lowered alongside the body
+		_rot(w[0], 0.0, sg * (-0.7 * fold), sg * (f * _flap - 0.75 * fold))
+		_rot(w[1], 0.0, sg * (1.5 * fold) + sg * f * 0.15, sg * (f * 0.25 + 0.35 * fold))
+		_rot(w[2], 0.0, sg * (-1.6 * fold), sg * 0.2 * fold)
+		_rot(w[3], 0.0, sg * (0.9 * fold) - sg * f * 0.1, sg * (f * 0.2 - 0.3 * fold))
 	# hybrid wing parts (rigid) flap via attachment pivots
 	for sock in ["shoulder_L", "shoulder_R"]:
 		if parts.has(sock):

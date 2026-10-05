@@ -136,7 +136,7 @@ SPECIES = {
     "demon": lambda: humanoid("demon", height=2.3, build=1.25, head_scale=0.9, nose=0.7, demon=True),
 }
 
-RES = {"compy": 220, "human_m": 150, "human_f": 150, "goblin": 150, "demon": 150, "spider": 260, "riftspider": 260,
+RES = {"compy": 220, "human_m": 280, "human_f": 280, "goblin": 280, "demon": 280, "spider": 260, "riftspider": 260,
        "titanoboa": 260, "bonewyrm": 260, "pteranodon": 260, "argentavis": 260, "wyvern": 260, "mosasaurus": 260,
        "plesiosaurus": 260, "ichthyosaurus": 260, "megalodon": 260}
 
@@ -145,7 +145,7 @@ TRIS = {"trex": 26000, "spinosaurus": 26000, "carnotaurus": 22000, "parasaurolop
         "shadowstalker": 18000, "compy": 6000, "brontosaurus": 26000, "triceratops": 24000, "stegosaurus": 22000,
         "ankylosaurus": 22000, "sarcosuchus": 20000, "mammoth": 18000, "direwolf": 14000, "smilodon": 14000,
         "hellhound": 14000, "mosasaurus": 9000, "megalodon": 8000, "wyvern": 11000,
-        "human_m": 7000, "human_f": 7000, "goblin": 6000, "demon": 8000, "spider": 6000, "riftspider": 6000}
+        "human_m": 14000, "human_f": 14000, "goblin": 12000, "demon": 14000, "spider": 6000, "riftspider": 6000}
 
 
 def main():

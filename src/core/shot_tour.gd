@@ -20,6 +20,7 @@ static func run(main: Node, dir: String) -> void:
 		["06_mountains", Vector3(60, 0, -250), -0.1, 3.14, false, 7.0],
 		["07_night", WorldData.poi_pos("morgengrau") + Vector3(-20, 0, 20), -0.15, -0.6, false, 23.0],
 		["08_rift", WorldData.poi_pos("riss_narbenschlund") + Vector3(0, 0, 110), -0.15, 0.0, false, 21.0],
+		["09_dinos", WorldData.poi_pos("start_beach") + Vector3(-60, 0, -120), -0.12, 0.6, false, 10.0],
 	]
 	for v in views:
 		var pos: Vector3 = v[1]
@@ -34,6 +35,14 @@ static func run(main: Node, dir: String) -> void:
 		for i in 90:
 			await tree.process_frame
 		# spawn showcase creatures near the camera
+		if v[0] == "09_dinos":
+			var specs := [["trex", 22.0, -6.0], ["triceratops", 16.0, 7.0], ["stegosaurus", 30.0, 12.0], ["raptor", 9.0, -2.0]]
+			for sp in specs:
+				var c = w.spawn_wild(sp[0], 8, pos + p.rig.forward_flat() * sp[1] + p.rig.right_flat() * sp[2], {})
+				if c:
+					c.ai.set_physics_process(false)
+			for i in 90:
+				await tree.process_frame
 		if v[0] == "01_start_tps":
 			for sp in ["raptor", "triceratops", "parasaurolophus"]:
 				w.spawn_wild(sp, 5, pos + p.rig.forward_flat() * (14.0 + randf() * 10.0) + p.rig.right_flat() * randf_range(-8, 8), {})

@@ -605,12 +605,18 @@ def flyer(rid, H=0.6, torso_len=0.6, torso_r=0.18, neck_len=0.5, neck_r=0.06, ne
     hd = _dirv(head_pitch)
     HB = N2 + hd * head_r * 0.2
     HT = HB + hd * head_len
-    r.add("head", "neck2", HB, HT, head_r, snout_r, sx=0.7, sy=1.1, blend=head_r * 0.5, region=0)
+    r.add("head", "neck2", HB, HT, 0, 0, geo=False)
     JB = HB + v3(0, -head_r * 0.45, 0)
-    r.add("jaw", "head", JB, JB + _dirv(head_pitch - 4) * head_len * 0.92, head_r * 0.5, snout_r * 0.6, sx=0.7, sy=0.5, blend=head_r * 0.3)
+    r.add("jaw", "head", JB, JB + _dirv(head_pitch - 4) * head_len * 0.92, 0, 0, geo=False)
+    r.ell("spine", (S1 + C) * 0.5 + v3(0, -torso_r * 0.15, 0), (torso_r * 0.95, torso_r * 1.05, torso_len * 0.55), k=torso_r * 0.4)
     if feathered:
-        # hooked beak
-        r.add_curved_cone(HT + v3(0, head_r * 0.15, head_r * 0.2), v3(0, 0.0, -1), head_len * 0.25, snout_r * 2.2, v3(0, -1.1, 0), "head", R_KERATIN)
+        r.ell("spine", C + v3(0, -torso_r * 0.55, 0.15 * torso_len), (torso_r * 0.6, torso_r * 0.75, torso_len * 0.4), k=torso_r * 0.4)
+        f_, s_, u_ = build_skull(r, HB, hd, head_len, head_r * 1.9, head_r * 0.95, snout_r * 3.0, snout_r * 1.4, teeth=False,
+                                 beak=True, eye=1.6, eye_t=0.3, eye_up=0.25, snout_drop=0.12)
+        r.add_curved_cone(HT + u_ * snout_r * 0.8 - f_ * head_len * 0.12, f_, head_len * 0.22, snout_r * 1.6, -u_ * 1.1, "head", R_KERATIN, segs=8, rings=5)
+    else:
+        f_, s_, u_ = build_skull(r, HB, hd, head_len, head_r * 2.0, head_r * 0.85, snout_r * 2.2, snout_r * 1.1, teeth=teeth,
+                                 beak=False, eye=1.4, eye_t=0.14, eye_up=0.25, snout_drop=0.02, min_gap=head_len * 0.015)
     prev, tp = "pelvis", P
     n_t = 3
     for i in range(n_t):
@@ -689,7 +695,9 @@ def flyer(rid, H=0.6, torso_len=0.6, torso_r=0.18, neck_len=0.5, neck_r=0.06, ne
         r.add_membrane(lead, bw, trail, bw, R_FEATHER, rows=3)
     r.chain("spine", ["pelvis", "spine"])
     r.chain("neck", ["neck1", "neck2", "head"])
-    _head_details(r, "head", "jaw", teeth, eye_scale=1.1, n_teeth=10, eye_t=0.12 if not feathered else 0.3, eye_up=0.3)
+    if feathered:
+        fb = {"pelvis", "spine", "neck1", "neck2", "tail1", "tail2", "tail3", "thigh_L", "thigh_R"}
+        r.region_fn = lambda p, n, bn, cur: R_FEATHER if (cur == 0 and bn in fb) else None
     hb = r.b("head")
     hd_ = norm(hb.tail - hb.head)
     r.socket("head_top", "head", hb.head + v3(0, head_r * 0.9, 0.02), (0, 1, 0.5), head_r * 3)
@@ -1012,24 +1020,51 @@ def humanoid(rid, height=1.8, build=1.0, head_scale=1.0, ears=0.0, nose=1.0, gob
     r.add("spine", "pelvis", SP, CH, h * 0.075 * bw, h * 0.09 * bw, sx=1.4 if not female else 1.3, sy=0.95, blend=h * 0.05)
     r.add("chest", "spine", CH, NK + v3(0, -h * 0.02, 0), h * 0.095 * bw, h * 0.06 * bw, sx=1.45 if not female else 1.25, sy=0.95, blend=h * 0.04)
     r.add("neck1", "chest", NK + v3(0, -h * 0.02, 0), HD, h * 0.032 * bw, h * 0.03 * bw, blend=h * 0.02)
-    # head: cranium blob + jaw
-    r.add("head", "neck1", HD, HD + v3(0, hr * 1.6, 0), hr * 0.95, hr * 1.0, sx=0.9, sy=1.0, blend=hr * 0.3)
-    r.blob("head", HD + v3(0, hr * 1.2, -hr * 0.05), (hr * 0.95, hr * 1.12, hr * 1.12), k=hr * 0.3)
-    r.add("jaw", "head", HD + v3(0, hr * 0.55, -hr * 0.1), HD + v3(0, hr * 0.15, -hr * 0.65), hr * 0.62, hr * 0.38, sx=1.1, blend=hr * 0.35)
-    # nose / brow
-    nl = hr * 0.35 * nose
-    r.blob("head", HD + v3(0, hr * 0.95, -hr * 1.0 - nl * 0.4), (hr * 0.13 * nose, hr * 0.25 * nose, nl), k=hr * 0.12)
-    r.blob("head", HD + v3(0, hr * 1.32, -hr * 0.9), (hr * 0.75, hr * 0.13, hr * 0.2), k=hr * 0.15)
-    for s, sn in ((-1, "L"), (1, "R")):
-        r.add_sphere(HD + v3(s * hr * 0.36, hr * 1.17, -hr * 0.86), hr * 0.13, "head", R_EYE, segs=10, rings=7)
+    # head: cranium, face, jaw, features (all smooth SDF prims)
+    r.add("head", "neck1", HD, HD + v3(0, hr * 1.6, 0), 0, 0, geo=False)
+    r.add("jaw", "head", HD + v3(0, hr * 0.55, -hr * 0.1), HD + v3(0, hr * 0.15, -hr * 0.65), 0, 0, geo=False)
+    Hc = HD + v3(0, hr * 1.15, -hr * 0.05)
+    F = v3(0, 0, -1)
+    r.ell("head", Hc + v3(0, hr * 0.12, hr * 0.06), (hr * 0.86, hr * 1.0, hr * 1.06), k=hr * 0.2)
+    r.ell("head", Hc + v3(0, -hr * 0.22, -hr * 0.42), (hr * 0.7, hr * 0.78, hr * 0.62), k=hr * 0.25)
+    r.ell("jaw", Hc + v3(0, -hr * 0.7, -hr * 0.5), (hr * 0.52 * (1.15 if goblin or demon else 1.0), hr * 0.34, hr * 0.42), k=hr * 0.2)
+    r.ell("jaw", Hc + v3(0, -hr * 0.9, -hr * 0.78), (hr * 0.22, hr * 0.17, hr * 0.17), k=hr * 0.12)
+    r.ell("head", Hc + v3(0, hr * 0.22, -hr * 0.86), (hr * 0.62, hr * 0.13 * (1.6 if demon or goblin else 1.0), hr * 0.18), k=hr * 0.12)
+    nl = nose
+    r.cap("head", Hc + v3(0, hr * 0.18, -hr * 0.93), Hc + v3(0, -hr * 0.22 * nl, -hr * (1.0 + 0.2 * nl)), hr * 0.07, hr * 0.1 * nl, up=(0, 0, -1), sx=1.2, k=hr * 0.07)
+    r.ell("head", Hc + v3(0, -hr * 0.27 * nl, -hr * (1.02 + 0.17 * nl)), (hr * 0.17 * nl, hr * 0.1 * nl, hr * 0.11 * nl), k=hr * 0.06)
+    lip_z = -hr * 0.97
+    r.ell("head", Hc + v3(0, -hr * 0.47, lip_z), (hr * 0.3, hr * 0.065, hr * 0.1), k=hr * 0.06)
+    r.ell("jaw", Hc + v3(0, -hr * 0.58, lip_z + hr * 0.03), (hr * 0.28, hr * 0.07, hr * 0.1), k=hr * 0.06)
+    r.cap("head", Hc + v3(-hr * 0.26, -hr * 0.52, lip_z - hr * 0.05), Hc + v3(hr * 0.26, -hr * 0.52, lip_z - hr * 0.05), hr * 0.012, hr * 0.012, up=(0, 1, 0), sx=1.0, sy=1.0, k=hr * 0.015, sub=True, region=R_MOUTH)
+    er = hr * 0.12
+    for sd, sn in ((-1, "L"), (1, "R")):
+        r.ell("head", Hc + v3(sd * hr * 0.5, -hr * 0.3, -hr * 0.62), (hr * 0.22, hr * 0.18, hr * 0.25), k=hr * 0.15)
+        ec = Hc + v3(sd * hr * 0.33, hr * 0.03, -hr * 0.72)
+        r.ell("head", ec + v3(0, 0, -er * 0.75), (er * 1.15, er * 0.8, er * 0.7), k=er * 0.5, sub=True)
+        r.add_eye(ec + v3(0, 0, -er * 0.15), er * 0.92, v3(sd * 0.12, 0.0, -1.0), "head")
+        r.ell("head", ec + v3(0, -er * 0.75, -er * 0.25), (er * 1.0, er * 0.22, er * 0.5), k=er * 0.2)
+        r.ell("head", ec + v3(0, er * 0.75, -er * 0.35), (er * 1.15, er * 0.32, er * 0.6), k=er * 0.25)
         if ears > 0:
-            e0 = HD + v3(s * hr * 0.9, hr * 1.15, 0.0)
-            r.blob("head", e0 + v3(s * hr * 0.35 * ears, hr * 0.25 * ears, hr * 0.15), (hr * 0.45 * ears, hr * 0.1, hr * 0.22), k=hr * 0.1)
+            e0 = Hc + v3(sd * hr * 0.82, hr * 0.0, hr * 0.12)
+            r.cap("head", e0, e0 + v3(sd * hr * 0.8 * ears, hr * 0.35 * ears, hr * 0.35), hr * 0.22, hr * 0.03, up=(sd, 0.3, 0), sx=1.0, sy=0.3, k=hr * 0.08)
         else:
-            r.blob("head", HD + v3(s * hr * 0.92, hr * 1.12, 0.0), (hr * 0.12, hr * 0.25, hr * 0.17), k=hr * 0.08)
+            r.ell("head", Hc + v3(sd * hr * 0.86, hr * 0.0, hr * 0.12), (hr * 0.1, hr * 0.26, hr * 0.17), k=hr * 0.07)
+    hair = not (goblin or demon)
+    if hair:
+        r.ell("head", Hc + v3(0, hr * 0.28, hr * 0.12), (hr * 0.93, hr * 0.9, hr * 1.06), k=hr * 0.06, region=R_HAIR)
+        if female:
+            r.ell("head", Hc + v3(0, -hr * 0.55, hr * 0.62), (hr * 0.85, hr * 1.25, hr * 0.42), k=hr * 0.2, region=R_HAIR)
+        else:
+            r.ell("head", Hc + v3(0, -hr * 0.15, hr * 0.55), (hr * 0.8, hr * 0.6, hr * 0.42), k=hr * 0.15, region=R_HAIR)
     if female:
-        for s in (-1, 1):
-            r.blob("chest", CH + v3(s * h * 0.05, h * 0.0, -h * 0.07), (h * 0.05, h * 0.05, h * 0.045), k=h * 0.03)
+        for s_ in (-1, 1):
+            r.ell("chest", CH + v3(s_ * h * 0.05, h * 0.0, -h * 0.07), (h * 0.05, h * 0.05, h * 0.045), k=h * 0.03)
+    # musculature & clothing details
+    r.ell("chest", CH + v3(0, h * 0.0, -h * 0.045), (h * 0.12 * bw, h * 0.06, h * 0.05), k=h * 0.03)
+    r.ell("neck1", NK + v3(0, -h * 0.005, -h * 0.005), (h * 0.042 * bw, h * 0.02, h * 0.04), k=h * 0.02, region=R_TOP)
+    r.ell("pelvis", P + v3(0, h * 0.035, 0), (h * 0.125 * bw, h * 0.022, h * 0.088 * bw), k=h * 0.008, region=R_BOOTS)
+    r.ell("pelvis", P + v3(0, -h * 0.03, h * 0.05), (h * 0.1 * bw, h * 0.06, h * 0.05), k=h * 0.03)
     # arms
     for s, sn in ((-1, "L"), (1, "R")):
         sh = CH + v3(s * h * 0.115 * bw, h * 0.045, 0.01)
@@ -1040,6 +1075,9 @@ def humanoid(rid, height=1.8, build=1.0, head_scale=1.0, ears=0.0, nose=1.0, gob
         r.add(f"uarm_{sn}", f"clav_{sn}", sh, el, h * 0.042 * bw, h * 0.032 * bw, blend=h * 0.02)
         r.add(f"farm_{sn}", f"uarm_{sn}", el, wr, h * 0.032 * bw, h * 0.022 * bw, sx=1.1, blend=h * 0.015)
         r.add(f"hand_{sn}", f"farm_{sn}", wr, hn, h * 0.024 * bw, h * 0.02 * bw, sx=1.4, sy=0.6, blend=h * 0.01)
+        r.ell(f"uarm_{sn}", sh + v3(s * h * 0.01, -h * 0.01, 0), (h * 0.05 * bw, h * 0.05, h * 0.048 * bw), k=h * 0.02)
+        r.ell_along(f"farm_{sn}", el, el + (wr - el) * 0.6, h * 0.033 * bw, h * 0.036 * bw, up=(0, 0, -1), k=h * 0.012)
+        r.cap(f"hand_{sn}", wr + v3(-s * h * 0.012, -h * 0.01, -h * 0.012), wr + v3(-s * h * 0.022, -h * 0.05, -h * 0.025), h * 0.011, h * 0.008, k=h * 0.008)
         if goblin or demon:
             _claws(r, f"hand_{sn}", 4, h * 0.03 * (1.8 if demon else 1.0), h * 0.011, curve_down=0.6)
         r.chain(f"arm_{sn}", [f"clav_{sn}", f"uarm_{sn}", f"farm_{sn}", f"hand_{sn}"])
@@ -1049,6 +1087,8 @@ def humanoid(rid, height=1.8, build=1.0, head_scale=1.0, ears=0.0, nose=1.0, gob
         toe = an + v3(0, -h * 0.03, -h * 0.1)
         r.add(f"thigh_{sn}", "pelvis", hip, kn, h * 0.062 * bw, h * 0.04 * bw, blend=h * 0.03)
         r.add(f"shin_{sn}", f"thigh_{sn}", kn, an, h * 0.042 * bw, h * 0.026 * bw, blend=h * 0.02)
+        r.ell_along(f"shin_{sn}", kn + v3(0, -h * 0.02, h * 0.01), kn + (an - kn) * 0.55 + v3(0, 0, h * 0.012), h * 0.04 * bw, h * 0.045 * bw, up=(0, 0, 1), k=h * 0.015)
+        r.ell(f"shin_{sn}", an + (kn - an) * 0.42, (h * 0.04 * bw, h * 0.018, h * 0.042 * bw), k=h * 0.006, region=R_BOOTS)
         r.add(f"meta_{sn}", f"shin_{sn}", an, an + (toe - an) * 0.6, h * 0.03, h * 0.032, sx=1.1, sy=0.7, blend=h * 0.015)
         r.add(f"toe_{sn}", f"meta_{sn}", an + (toe - an) * 0.6, toe, h * 0.03, h * 0.025, sx=1.2, sy=0.6, blend=h * 0.01)
         r.chain(f"leg_{sn}", [f"thigh_{sn}", f"shin_{sn}", f"meta_{sn}", f"toe_{sn}"])
@@ -1072,7 +1112,6 @@ def humanoid(rid, height=1.8, build=1.0, head_scale=1.0, ears=0.0, nose=1.0, gob
     r.socket("mouth", "jaw", r.b("jaw").tail, (0, 0, -1), hr)
     r.socket("pauldron_L", "uarm_L", r.b("uarm_L").head + v3(0, h * 0.01, 0), (-1, 0.6, 0), h * 0.1)
     r.socket("pauldron_R", "uarm_R", r.b("uarm_R").head + v3(0, h * 0.01, 0), (1, 0.6, 0), h * 0.1)
-    hair = not (goblin or demon)
     hd_y = HD[1]
 
     def region_fn(p, n, bn, cur):
@@ -1082,15 +1121,10 @@ def humanoid(rid, height=1.8, build=1.0, head_scale=1.0, ears=0.0, nose=1.0, gob
             return R_BOTTOM if (bn == "pelvis" and p[1] < hipY + h * 0.02) else R_TOP
         if bn.startswith(("thigh", "shin")):
             return R_BOTTOM
-        if bn.startswith(("meta", "toe")):
+        if bn.startswith(("meta", "toe")) or (bn.startswith("shin") and p[1] < h * 0.17):
             return R_BOOTS
         if bn == "neck1":
             return None
-        if hair and bn in ("head",):
-            if p[1] > hd_y + hr * 1.42 and not (p[2] < -hr * 0.55 and p[1] < hd_y + hr * 1.75):
-                return R_HAIR
-            if p[2] > hr * 0.25 and p[1] > hd_y + hr * 0.75:
-                return R_HAIR
         return None
     r.region_fn = region_fn
     r.meta.update(gait="human", hip_height=hipY, length=0.4 * h, height=h)

@@ -31,6 +31,7 @@ uniform float roughness_base = 0.62;
 uniform float hurt_flash = 0.0;
 uniform float select_flash = 0.0;
 uniform float body_scale = 1.0;
+uniform float pupil_slit = 1.0;
 uniform sampler2D skin_tex : hint_default_white, filter_linear_mipmap, repeat_enable;
 uniform sampler2D wrinkle_tex : hint_default_white, filter_linear_mipmap, repeat_enable;
 uniform float use_wrinkle = 0.0;
@@ -96,7 +97,7 @@ void fragment() {
 	if (reg == 1) {
 		float th = UV.y;
 		float slit = abs(fract(UV.x * 2.0 + 0.25) - 0.5);
-		float pupil = 1.0 - smoothstep(0.1, 0.16, th + slit * 0.18);
+		float pupil = 1.0 - smoothstep(0.1, 0.16, th + slit * 0.18 * pupil_slit);
 		float iris = 1.0 - smoothstep(0.3, 0.42, th);
 		col = mix(vec3(0.05, 0.04, 0.03), eye_color * (0.55 + 0.6 * n2), iris);
 		col = mix(col, vec3(0.01), pupil);

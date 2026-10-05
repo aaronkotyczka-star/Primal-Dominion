@@ -15,7 +15,7 @@ Legende: ✅ umgesetzt (durch automatischen Test oder Screenshot geprüft) · �
 |---|---|---|
 | Neues Spiel (Name, Körper, 4 Startausrüstungen, 4 Schwierigkeiten + Einzelregeln) | ✅ | |
 | Bewegung, Sprint, Ducken/Schleichen, Ausweichen, Schwimmen, Ego/Third-Person | ✅ | Klettern nur über Fähigkeit „Kletterer“ (Rang 2), ungetestet |
-| Offene Welt 2048 × 2048 m, 5 Inseln, Biome, LOD-Gelände, Vegetation, Gras | ✅ | Kerninsel detailliert, andere Inseln dünner besetzt |
+| Offene Welt 2048 × 2048 m, 5 Inseln, Biome, LOD-Gelände, Vegetation, Gras | ✅ | ≈34.000 Pflanzen/Felsen (24 Typen inkl. Varianten, Stämme, Stümpfe, Felsnadeln, Findlinge); Kerninsel detailliert, andere Inseln dünner besetzt |
 | Tag/Nacht, Wetter (Regen, Sturm, Dämonensturm), Hunger, Temperatur | ⚪ | |
 | Sammeln (Hand/Werkzeug), Herstellen (102 Rezepte, Stationen, Qualität) | ✅ | |
 | Kampf: Nah-/Fernkampf, Blocken, Zielerfassung, Fähigkeiten, Beute | ✅ | |
@@ -34,7 +34,7 @@ Legende: ✅ umgesetzt (durch automatischen Test oder Screenshot geprüft) · �
 ## Phase 2 – Erweiterung
 | Bereich | Status | Anmerkung |
 |---|---|---|
-| 31 Arten (Dinos, Säuger, Flug-, Meeres-, Monster) mit Rigs | 🟡 | Modelle prozedural aus Grundformen; Flügel/Flossen grob |
+| 31 Arten (Dinos, Säuger, Flug-, Meeres-, Monster) mit Rigs | 🟡 | Anatomisch modelliert (Schädel mit Zahnreihen, Augen mit Pupillen, Muskeln, Zehen/Krallen, Nackenschild, Osteoderme, Federn), prozedural erzeugt; Flughäute und Gefieder der Flugtiere noch einfach |
 | Fraktionen (5) mit Ansehen, Handel, Reaktion auf Dämonengestalt | ✅ | |
 | Siedlung: Bewohner, Aufgaben, Expeditionen | ✅ | einfache Simulation ohne sichtbare Arbeitsanimationen |
 | Gebiete: Bündnis, Handel, Eroberung; Feldzug automatisch **oder** selbst mitkämpfen | ✅ | Mitkämpfen: Verteidiger erscheinen am Zielort; eigene Armee wird dort nicht gespawnt |
@@ -52,7 +52,8 @@ Legende: ✅ umgesetzt (durch automatischen Test oder Screenshot geprüft) · �
 | Gamepad | ❌ | nur Maus/Tastatur |
 
 ## Bekannte Platzhalter / Vereinfachungen
-- Menschen/Goblins wirken wie Gliederpuppen: keine Gesichtsdetails, Kleidung nur als Farbregionen, keine Haare als eigene Geometrie.
+- Menschen/Goblins: einfache Gesichter (Nase, Lippen, Augen, Ohren), Haar als glattes Volumen, Kleidung als Farbregionen mit Gürtel/Kragen/Stiefelschaft – deutlich einfacher als handmodellierte Figuren.
+- Kreaturen und Pflanzen sind vollständig prozedural erzeugt (keine Bildhauerei/Texturen von Hand); Detailgrad begrenzt durch Rastergröße (~3–4 cm bei großen Tieren).
 - Alle Animationen sind prozedural (Gangzyklen, Aktionen) – keine handanimierten Keyframes.
 - Gegenstandssymbole sind farbige Kürzel-Plaketten statt Bildern.
 - Musik und Sounds sind einfache Synthese, keine Sprachausgabe.

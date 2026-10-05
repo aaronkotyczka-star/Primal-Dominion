@@ -72,6 +72,8 @@ func apply_colors() -> void:
 		sm.set_shader_parameter("bump_height", float(p.get("bump_height", 0.006 * sqrt(maxf(0.2, hh)))))
 		sm.set_shader_parameter("use_wrinkle", float(p.get("use_wrinkle", 0.0)))
 		sm.set_shader_parameter("body_scale", maxf(0.2, hh))
+		var rig_id: String = p.get("rig", "")
+		sm.set_shader_parameter("pupil_slit", 0.0 if rig_id.begins_with("human") or rig_id in ["direwolf", "smilodon", "mammoth", "argentavis"] else 1.0)
 
 
 func flash_hurt() -> void:
