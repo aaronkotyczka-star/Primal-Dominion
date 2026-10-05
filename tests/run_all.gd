@@ -61,6 +61,7 @@ func _run() -> void:
 	await t_elements()
 	await t_hybrid()
 	await t_save_load()
+	await t_ui_centering()
 	await t_core_quest()
 	await t_demon()
 	await t_settlement()
@@ -409,6 +410,39 @@ func t_hybrid() -> void:
 	var h := GameState.creature(uid)
 	check(h["species"] == "hybrid" and h["parents"] == [ua, ub], "Hybride geschlüpft mit Stammbaum")
 	check(Creatures.stats(h)["hp"] > 0, "Hybridwerte berechenbar")
+
+
+func _centered(c: Control) -> bool:
+	var parent_rect := (c.get_parent() as Control).get_global_rect()
+	var r := c.get_global_rect()
+	return r.get_center().distance_to(parent_rect.get_center()) <= 1.0
+
+
+func t_ui_centering() -> void:
+	print("[Menüs zentriert]")
+	ui.close_all()
+	var opened := {"Inventar": func(): ui.open_inventory(), "Journal": func(): ui.open_journal(),
+		"Pause": func(): ui.open_pause(), "Hinweis": func(): ui.show_text("Test", "Kurzer Text"),
+		"Einstellungen": func(): ui.open_settings(), "Bauen": func(): ui.open_build()}
+	for k in opened:
+		opened[k].call()
+		await frames(4)
+		var w: Control = ui.windows[-1]
+		check(_centered(w), "%s-Fenster zentriert" % k)
+		ui.close_all()
+		await frames(2)
+	# content grows after opening -> must stay centered
+	ui.show_text("Test", "Kurz")
+	await frames(3)
+	var tw: Control = ui.windows[-1]
+	var long_text := ""
+	for i in 40:
+		long_text += "Eine sehr lange Zeile Text, damit das Fenster wächst. "
+	tw.content.add_child(UIK.label(long_text, 17, UIK.TEXT, true))
+	await frames(4)
+	check(_centered(tw), "Fenster bleibt nach Inhaltsänderung zentriert")
+	ui.close_all()
+	await frames(2)
 
 
 func t_save_load() -> void:

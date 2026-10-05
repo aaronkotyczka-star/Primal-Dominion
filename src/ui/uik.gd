@@ -228,10 +228,38 @@ static func item_tooltip(st: Dictionary) -> String:
 	return "\n".join(lines)
 
 
+## Keeps a control exactly centered in its parent: re-centers whenever its own size,
+## or its minimum size changes (content refresh); resolution changes are covered by the anchors.
 static func center_window(c: Control) -> void:
-	c.set_anchors_preset(Control.PRESET_CENTER)
+	c.anchor_left = 0.5
+	c.anchor_right = 0.5
+	c.anchor_top = 0.5
+	c.anchor_bottom = 0.5
 	c.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	c.grow_vertical = Control.GROW_DIRECTION_BOTH
+	if c.has_meta("centered"):
+		recenter(c)
+		return
+	c.set_meta("centered", true)
+	var cb := func(): recenter(c)
+	# anchors at 0.5 with symmetric offsets follow resolution changes automatically
+	c.resized.connect(cb)
+	c.minimum_size_changed.connect(cb)
+	recenter.call_deferred(c)
+
+
+static func recenter(c: Control) -> void:
+	if not is_instance_valid(c):
+		return
+	var s := c.get_combined_minimum_size()
+	var w := roundf(s.x * 0.5)
+	var h := roundf(s.y * 0.5)
+	if is_equal_approx(c.offset_left, -w) and is_equal_approx(c.offset_right, s.x - w) and is_equal_approx(c.offset_top, -h) and is_equal_approx(c.offset_bottom, s.y - h):
+		return
+	c.offset_left = -w
+	c.offset_right = s.x - w
+	c.offset_top = -h
+	c.offset_bottom = s.y - h
 
 
 static func anchor(c: Control, ax: float, ay: float, ox: float, oy: float, w: float = 0.0, h: float = 0.0) -> void:

@@ -23,6 +23,21 @@ func _ready() -> void:
 		start_new(opts)
 		return
 	show_menu()
+	for a in args:
+		if a.begins_with("--menushot="):
+			_menu_shot(a.substr(11))
+
+
+## Saves screenshots of the main menu and the new-game dialog (visual check of the layout).
+func _menu_shot(path: String) -> void:
+	for i in 40:
+		await get_tree().process_frame
+	get_tree().root.get_texture().get_image().save_png(path + "_menu.png")
+	_new_game_dialog()
+	for i in 20:
+		await get_tree().process_frame
+	get_tree().root.get_texture().get_image().save_png(path + "_newgame.png")
+	get_tree().quit()
 
 
 # ------------------------------------------------------------------ menu
@@ -45,13 +60,17 @@ func show_menu() -> void:
 	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	menu.add_child(shade)
 	var col := UIK.vbox(10)
-	UIK.anchor(col, 0, 0.5, 120, -300)
+	col.alignment = BoxContainer.ALIGNMENT_CENTER
 	menu.add_child(col)
+	UIK.center_window(col)
 	var t := UIK.label("PRIMAL DOMINION", 64, UIK.GOLD)
+	t.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	t.add_theme_color_override("font_outline_color", Color(0, 0, 0))
 	t.add_theme_constant_override("outline_size", 10)
 	col.add_child(t)
-	col.add_child(UIK.label("Bestien. Blut. Herrschaft.", 22, UIK.DIM))
+	var sub := UIK.label("Bestien. Blut. Herrschaft.", 22, UIK.DIM)
+	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	col.add_child(sub)
 	col.add_child(Control.new())
 	var has_any := false
 	for s in SaveSystem.SLOTS:
@@ -64,7 +83,12 @@ func show_menu() -> void:
 	col.add_child(UIK.button("Einstellungen", func(): _settings(), "", 320))
 	col.add_child(UIK.button("Mitwirkende & Lizenzen", func(): _credits(), "", 320))
 	col.add_child(UIK.button("Beenden", func(): get_tree().quit(), "", 320))
-	col.add_child(UIK.label("Version %s · Godot %s" % [ProjectSettings.get_setting("application/config/version"), Engine.get_version_info()["string"]], 13, UIK.DIM))
+	var ver := UIK.label("Version %s · Godot %s" % [ProjectSettings.get_setting("application/config/version"), Engine.get_version_info()["string"]], 13, UIK.DIM)
+	ver.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	col.add_child(ver)
+	for b in col.get_children():
+		if b is Button:
+			b.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 
 
 func _popup(title: String, size: Vector2) -> UIWindow:
@@ -242,16 +266,20 @@ func _start_world() -> void:
 	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	loading.add_child(bg)
 	var v := UIK.vbox(10)
-	UIK.anchor(v, 0.5, 0.5, -300, -40, 600, 0)
+	v.custom_minimum_size = Vector2(600, 0)
 	loading.add_child(v)
+	UIK.center_window(v)
 	loading_label = UIK.label("Lade …", 22, UIK.GOLD)
+	loading_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	v.add_child(loading_label)
 	loading_bar = UIK.bar(UIK.GOLD, 600, 12)
 	v.add_child(loading_bar)
 	var tips := ["Tipp: Ducken (Strg) macht dich für scheue Tiere weniger bedrohlich.", "Tipp: Velociraptoren lassen sich nur aus dem Ei aufziehen.",
 		"Tipp: Nasse Gegner sind anfällig für Blitz – Elemente reagieren miteinander.", "Tipp: Gefährten teleportieren nicht. Pfeife (Tab), wenn sie zurückbleiben.",
 		"Tipp: Vorratskisten in der Nähe werden beim Herstellen automatisch genutzt.", "Tipp: Hybride werden mächtig – doch fremde Körper machen das Blut instabil."]
-	v.add_child(UIK.label(tips[randi() % tips.size()], 15, UIK.DIM, true))
+	var tip := UIK.label(tips[randi() % tips.size()], 15, UIK.DIM, true)
+	tip.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	v.add_child(tip)
 	add_child(loading)
 	world = World.new()
 	world.name = "World"
