@@ -182,6 +182,25 @@ func add_xp(amount: float, _source: String = "") -> void:
 			p["skill_points"] += 1
 		EventBus.player_level_up.emit(p["level"])
 		EventBus.notify.emit("Stufe %d erreicht! +Fähigkeitenpunkt" % p["level"], "good")
+	var d: Dictionary = p["demon"]
+	if _source == "kill" and d.get("unlocked", false) and d.get("in_form", false):
+		add_demon_xp(amount * 1.5)
+
+
+func demon_xp_for_level(lv: int) -> int:
+	return 150 + lv * lv * 60
+
+
+func add_demon_xp(amount: float) -> void:
+	var d: Dictionary = player()["demon"]
+	if not d.get("unlocked", false):
+		return
+	d["xp"] = int(d.get("xp", 0)) + int(round(amount * float(rule("xp"))))
+	while int(d["xp"]) >= demon_xp_for_level(int(d["level"])) and int(d["level"]) < 30:
+		d["xp"] = int(d["xp"]) - demon_xp_for_level(int(d["level"]))
+		d["level"] = int(d["level"]) + 1
+		d["points"] = int(d.get("points", 0)) + 1
+		EventBus.notify.emit("Dämonenstufe %d erreicht! +Dämonenpunkt" % d["level"], "good")
 
 
 func skill_rank(id: String) -> int:

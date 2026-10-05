@@ -593,6 +593,10 @@ func t_demon() -> void:
 	await frames(5)
 	check(not p.demon_form and p.visual.pheno["rig"].begins_with("human"), "Zurück zur Menschengestalt (ohne Kosten/Abklingzeit)")
 	p.toggle_demon_form()
+	var dl0 := int(d["level"])
+	var pts0 := int(d["points"])
+	GameState.add_xp(2000, "kill")
+	check(int(d["level"]) > dl0 and int(d["points"]) > pts0, "Dämonen-EP durch Kämpfe in Dämonengestalt (Stufe %d)" % d["level"])
 	p.toggle_demon_form()
 	check(GameState.rep("morgengrau") == rep0, "Formwechsel setzt Ansehen nicht zurück/verändert es nicht ohne Zeugen")
 
@@ -616,3 +620,16 @@ func t_settlement() -> void:
 	check(Settlement.residents().size() == 1, "Bewohner arbeitet (Tick ohne Fehler)")
 	var res := Settlement.resolve_campaign("nordgrat", GameState.state["creatures"].keys().slice(0, 3).map(func(k): return int(k)))
 	check(res.has("win"), "Feldzug aufgelöst (Sieg: %s)" % str(res["win"]))
+	if Settlement.territory_owner("aschenkamm") != "player":
+		GameState.set_flag("campaign_target", "aschenkamm")
+		await teleport(WorldData.poi_pos("vulkan_krater") + Vector3(0, 0, 40))
+		await frames(30)
+		Encounters.update(w)
+		var defs: Array = Encounters._active.get("campaign_aschenkamm", [])
+		check(defs.size() >= 3, "Mitkämpfen: Verteidiger erscheinen (%d)" % defs.size())
+		for a in defs:
+			if is_instance_valid(a):
+				_kill(a)
+		await frames(5)
+		Encounters.update(w)
+		check(Settlement.territory_owner("aschenkamm") == "player", "Mitkämpfen: Gebiet nach Sieg erobert")

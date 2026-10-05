@@ -22,6 +22,7 @@ static func update(w: World) -> void:
 	_skarza(w)
 	_rift(w)
 	_herald(w)
+	_campaign(w)
 	_whispers(w)
 
 
@@ -175,6 +176,57 @@ static func _skarza(w: World) -> void:
 			GameState.state["territories"]["knochenebene"] = {"owner": "player", "since": GameState.get_day(), "how": "erobert"}
 			EventBus.notify.emit("Die Knochenebene gehört nun dir! Der Stamm akzeptiert dich als Stärksten.", "quest"))
 		EventBus.notify.emit("Skarza nimmt die Herausforderung an! Nur er kämpft – besiege ihn.", "danger")
+
+
+# ------------------------------------------------------------------ campaign: fight in person
+const CAMPAIGN_DEFENDERS := {"knochenbrecher": ["npc:knochenbrecher_krieger"], "moosfell": ["npc:moosfell_goblin"],
+	"morgengrau": ["npc:siedler"], "daemonengoblins": ["npc:rissbrut", "hellhound"], "eisenhand": ["npc:soeldner"], "": ["carnotaurus", "raptor"]}
+
+
+static func _campaign(w: World) -> void:
+	var tid := String(GameState.flag("campaign_target", ""))
+	if tid == "" or not Settlement.TERRITORIES.has(tid):
+		return
+	if Settlement.territory_owner(tid) == "player":
+		GameState.set_flag("campaign_target", "")
+		return
+	var t: Dictionary = Settlement.TERRITORIES[tid]
+	var c := WorldData.poi_pos(t["poi"]) + Vector3(0, 0, 30)
+	var key := "campaign_" + tid
+	if not _active.has(key):
+		if w.player.global_position.distance_to(c) > 70.0:
+			return
+		var n := clampi(int(Settlement.defender_power(tid) / 70.0), 3, 7)
+		var pool: Array = CAMPAIGN_DEFENDERS.get(t["owner"], CAMPAIGN_DEFENDERS[""])
+		var list := []
+		for k in n:
+			var kind: String = pool[k % pool.size()]
+			var pos := c + Vector3(cos(k * TAU / n), 0, sin(k * TAU / n)) * 9.0
+			var a: Node = null
+			if kind.begins_with("npc:"):
+				a = Settlements._npc(w, kind.substr(4), pos, true)
+			else:
+				a = w.spawn_wild(kind, 8 + k, pos)
+				if a:
+					a.ai.home = c
+					a.ai.aggro_r = 40.0
+			if a:
+				a.quest_tag = "campaign_defender"
+				list.append(a)
+		_active[key] = list
+		EventBus.notify.emit("Die Verteidiger von %s stellen sich dir entgegen!" % t["name"], "danger")
+		return
+	var alive := 0
+	for a in _active[key]:
+		if is_instance_valid(a) and not a.combatant.dead:
+			alive += 1
+	if alive == 0:
+		_active.erase(key)
+		GameState.set_flag("campaign_target", "")
+		Settlement.claim(tid, "erobert")
+		if t["owner"] != "":
+			GameState.change_rep(t["owner"], -35, "Gebiet erobert")
+		GameState.add_path("conqueror", 2)
 
 
 # ------------------------------------------------------------------ rift assault (act 1 finale)

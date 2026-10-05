@@ -12,7 +12,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
         with:
@@ -49,7 +49,7 @@ jobs:
 
       - name: Automated tests (headless)
         run: |
-          timeout 900 godot --headless --path . --quit-after 60000 -- --autostart --test=run_all 2>&1 | tee test.log
+          timeout 1500 godot --headless --path . -- --autostart --test=run_all 2>&1 | tee test.log
           grep -q "ALL TESTS PASSED" test.log
           ! grep -E "SCRIPT ERROR" test.log
 

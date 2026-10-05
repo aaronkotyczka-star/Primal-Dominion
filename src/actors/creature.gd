@@ -515,6 +515,8 @@ func loot_corpse(player: Node) -> Array:
 		var n := int(round(randf_range(l[1], l[2]) * mult * (1.0 + level * 0.01)))
 		if n > 0:
 			out.append([l[0], n])
+	if species_id == "hellhound" and randf() < (0.35 if alpha else 0.08):
+		out.append(["demon_heart", 1])
 	if alpha:
 		out.append(["rare_flower" if sp.get("diet", "") == "herbivore" else "raw_prime_meat", 2])
 	var els: Dictionary = rec["genes"].get("elements", {})
