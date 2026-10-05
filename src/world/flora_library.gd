@@ -51,6 +51,10 @@ static func material(kind: String) -> Material:
 			sm.vertex_color_use_as_albedo = false
 			if kind == "deadwood":
 				sm.albedo_color = Color(0.55, 0.52, 0.5)
+			# dither away branches right in front of the camera
+			sm.distance_fade_mode = BaseMaterial3D.DISTANCE_FADE_PIXEL_DITHER
+			sm.distance_fade_min_distance = 0.8
+			sm.distance_fade_max_distance = 2.8
 			m = sm
 		"leaves", "moss":
 			var fm := ShaderMaterial.new()
