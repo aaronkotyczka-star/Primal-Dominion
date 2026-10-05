@@ -63,15 +63,26 @@ func _init() -> void:
 			vis.animator.speed = 3.0 * float(meta.get("hip_height", 1.0))
 			vis.animator.run_speed = 6.0 * float(meta.get("hip_height", 1.0))
 			vis.animator.phase = 0.2
-		else:
+		elif OS.get_environment("REST") == "":
 			vis.animator.play("roar", 100.0)
 			vis.animator.action_t = 0.5
 		var size := maxf(maxf(hh, ln), wd)
 		var center := Vector3(x, gy + (aabb[0][1] + aabb[1][1]) * 0.5, (aabb[0][2] + aabb[1][2]) * 0.5)
-		for view in 2:
+		var hpos := center
+		var hsize := size * 0.15
+		for b in meta["bones"]:
+			if b["name"] == (OS.get_environment("FOCUS") if OS.get_environment("FOCUS") != "" else "head"):
+				var hh0: Array = b["head"]
+				var ht0: Array = b["tail"]
+				hpos = vis.global_position + (Vector3(hh0[0], hh0[1], hh0[2]) + Vector3(ht0[0], ht0[1], ht0[2])) * 0.5
+				hsize = maxf(Vector3(hh0[0], hh0[1], hh0[2]).distance_to(Vector3(ht0[0], ht0[1], ht0[2])), 0.05)
+		for view in 3:
 			var dir := Vector3(1, 0.25, 0).normalized() if view == 0 else Vector3(0.8, 0.45, -0.9).normalized()
-			cam.position = center + dir * size * 1.9
+			cam.position = center + dir * size * 1.15
 			cam.look_at(center)
+			if view == 2:
+				cam.position = hpos + Vector3(1.0, 0.35, -0.9).normalized() * hsize * 2.6
+				cam.look_at(hpos)
 			for i in (30 if x == 0.0 and view == 0 else 6):
 				await process_frame
 			get_root().get_texture().get_image().save_png("%s_%s_%d.png" % [out, id, view])

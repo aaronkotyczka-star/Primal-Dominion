@@ -17,6 +17,7 @@ UP = np.array([0.0, 1.0, 0.0])
 # Region ids written into CUSTOM0.w (used by creature shader)
 R_SKIN, R_EYE, R_TOOTH, R_KERATIN, R_MEMBRANE, R_FEATHER, R_GLOW = 0, 1, 2, 3, 4, 5, 6
 R_TOP, R_BOTTOM, R_BOOTS, R_HAIR = 7, 8, 9, 10
+R_MOUTH = 11
 
 
 def v3(*a):
@@ -53,8 +54,12 @@ class Rig:
         self.sockets = {}
         self.chains = {}
         self.meta = {}
-        self.blobs = []  # extra SDF-only blobs not tied to own bone: (bone_name, center, radii)
+        self.blobs = []  # legacy axis-aligned blobs: (bone_name, center, radii, k)
+        self.prims = []  # dict(kind, bone, k, sub, region, ...)
         self.region_fn = None
+        self.detail_amp = 0.0
+        self.detail_freq = 1.0
+        self.ao_scale = None
 
     def add(self, name, parent, head, tail, r0, r1, **kw):
         b = Bone(name, parent, head, tail, r0, r1, **kw)
@@ -106,7 +111,32 @@ class Rig:
         h = np.clip(0.5 + 0.5 * (b - a) / k, 0.0, 1.0)
         return b * (1 - h) + a * h - k * h * (1 - h)
 
-    def eval_sdf(self, P, per_bone=False):
+    def _prim_sdf(self, pr, P):
+        if pr["kind"] == "ell":
+            q = (P - pr["c"]) @ pr["R"].T
+            r = pr["r"]
+            k0 = np.linalg.norm(q / r, axis=1)
+            k1 = np.linalg.norm(q / (r * r), axis=1)
+            return k0 * (k0 - 1.0) / np.maximum(k1, 1e-9)
+        # tapered capsule with elliptical cross-section
+        A, B = pr["a"], pr["b"]
+        d = B - A
+        L = max(np.linalg.norm(d), 1e-6)
+        dvec = d / L
+        AP = P - A
+        t = np.clip(AP @ dvec / L, 0.0, 1.0)
+        v = AP - np.outer(t * L, dvec)
+        up = pr["up"] - dvec * (pr["up"] @ dvec)
+        if np.linalg.norm(up) < 1e-4:
+            up = v3(0, 0, 1) if abs(dvec[1]) > 0.9 else UP
+            up = up - dvec * (up @ dvec)
+        up = norm(up)
+        side = np.cross(dvec, up)
+        rad = pr["r0"] + (pr["r1"] - pr["r0"]) * t
+        q = np.sqrt(((v @ side) / pr["sx"]) ** 2 + ((v @ up) / pr["sy"]) ** 2 + (v @ dvec) ** 2)
+        return (q - rad) * min(pr["sx"], pr["sy"], 1.0)
+
+    def eval_sdf(self, P, per_bone=False, detail=True):
         total = None
         geo_idx = []
         dists = []
@@ -119,12 +149,66 @@ class Rig:
             total = d if total is None else self.smin(total, d, b.blend)
         for (bn, c, r, k) in self.blobs:
             d = self._blob_sdf(np.asarray(c), np.asarray(r, float), P)
-            total = self.smin(total, d, k)
+            total = d if total is None else self.smin(total, d, k)
             geo_idx.append(self.index[bn])
             dists.append(d)
+        for pr in self.prims:
+            if pr["sub"]:
+                continue
+            d = self._prim_sdf(pr, P)
+            total = d if total is None else self.smin(total, d, pr["k"])
+            geo_idx.append(self.index[pr["bone"]])
+            dists.append(d)
+        for pr in self.prims:
+            if not pr["sub"]:
+                continue
+            d = self._prim_sdf(pr, P)
+            total = -self.smin(-total, d, pr["k"])
+        if detail and self.detail_amp > 0.0:
+            total = total + self.detail_amp * (_vnoise(P * self.detail_freq) - 0.5 + 0.5 * (_vnoise(P * self.detail_freq * 2.7 + 5.0) - 0.5))
         if per_bone:
             return total, geo_idx, np.stack(dists, axis=1)
         return total
+
+    # oriented ellipsoid. axes: rows = local x (side), y (up), z (length) unit vectors
+    def ell(self, bone, center, radii, axes=None, k=0.05, sub=False, region=None):
+        R = np.eye(3) if axes is None else np.array([norm(np.asarray(a, float)) for a in axes])
+        self.prims.append(dict(kind="ell", bone=bone, c=np.asarray(center, float), r=np.asarray(radii, float), R=R, k=k, sub=sub, region=region))
+
+    def ell_along(self, bone, a, b, rad_side, rad_up, up=(0, 1, 0), k=0.05, extra_len=1.0, sub=False, region=None):
+        """Ellipsoid spanning segment a-b (length axis), cross radii rad_side/rad_up."""
+        a = np.asarray(a, float)
+        b = np.asarray(b, float)
+        z = norm(b - a)
+        u = np.asarray(up, float)
+        u = norm(u - z * (u @ z)) if np.linalg.norm(u - z * (u @ z)) > 1e-4 else norm(np.cross(z, v3(1, 0, 0)))
+        x = np.cross(u, z)
+        L = np.linalg.norm(b - a) * 0.5 * extra_len
+        self.ell(bone, (a + b) * 0.5, (rad_side, rad_up, L), (x, u, z), k=k, sub=sub, region=region)
+
+    def cap(self, bone, a, b, r0, r1, up=(0, 1, 0), sx=1.0, sy=1.0, k=0.05, sub=False, region=None):
+        self.prims.append(dict(kind="cap", bone=bone, a=np.asarray(a, float), b=np.asarray(b, float), r0=r0, r1=r1,
+                               up=np.asarray(up, float), sx=sx, sy=sy, k=k, sub=sub, region=region))
+
+    def surface_hit(self, origin, direction, max_dist, steps=48):
+        """March from an interior point outward; returns first surface point (or None)."""
+        o = np.asarray(origin, float)
+        dvec = norm(np.asarray(direction, float))
+        ts = np.linspace(0, max_dist, steps)
+        pts = o[None, :] + ts[:, None] * dvec[None, :]
+        d = self.eval_sdf(pts, detail=False)
+        idx = np.where((d[:-1] < 0) & (d[1:] >= 0))[0]
+        if len(idx) == 0:
+            return None
+        i = idx[0]
+        lo, hi = ts[i], ts[i + 1]
+        for _ in range(12):
+            mid = (lo + hi) * 0.5
+            if self.eval_sdf((o + dvec * mid)[None, :], detail=False)[0] < 0:
+                lo = mid
+            else:
+                hi = mid
+        return o + dvec * (lo + hi) * 0.5
 
     def blob(self, bone, center, radii, k=0.05):
         self.blobs.append((bone, np.asarray(center, float), np.asarray(radii, float), k))
@@ -211,6 +295,28 @@ class Rig:
                 idx += [a, c_, b_, b_, c_, d_]
         self.add_extra(pos, nrm, idx, [[(bone, 1.0)]] * len(pos), region)
 
+    def add_eye(self, center, radius, axis, bone, segs=14, rings=10):
+        """Sphere with its pole along `axis`; uv.y = polar angle / pi (0 at pupil), uv.x = azimuth / 2pi."""
+        center = np.asarray(center, float)
+        ax = norm(np.asarray(axis, float))
+        s = norm(np.cross(ax, UP)) if abs(ax[1]) < 0.95 else v3(1, 0, 0)
+        u = np.cross(s, ax)
+        pos, nrm, idx, uv = [], [], [], []
+        for i in range(rings + 1):
+            th = math.pi * i / rings
+            for k in range(segs + 1):
+                ph = 2 * math.pi * k / segs
+                n = ax * math.cos(th) + (s * math.cos(ph) + u * math.sin(ph)) * math.sin(th)
+                pos.append(center + n * radius)
+                nrm.append(n)
+                uv.append((k / segs, i / rings))
+        w = segs + 1
+        for i in range(rings):
+            for k in range(segs):
+                a = i * w + k
+                idx += [a, a + w, a + 1, a + 1, a + w, a + w + 1]
+        self.add_extra(pos, nrm, idx, [[(bone, 1.0)]] * len(pos), R_EYE, uv=uv)
+
     def add_membrane(self, lead_pts, lead_bones, trail_pts, trail_bones, region, rows=6, feather=False):
         """Grid surface between leading edge polyline and trailing edge polyline (same count).
         Written as two-sided geometry on surface 1 with UVs (u span, v chord)."""
@@ -242,24 +348,52 @@ class Rig:
         self.add_extra(pos2, nr2, idx2, bw2, region, surface=1, uv=uv2)
 
     # ------------------------------------------------------------- build
-    def build(self, out_dir, voxel=None, target_tris=8000, smooth_iter=6):
+    def _bounds(self):
         geo = [b for b in self.bones if b.geo]
-        mins = np.min([np.minimum(b.head, b.tail) - max(b.r0, b.r1) * 1.3 for b in geo], axis=0)
-        maxs = np.max([np.maximum(b.head, b.tail) + max(b.r0, b.r1) * 1.3 for b in geo], axis=0)
+        lo = [np.minimum(b.head, b.tail) - max(b.r0, b.r1) * 1.3 for b in geo]
+        hi = [np.maximum(b.head, b.tail) + max(b.r0, b.r1) * 1.3 for b in geo]
         for (_, c, r, _k) in self.blobs:
-            mins = np.minimum(mins, c - r * 1.3)
-            maxs = np.maximum(maxs, c + r * 1.3)
+            lo.append(c - r * 1.3)
+            hi.append(c + r * 1.3)
+        for pr in self.prims:
+            if pr["sub"]:
+                continue
+            if pr["kind"] == "ell":
+                rr = np.max(pr["r"]) * 1.3
+                lo.append(pr["c"] - rr)
+                hi.append(pr["c"] + rr)
+            else:
+                rr = max(pr["r0"], pr["r1"]) * max(pr["sx"], pr["sy"], 1.0) * 1.3
+                lo.append(np.minimum(pr["a"], pr["b"]) - rr)
+                hi.append(np.maximum(pr["a"], pr["b"]) + rr)
+        return np.min(lo, axis=0), np.max(hi, axis=0)
+
+    def build(self, out_dir, voxel=None, target_tris=8000, smooth_iter=6, res=150):
+        mins, maxs = self._bounds()
         ext = maxs - mins
         if voxel is None:
-            voxel = max(ext) / 150.0
-        mins -= voxel * 2
-        maxs += voxel * 2
+            voxel = max(ext) / res
+        mins -= voxel * 3
+        maxs += voxel * 3
         shape = np.ceil((maxs - mins) / voxel).astype(int) + 1
         xs = mins[0] + np.arange(shape[0]) * voxel
         ys = mins[1] + np.arange(shape[1]) * voxel
         zs = mins[2] + np.arange(shape[2]) * voxel
-        G = np.stack(np.meshgrid(xs, ys, zs, indexing="ij"), axis=-1).reshape(-1, 3)
-        vol = self.eval_sdf(G).reshape(shape)
+        if res > 200:
+            # narrow band: coarse pass, exact evaluation only near the surface
+            f = 3
+            cx, cy, cz = xs[::f], ys[::f], zs[::f]
+            CG = np.stack(np.meshgrid(cx, cy, cz, indexing="ij"), axis=-1).reshape(-1, 3)
+            cvol = self.eval_sdf(CG).reshape(len(cx), len(cy), len(cz))
+            from scipy.ndimage import map_coordinates
+            ii = np.stack(np.meshgrid(np.arange(shape[0]) / f, np.arange(shape[1]) / f, np.arange(shape[2]) / f, indexing="ij"), axis=0)
+            vol = map_coordinates(cvol, ii.reshape(3, -1), order=1, mode="nearest").reshape(shape)
+            band = np.abs(vol) < voxel * f * 2.2
+            G = np.stack(np.meshgrid(xs, ys, zs, indexing="ij"), axis=-1)[band]
+            vol[band] = self.eval_sdf(G)
+        else:
+            G = np.stack(np.meshgrid(xs, ys, zs, indexing="ij"), axis=-1).reshape(-1, 3)
+            vol = self.eval_sdf(G).reshape(shape)
         verts, faces, _n, _v = measure.marching_cubes(vol, level=0.0, spacing=(voxel, voxel, voxel))
         verts += mins
         verts = _taubin(verts, faces, smooth_iter)
@@ -291,8 +425,20 @@ class Rig:
                 rr = self.region_fn(verts[vi], nrm[vi], self.bones[prim[vi]].name, region[vi])
                 if rr is not None:
                     region[vi] = rr
-        surf0 = dict(pos=verts, nrm=nrm, idx=faces.reshape(-1), bones=bones_arr, weights=weights_arr, region=region, uv=np.zeros((len(verts), 2)))
-        surf1 = dict(pos=np.zeros((0, 3)), nrm=np.zeros((0, 3)), idx=np.zeros(0, np.int64), bones=np.zeros((0, 4), np.int32), weights=np.zeros((0, 4)), region=np.zeros(0), uv=np.zeros((0, 2)))
+        for pr in self.prims:
+            if pr["region"] is None:
+                continue
+            dd = self._prim_sdf(pr, verts)
+            if pr["sub"]:
+                hit = np.abs(dd) < voxel * 2.0
+                if pr["kind"] == "cap":
+                    hit &= np.abs(nrm @ norm(pr["up"])) > 0.55
+            else:
+                hit = dd < voxel
+            region[hit] = pr["region"]
+        ao = self._bake_ao(verts, nrm, max(ext))
+        surf0 = dict(pos=verts, nrm=nrm, idx=faces.reshape(-1), bones=bones_arr, weights=weights_arr, region=region, uv=np.zeros((len(verts), 2)), ao=ao)
+        surf1 = dict(pos=np.zeros((0, 3)), nrm=np.zeros((0, 3)), idx=np.zeros(0, np.int64), bones=np.zeros((0, 4), np.int32), weights=np.zeros((0, 4)), region=np.zeros(0), uv=np.zeros((0, 2)), ao=np.zeros(0))
         for e in self.extra:
             s = surf0 if e["surface"] == 0 else surf1
             off = len(s["pos"])
@@ -311,8 +457,22 @@ class Rig:
             s["weights"] = np.concatenate([s["weights"], bwv])
             s["region"] = np.concatenate([s["region"], np.full(len(e["pos"]), e["region"])])
             s["uv"] = np.concatenate([s["uv"], e["uv"] if e["uv"] is not None else np.zeros((len(e["pos"]), 2))])
+            s["ao"] = np.concatenate([s["ao"], self._bake_ao(e["pos"], e["nrm"], max(ext), extra=True)])
         self._write(out_dir, [surf0, surf1])
         return len(surf0["idx"]) // 3 + len(surf1["idx"]) // 3
+
+    def _bake_ao(self, pos, nrm, size, extra=False):
+        """Ambient occlusion from the SDF (0 = open, 1 = fully occluded). Stored as 1-ao in CUSTOM1.w."""
+        if len(pos) == 0:
+            return np.zeros(0)
+        step = (self.ao_scale or size * 0.012)
+        occ = np.zeros(len(pos))
+        start = 1.5 if extra else 1.0
+        for i in range(1, 6):
+            h = step * (i + start)
+            d = self.eval_sdf(pos + nrm * h, detail=False)
+            occ += np.maximum(h - d, 0.0) / h * (0.5 ** (i - 1))
+        return np.clip(1.0 - occ * 0.45, 0.0, 1.0)
 
     def _skin(self, verts, geo_idx, D):
         nb = len(self.bones)
@@ -369,7 +529,7 @@ class Rig:
 
             # rest normals for triplanar + belly factor
             custom0 = np.concatenate([s["pos"], s["region"][:, None]], axis=1)
-            custom1 = np.concatenate([s["nrm"], np.zeros((n, 1))], axis=1)
+            custom1 = np.concatenate([s["nrm"], (1.0 - s["ao"])[:, None] if "ao" in s else np.zeros((n, 1))], axis=1)
             put("position", s["pos"], np.float32)
             put("normal", s["nrm"], np.float32)
             put("custom0", custom0, np.float32)
@@ -438,3 +598,24 @@ def _taubin(verts, faces, iters, lam=0.5, mu=-0.53):
         v = v + lam * (L @ v - v)
         v = v + mu * (L @ v - v)
     return v
+
+
+def _hash3(i):
+    h = (i[..., 0] * 73856093) ^ (i[..., 1] * 19349663) ^ (i[..., 2] * 83492791)
+    h = (h ^ (h >> 13)) * 1274126177
+    return ((h ^ (h >> 16)) & 0xFFFF) / 65535.0
+
+
+def _vnoise(P):
+    """Smooth value noise in [0,1]."""
+    fl = np.floor(P)
+    f = P - fl
+    i = fl.astype(np.int64)
+    u = f * f * (3 - 2 * f)
+    res = 0.0
+    for dx in (0, 1):
+        for dy in (0, 1):
+            for dz in (0, 1):
+                w = (u[:, 0] if dx else 1 - u[:, 0]) * (u[:, 1] if dy else 1 - u[:, 1]) * (u[:, 2] if dz else 1 - u[:, 2])
+                res = res + w * _hash3(i + np.array([dx, dy, dz]))
+    return res

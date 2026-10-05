@@ -5,6 +5,7 @@ render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_burley, specular_sc
 varying vec3 v_rest;
 varying vec3 v_rnormal;
 varying flat float v_region;
+varying float v_occ;
 
 uniform vec3 color_main : source_color = vec3(0.35, 0.32, 0.25);
 uniform vec3 color_belly : source_color = vec3(0.65, 0.6, 0.5);
@@ -38,6 +39,7 @@ void vertex() {
 	v_rest = CUSTOM0.xyz;
 	v_region = CUSTOM0.w;
 	v_rnormal = CUSTOM1.xyz;
+	v_occ = CUSTOM1.w;
 }
 
 vec4 triplanar(sampler2D t, vec3 p, vec3 n) {
@@ -92,8 +94,12 @@ void fragment() {
 	float bump = 1.0;
 	vec3 emis = vec3(0.0);
 	if (reg == 1) {
-		vec3 en = normalize(v_rnormal);
-		col = eye_color * 0.6;
+		float th = UV.y;
+		float slit = abs(fract(UV.x * 2.0 + 0.25) - 0.5);
+		float pupil = 1.0 - smoothstep(0.1, 0.16, th + slit * 0.18);
+		float iris = 1.0 - smoothstep(0.3, 0.42, th);
+		col = mix(vec3(0.05, 0.04, 0.03), eye_color * (0.55 + 0.6 * n2), iris);
+		col = mix(col, vec3(0.01), pupil);
 		rough = 0.05;
 		spec = 0.9;
 		bump = 0.0;
@@ -106,6 +112,17 @@ void fragment() {
 		col = keratin_color * (0.85 + 0.3 * n2);
 		rough = 0.4;
 		bump = 0.2;
+	} else if (reg == 11) {
+		col = vec3(0.2, 0.07, 0.06) * (0.8 + 0.3 * n2);
+		rough = 0.25;
+		spec = 0.6;
+		bump = 0.05;
+	} else if (reg == 5) {
+		float barb = sin(rp.z * 140.0 * pattern_scale + rp.y * 40.0 + n2 * 4.0) * 0.5 + 0.5;
+		col = mix(col, col * 0.7, barb * 0.35);
+		rough = 0.85;
+		spec = 0.2;
+		bump = 0.15;
 	} else if (reg == 7) {
 		col = top_color * (0.85 + 0.25 * wk.b);
 		rough = 0.85;
@@ -148,6 +165,10 @@ void fragment() {
 	float det = dot(dpdx, r1);
 	vec3 grad = sign(det) * (dhx * r1 + dhy * r2);
 	NORMAL = normalize(abs(det) * NORMAL - grad);
+	float occ = clamp(v_occ, 0.0, 1.0);
+	col *= mix(1.0, 0.45, occ);
+	AO = 1.0 - occ * 0.8;
+	AO_LIGHT_AFFECT = 0.3;
 	ALBEDO = mix(col, vec3(1.0, 0.15, 0.1), hurt_flash * 0.5) + vec3(0.25, 0.35, 0.6) * select_flash;
 	ROUGHNESS = clamp(rough, 0.02, 1.0);
 	SPECULAR = spec;

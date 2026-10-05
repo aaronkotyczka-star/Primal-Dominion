@@ -118,9 +118,14 @@ def P_dome():
 def P_plates():
     """Row of 3 alternating stegosaur plates (unit length 1 along z)."""
     r = part("plates")
-    for i, (z, s, h) in enumerate([(-0.45, -1, 0.75), (0.0, 1, 1.0), (0.45, -1, 0.85)]):
-        base = v3(s * 0.06, -0.05, z)
-        r.add(f"p{i}", "root", base, base + v3(s * 0.06, h, 0.1), 0.32 * h, 0.05, sx=0.08, sy=1.0, blend=0.03, region=R_KERATIN)
+    for i, (z, sd, h) in enumerate([(-0.45, -1, 0.72), (0.0, 1, 1.0), (0.45, -1, 0.82)]):
+        base = v3(sd * 0.05, -0.08, z)
+        lean = v3(sd * 0.06, 0, 0.12) * h
+        c = base + v3(0, h * 0.42, 0) + lean * 0.4
+        r.ell("root", c, (0.045 * h + 0.012, h * 0.42, h * 0.3), k=0.03)
+        r.cap("root", c, base + v3(0, h * 1.02, 0) + lean, h * 0.22, 0.012, up=(1, 0, 0), sx=0.22, sy=1.0, k=0.04)
+        r.cap("root", base + v3(0, -0.02, 0), c, h * 0.12, h * 0.2, up=(1, 0, 0), sx=0.4, sy=1.0, k=0.04)
+    r.meta["voxel"] = 0.012
     return r
 
 
@@ -267,8 +272,9 @@ if __name__ == "__main__":
     ids = sys.argv[1:] or list(PARTS.keys())
     for pid in ids:
         rig = PARTS[pid]()
-        if not any(b.geo for b in rig.bones) and not rig.blobs:
+        if not any(b.geo for b in rig.bones) and not rig.blobs and not rig.prims:
             # explicit-only parts: add a tiny hidden blob so marching cubes has a surface
             rig.add("hidden", "root", v3(0, -0.01, 0), v3(0, -0.01, 0.001), 0.02, 0.02, blend=0.01)
-        tris = rig.build(OUT, voxel=0.025, target_tris=2500, smooth_iter=3)
+        vox = rig.meta.pop("voxel", 0.025)
+        tris = rig.build(OUT, voxel=vox, target_tris=3000, smooth_iter=3)
         print(pid, tris)

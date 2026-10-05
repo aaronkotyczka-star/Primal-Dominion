@@ -997,13 +997,7 @@
     "pt": 4
    }
   ],
-  "parts": [
-   {
-    "id": "dome",
-    "socket": "head_top",
-    "size": 0.6
-   }
-  ],
+  "parts": [],
   "xp": 40,
   "loot": [
    [
@@ -1121,11 +1115,6 @@
    }
   ],
   "parts": [
-   {
-    "id": "frill",
-    "socket": "frill",
-    "size": 0.85
-   },
    {
     "id": "horns_brow",
     "socket": "head_top",
@@ -1359,11 +1348,6 @@
    }
   ],
   "parts": [
-   {
-    "id": "armor",
-    "socket": "back",
-    "size": 1.0
-   },
    {
     "id": "club",
     "socket": "tail_tip",
