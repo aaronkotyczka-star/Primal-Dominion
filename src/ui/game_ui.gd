@@ -17,7 +17,7 @@ func _ready() -> void:
 	add_to_group("ui")
 	layer = 10
 	root = Control.new()
-	root.set_anchors_preset(Control.PRESET_FULL_RECT)
+	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.theme = UIK.get_theme()
 	add_child(root)
@@ -25,7 +25,7 @@ func _ready() -> void:
 	root.add_child(hud)
 	dimmer = ColorRect.new()
 	dimmer.color = Color(0, 0, 0, 0.45)
-	dimmer.set_anchors_preset(Control.PRESET_FULL_RECT)
+	dimmer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	dimmer.visible = false
 	dimmer.mouse_filter = Control.MOUSE_FILTER_STOP
 	root.add_child(dimmer)

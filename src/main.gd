@@ -30,19 +30,19 @@ func show_menu() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	Audio.set_music("menu")
 	menu = Control.new()
-	menu.set_anchors_preset(Control.PRESET_FULL_RECT)
+	menu.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	menu.theme = UIK.get_theme()
 	add_child(menu)
 	var bg := TextureRect.new()
 	bg.texture = load("res://assets/world/map.png")
-	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	bg.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	bg.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	bg.modulate = Color(0.45, 0.4, 0.38)
 	menu.add_child(bg)
 	var shade := ColorRect.new()
 	shade.color = Color(0.02, 0.02, 0.02, 0.55)
-	shade.set_anchors_preset(Control.PRESET_FULL_RECT)
+	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	menu.add_child(shade)
 	var col := UIK.vbox(10)
 	UIK.anchor(col, 0, 0.5, 120, -300)
@@ -235,11 +235,11 @@ func _start_world() -> void:
 		menu = null
 	Encounters._active = {}
 	loading = Control.new()
-	loading.set_anchors_preset(Control.PRESET_FULL_RECT)
+	loading.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	loading.theme = UIK.get_theme()
 	var bg := ColorRect.new()
 	bg.color = Color(0.03, 0.03, 0.03)
-	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	loading.add_child(bg)
 	var v := UIK.vbox(10)
 	UIK.anchor(v, 0.5, 0.5, -300, -40, 600, 0)

@@ -30,7 +30,7 @@ func _make_mesh() -> ArrayMesh:
 	for k in 3:
 		var a := k * PI / 3.0
 		var d := Vector3(cos(a), 0, sin(a)) * 0.45
-		var h := 0.75
+		var h := 0.5
 		var corners := [-d, d, d + Vector3(0, h, 0), -d + Vector3(0, h, 0)]
 		var uvs := [Vector2(0.5, 1.0), Vector2(1.0, 1.0), Vector2(1.0, 0.5), Vector2(0.5, 0.5)]
 		var sways := [0.0, 0.0, 1.0, 1.0]
@@ -107,7 +107,7 @@ func _build_cell(k: Vector2i) -> MultiMeshInstance3D:
 			if y < 0.3:
 				continue
 			var s := rng.randf_range(0.6, 1.3) * (0.6 + w * 0.6)
-			xf.append(Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(s, s * rng.randf_range(0.7, 1.4), s)), Vector3(x, y - 0.05, z)))
+			xf.append(Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(s, s * rng.randf_range(0.6, 1.2), s)), Vector3(x, y - 0.05, z)))
 	var mmi := MultiMeshInstance3D.new()
 	var mm := MultiMesh.new()
 	mm.transform_format = MultiMesh.TRANSFORM_3D

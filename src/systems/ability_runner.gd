@@ -87,8 +87,10 @@ static func execute(actor: Node3D, ability_id: String, ctx: Dictionary = {}) -> 
 
 
 static func _delayed(actor: Node, t: float, f: Callable) -> void:
+	var wr: WeakRef = weakref(actor)
 	actor.get_tree().create_timer(t, false).timeout.connect(func():
-		if is_instance_valid(actor) and actor.combatant and not actor.combatant.dead:
+		var a = wr.get_ref()
+		if a != null and a.combatant and not a.combatant.dead:
 			f.call())
 
 

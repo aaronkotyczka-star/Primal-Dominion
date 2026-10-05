@@ -60,7 +60,7 @@ Legende: ✅ umgesetzt (durch automatischen Test oder Screenshot geprüft) · �
 - Feldzüge werden abstrakt (Kräfteverhältnis) aufgelöst.
 
 ## Bekannte technische Hinweise
-- Beim Beenden meldet Godot noch verwaiste Ressourcen (`ObjectDB instances leaked`) und einmalig „Lambda capture … was freed“ – ohne Auswirkung auf den Spielablauf, aber noch zu bereinigen.
+- Der letzte Testlauf endet ohne Engine-Fehlermeldungen; frühere Meldung „Lambda capture … was freed“ wurde durch WeakRef behoben (kann bei anderen verzögerten Treffern noch vereinzelt auftreten, harmlos).
 - `godot --check-only` meldet Autoload-Namen fälschlich als unbekannt; maßgeblich ist der Testlauf.
 
 ## Nächste Schritte
