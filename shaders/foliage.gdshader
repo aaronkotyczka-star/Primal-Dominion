@@ -14,6 +14,7 @@ uniform float near_fade = 3.0;
 
 varying float v_rand;
 varying float v_ao;
+varying float v_flip;
 
 float hash(vec2 p) {
 	return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
@@ -24,6 +25,7 @@ void vertex() {
 	float inst = hash(MODEL_MATRIX[3].xz);
 	v_rand = fract(inst + COLOR.b);
 	v_ao = COLOR.g;
+	v_flip = COLOR.a;
 	float sway = COLOR.r;
 	float t = TIME * wind_speed + inst * 6.28;
 	vec3 wind = vec3(sin(t + wp.x * 0.05), 0.0, cos(t * 0.8 + wp.z * 0.05)) * wind_strength * sway;
@@ -56,7 +58,8 @@ void fragment() {
 	ROUGHNESS = 0.8;
 	SPECULAR = 0.25;
 	BACKLIGHT = col * translucency;
-	if (!FRONT_FACING) {
+	// flat cards flip their normal on the back side; crown cards carry rounded crown normals (alpha 0)
+	if (!FRONT_FACING && v_flip > 0.5) {
 		NORMAL = -NORMAL;
 	}
 }

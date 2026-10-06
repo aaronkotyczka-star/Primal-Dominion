@@ -57,6 +57,10 @@ class Rig:
         self.blobs = []  # legacy axis-aligned blobs: (bone_name, center, radii, k)
         self.prims = []  # dict(kind, bone, k, sub, region, ...)
         self.region_fn = None
+        # smooth per-vertex material masks (CUSTOM2): r = fur/hair/feather length, g/b/a = cloth masks
+        self.mask_fn = None
+        self.fine_boxes = []  # [(lo xyz, hi xyz, voxel)] regions meshed at a finer resolution
+        self.fur_bones = {}  # bone name -> fur coverage (blended with skin weights, so borders are soft)
         self.detail_amp = 0.0
         self.detail_freq = 1.0
         self.ao_scale = None
@@ -112,6 +116,8 @@ class Rig:
         return b * (1 - h) + a * h - k * h * (1 - h)
 
     def _prim_sdf(self, pr, P):
+        if pr["kind"] == "isect":
+            return np.max([self._prim_sdf(c, P) for c in pr["parts"]], axis=0)
         if pr["kind"] == "ell":
             q = (P - pr["c"]) @ pr["R"].T
             r = pr["r"]
@@ -171,11 +177,11 @@ class Rig:
         return total
 
     # oriented ellipsoid. axes: rows = local x (side), y (up), z (length) unit vectors
-    def ell(self, bone, center, radii, axes=None, k=0.05, sub=False, region=None):
+    def ell(self, bone, center, radii, axes=None, k=0.05, sub=False, region=None, fur=None):
         R = np.eye(3) if axes is None else np.array([norm(np.asarray(a, float)) for a in axes])
-        self.prims.append(dict(kind="ell", bone=bone, c=np.asarray(center, float), r=np.asarray(radii, float), R=R, k=k, sub=sub, region=region))
+        self.prims.append(dict(kind="ell", bone=bone, c=np.asarray(center, float), r=np.asarray(radii, float), R=R, k=k, sub=sub, region=region, fur=fur))
 
-    def ell_along(self, bone, a, b, rad_side, rad_up, up=(0, 1, 0), k=0.05, extra_len=1.0, sub=False, region=None):
+    def ell_along(self, bone, a, b, rad_side, rad_up, up=(0, 1, 0), k=0.05, extra_len=1.0, sub=False, region=None, fur=None):
         """Ellipsoid spanning segment a-b (length axis), cross radii rad_side/rad_up."""
         a = np.asarray(a, float)
         b = np.asarray(b, float)
@@ -184,11 +190,17 @@ class Rig:
         u = norm(u - z * (u @ z)) if np.linalg.norm(u - z * (u @ z)) > 1e-4 else norm(np.cross(z, v3(1, 0, 0)))
         x = np.cross(u, z)
         L = np.linalg.norm(b - a) * 0.5 * extra_len
-        self.ell(bone, (a + b) * 0.5, (rad_side, rad_up, L), (x, u, z), k=k, sub=sub, region=region)
+        self.ell(bone, (a + b) * 0.5, (rad_side, rad_up, L), (x, u, z), k=k, sub=sub, region=region, fur=fur)
 
-    def cap(self, bone, a, b, r0, r1, up=(0, 1, 0), sx=1.0, sy=1.0, k=0.05, sub=False, region=None):
+    def cap(self, bone, a, b, r0, r1, up=(0, 1, 0), sx=1.0, sy=1.0, k=0.05, sub=False, region=None, fur=None):
         self.prims.append(dict(kind="cap", bone=bone, a=np.asarray(a, float), b=np.asarray(b, float), r0=r0, r1=r1,
-                               up=np.asarray(up, float), sx=sx, sy=sy, k=k, sub=sub, region=region))
+                               up=np.asarray(up, float), sx=sx, sy=sy, k=k, sub=sub, region=region, fur=fur))
+
+    def isect_end(self, n_parts, bone, k=0.05, region=None, sub=False, fur=None):
+        """Replace the last n_parts prims by their intersection (e.g. hair = offset cranium ∩ hairline volume)."""
+        parts = self.prims[-n_parts:]
+        del self.prims[-n_parts:]
+        self.prims.append(dict(kind="isect", parts=parts, bone=bone, k=k, sub=sub, region=region, fur=fur))
 
     def surface_hit(self, origin, direction, max_dist, steps=48):
         """March from an interior point outward; returns first surface point (or None)."""
@@ -358,7 +370,13 @@ class Rig:
         for pr in self.prims:
             if pr["sub"]:
                 continue
-            if pr["kind"] == "ell":
+            if pr["kind"] == "isect":
+                pr0 = pr["parts"][0]
+                rr = np.max(pr0["r"]) * 1.3 if pr0["kind"] == "ell" else max(pr0["r0"], pr0["r1"]) * 1.3
+                c0 = pr0["c"] if pr0["kind"] == "ell" else (pr0["a"] + pr0["b"]) * 0.5
+                lo.append(c0 - rr)
+                hi.append(c0 + rr)
+            elif pr["kind"] == "ell":
                 rr = np.max(pr["r"]) * 1.3
                 lo.append(pr["c"] - rr)
                 hi.append(pr["c"] + rr)
@@ -375,27 +393,46 @@ class Rig:
             voxel = max(ext) / res
         mins -= voxel * 3
         maxs += voxel * 3
-        shape = np.ceil((maxs - mins) / voxel).astype(int) + 1
-        xs = mins[0] + np.arange(shape[0]) * voxel
-        ys = mins[1] + np.arange(shape[1]) * voxel
-        zs = mins[2] + np.arange(shape[2]) * voxel
-        if res > 200:
+        f = 3
+        # per-axis coordinates; finer spacing inside self.fine_boxes (faces, hands) with a graded transition
+        axes = []
+        for ax in range(3):
+            ranges = [(bx[0][ax], bx[1][ax], bx[2]) for bx in self.fine_boxes]
+            c = _axis_coords(mins[ax], maxs[ax], voxel, ranges)
+            n = len(c)
+            m = int(np.ceil((n - 1) / f)) * f + 1  # so that coarse samples are every f-th fine sample
+            while len(c) < m:
+                c = np.append(c, c[-1] + voxel)
+            axes.append(c)
+        xs, ys, zs = axes
+        shape = (len(xs), len(ys), len(zs))
+        if res > 200 or self.fine_boxes:
             # narrow band: coarse pass, exact evaluation only near the surface
-            f = 3
             cx, cy, cz = xs[::f], ys[::f], zs[::f]
             CG = np.stack(np.meshgrid(cx, cy, cz, indexing="ij"), axis=-1).reshape(-1, 3)
-            cvol = self.eval_sdf(CG).reshape(len(cx), len(cy), len(cz))
-            from scipy.ndimage import map_coordinates
-            ii = np.stack(np.meshgrid(np.arange(shape[0]) / f, np.arange(shape[1]) / f, np.arange(shape[2]) / f, indexing="ij"), axis=0)
-            vol = map_coordinates(cvol, ii.reshape(3, -1), order=1, mode="nearest").reshape(shape)
+            cvol = self.eval_sdf(CG).reshape(len(cx), len(cy), len(cz)).astype(np.float32)
+            del CG
+            from scipy.ndimage import zoom
+            vol = zoom(cvol, (f, f, f), order=1, grid_mode=False)
+            vol = vol[:shape[0], :shape[1], :shape[2]]
+            if vol.shape != shape:
+                vol = np.pad(vol, [(0, shape[i] - vol.shape[i]) for i in range(3)], mode="edge")
+            # coarse cells are up to f*voxel wide (graded areas are finer, so this is conservative)
             band = np.abs(vol) < voxel * f * 2.2
-            G = np.stack(np.meshgrid(xs, ys, zs, indexing="ij"), axis=-1)[band]
-            vol[band] = self.eval_sdf(G)
+            ii, jj, kk = np.nonzero(band)
+            CH = 2_000_000
+            out = np.empty(len(ii), np.float32)
+            for c0 in range(0, len(ii), CH):
+                G = np.stack([xs[ii[c0:c0 + CH]], ys[jj[c0:c0 + CH]], zs[kk[c0:c0 + CH]]], axis=1)
+                out[c0:c0 + CH] = self.eval_sdf(G)
+            vol[ii, jj, kk] = out
+            del band, ii, jj, kk, out
         else:
             G = np.stack(np.meshgrid(xs, ys, zs, indexing="ij"), axis=-1).reshape(-1, 3)
             vol = self.eval_sdf(G).reshape(shape)
-        verts, faces, _n, _v = measure.marching_cubes(vol, level=0.0, spacing=(voxel, voxel, voxel))
-        verts += mins
+        verts, faces, _n, _v = measure.marching_cubes(vol, level=0.0)
+        del vol
+        verts = np.stack([np.interp(verts[:, i], np.arange(len(axes[i])), axes[i]) for i in range(3)], axis=1)
         verts = _taubin(verts, faces, smooth_iter)
         simp = pyfqmr.Simplify()
         simp.setMesh(verts.astype(np.float64), faces.astype(np.int32))
@@ -437,8 +474,22 @@ class Rig:
                 hit = dd < voxel
             region[hit] = pr["region"]
         ao = self._bake_ao(verts, nrm, max(ext))
-        surf0 = dict(pos=verts, nrm=nrm, idx=faces.reshape(-1), bones=bones_arr, weights=weights_arr, region=region, uv=np.zeros((len(verts), 2)), ao=ao)
-        surf1 = dict(pos=np.zeros((0, 3)), nrm=np.zeros((0, 3)), idx=np.zeros(0, np.int64), bones=np.zeros((0, 4), np.int32), weights=np.zeros((0, 4)), region=np.zeros(0), uv=np.zeros((0, 2)), ao=np.zeros(0))
+        mask = np.zeros((len(verts), 4))
+        if self.fur_bones:
+            fb = np.array([self.fur_bones.get(b.name, 0.0) for b in self.bones])
+            mask[:, 0] = np.sum(fb[bones_arr] * weights_arr, axis=1)
+        for pr in self.prims:
+            if pr.get("fur") is None:
+                continue
+            dd = self._prim_sdf(pr, verts)
+            w = np.clip(1.0 - dd / (voxel * 2.5), 0.0, 1.0)
+            mask[:, 0] = np.maximum(mask[:, 0], w * pr["fur"]) if pr["fur"] > 0 else mask[:, 0] * (1.0 - w)
+        if self.mask_fn is not None:
+            mask = self.mask_fn(verts, nrm, [self.bones[i].name for i in prim], region, mask)
+        # no fur on eyes, teeth, claws/horns, mouth, membranes
+        mask[~np.isin(region, (R_SKIN, R_FEATHER, R_HAIR)), 0] = 0.0
+        surf0 = dict(pos=verts, nrm=nrm, idx=faces.reshape(-1), bones=bones_arr, weights=weights_arr, region=region, uv=np.zeros((len(verts), 2)), ao=ao, mask=mask)
+        surf1 = dict(pos=np.zeros((0, 3)), nrm=np.zeros((0, 3)), idx=np.zeros(0, np.int64), bones=np.zeros((0, 4), np.int32), weights=np.zeros((0, 4)), region=np.zeros(0), uv=np.zeros((0, 2)), ao=np.zeros(0), mask=np.zeros((0, 4)))
         for e in self.extra:
             s = surf0 if e["surface"] == 0 else surf1
             off = len(s["pos"])
@@ -458,6 +509,7 @@ class Rig:
             s["region"] = np.concatenate([s["region"], np.full(len(e["pos"]), e["region"])])
             s["uv"] = np.concatenate([s["uv"], e["uv"] if e["uv"] is not None else np.zeros((len(e["pos"]), 2))])
             s["ao"] = np.concatenate([s["ao"], self._bake_ao(e["pos"], e["nrm"], max(ext), extra=True)])
+            s["mask"] = np.concatenate([s["mask"], np.zeros((len(e["pos"]), 4))])
         if "saddle" in self.sockets:
             self.meta["saddle_half_width"] = self._saddle_half_width()
         self._write(out_dir, [surf0, surf1])
@@ -551,10 +603,11 @@ class Rig:
             put("normal", s["nrm"], np.float32)
             put("custom0", custom0, np.float32)
             put("custom1", custom1, np.float32)
+            put("custom2", s["mask"] if "mask" in s else np.zeros((n, 4)), np.float32)
             put("uv", s["uv"], np.float32)
             put("bones", s["bones"], np.int32)
             put("weights", s["weights"], np.float32)
-            put("index", s["idx"], np.int32)
+            put("index", godot_winding(s["pos"], s["nrm"], s["idx"]), np.int32)
             meta_s.append(info)
         bones = []
         for b in self.bones:
@@ -572,6 +625,38 @@ class Rig:
             f.write(bytes(blob))
         with open(f"{out_dir}/{self.id}.json", "w") as f:
             json.dump(meta, f, indent=1)
+
+
+def godot_winding(pos, nrm, idx):
+    """Godot treats CLOCKWISE triangles as front faces. Flip every triangle whose
+    counter-clockwise normal agrees with its vertex normals (= would be culled from outside)."""
+    pos = np.asarray(pos, float)
+    nrm = np.asarray(nrm, float)
+    t = np.asarray(idx, np.int64).reshape(-1, 3).copy()
+    if len(t) == 0:
+        return t.reshape(-1)
+    fn = np.cross(pos[t[:, 1]] - pos[t[:, 0]], pos[t[:, 2]] - pos[t[:, 0]])
+    vn = nrm[t].sum(axis=1)
+    ccw = (fn * vn).sum(axis=1) > 0
+    t[ccw] = t[ccw][:, ::-1]
+    return t.reshape(-1)
+
+
+def _axis_coords(lo, hi, base, ranges, grow=0.25):
+    """Sample positions from lo to hi: `base` spacing, finer inside ranges [(a, b, spacing)].
+    Outside a range the spacing grows linearly with the distance (slope `grow`), so cells stay well shaped."""
+    def spacing(t):
+        sp = base
+        for a, b, v in ranges:
+            d = max(a - t, t - b, 0.0)
+            sp = min(sp, v + grow * d)
+        return sp
+    out = [lo]
+    t = lo
+    while t < hi:
+        t = t + spacing(t)
+        out.append(t)
+    return np.array(out)
 
 
 def _blend_bw(a, b, t):

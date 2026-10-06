@@ -9,6 +9,7 @@ var inst: Dictionary = {}
 var skeleton: Skeleton3D
 var meta: Dictionary = {}
 var materials: Array = []
+var fur_materials: Array = []
 var part_nodes: Dictionary = {} # socket -> Node3D
 var animator: ProcAnimator
 var _hurt := 0.0
@@ -31,6 +32,7 @@ func setup(p: Dictionary) -> void:
 	skeleton = inst["skeleton"]
 	meta = inst["meta"]
 	materials = inst["materials"]
+	fur_materials = inst.get("fur_materials", [])
 	for part in p.get("parts", []):
 		var node := RigLibrary.attach_part(inst, part["id"], part["socket"], part.get("size", 1.0), part.get("mirror", false))
 		if node and part.get("align", "") == "body":
@@ -52,8 +54,11 @@ func apply_colors() -> void:
 	var p := pheno
 	var col: Dictionary = p.get("colors", {})
 	var hh: float = float(meta.get("hip_height", 1.0)) * float(p.get("scale", 1.0))
-	for m in materials:
+	var rig_id: String = p.get("rig", "")
+	var human := rig_id.begins_with("human")
+	for m in materials + fur_materials:
 		var sm: ShaderMaterial = m
+		sm.set_shader_parameter("human_skin", 1.0 if human else 0.0)
 		for k in col:
 			var v = col[k]
 			if v is Array:
@@ -72,7 +77,6 @@ func apply_colors() -> void:
 		sm.set_shader_parameter("bump_height", float(p.get("bump_height", 0.006 * sqrt(maxf(0.2, hh)))))
 		sm.set_shader_parameter("use_wrinkle", float(p.get("use_wrinkle", 0.0)))
 		sm.set_shader_parameter("body_scale", maxf(0.2, hh))
-		var rig_id: String = p.get("rig", "")
 		sm.set_shader_parameter("pupil_slit", 0.0 if rig_id.begins_with("human") or rig_id in ["direwolf", "smilodon", "mammoth", "argentavis"] else 1.0)
 
 
@@ -82,14 +86,14 @@ func flash_hurt() -> void:
 
 func set_selected(v: bool) -> void:
 	_select = 0.6 if v else 0.0
-	for m in materials:
+	for m in materials + fur_materials:
 		m.set_shader_parameter("select_flash", _select)
 
 
 func _process(delta: float) -> void:
 	if _hurt > 0.0:
 		_hurt = maxf(0.0, _hurt - delta * 4.0)
-		for m in materials:
+		for m in materials + fur_materials:
 			m.set_shader_parameter("hurt_flash", _hurt)
 
 

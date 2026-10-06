@@ -154,6 +154,12 @@ func _vbar(parent: Node, name: String, col: Color) -> ProgressBar:
 func _slot(key: String) -> PanelContainer:
 	var p := PanelContainer.new()
 	p.custom_minimum_size = Vector2(58, 58)
+	var ic := TextureRect.new()
+	ic.name = "Icon"
+	ic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	ic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	ic.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	p.add_child(ic)
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override("separation", 0)
 	p.add_child(v)
@@ -272,13 +278,19 @@ func _slow_update() -> void:
 	for i in 6:
 		var slot: PanelContainer = hotbar.get_child(i)
 		var id: String = p["hotbar"][i]
-		var n: Label = slot.get_node("VBoxContainer/N") if slot.has_node("VBoxContainer/N") else slot.get_child(0).get_child(1)
-		var c: Label = slot.get_child(0).get_child(2)
+		var box: Control = slot.get_child(1)
+		var n: Label = box.get_child(1)
+		var c: Label = box.get_child(2)
+		var icon: TextureRect = slot.get_node("Icon")
+		var ip := "res://assets/icons/%s.png" % id
 		if id == "":
 			n.text = ""
 			c.text = ""
+			icon.texture = null
 		else:
-			n.text = DB.item_name(id)
+			icon.texture = load(ip) if ResourceLoader.exists(ip) else null
+			n.text = "" if icon.texture != null else DB.item_name(id)
+			slot.tooltip_text = DB.item_name(id)
 			var cnt := Inventory.count(inv, id)
 			if p["equipment"]["weapon"] == id:
 				c.text = "ausgerüstet"
@@ -287,8 +299,8 @@ func _slow_update() -> void:
 	var lo: Array = player.combat.loadout()
 	for i in 4:
 		var slot2: PanelContainer = abil_bar.get_child(i)
-		var n2: Label = slot2.get_child(0).get_child(1)
-		var c2: Label = slot2.get_child(0).get_child(2)
+		var n2: Label = slot2.get_child(1).get_child(1)
+		var c2: Label = slot2.get_child(1).get_child(2)
 		var ab: String = lo[i] if i < lo.size() else ""
 		if player.mount or player.controlled:
 			var cr: Creature = player.mount if player.mount else player.controlled

@@ -5,7 +5,8 @@ import os
 import sys
 import time
 
-from families import theropod, quadruped, flyer, wyvern, marine, serpent, arthropod, humanoid
+from families import theropod, quadruped, flyer, wyvern, marine, serpent, arthropod
+from humans import humanoid
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "..", "assets", "creatures")
 
@@ -14,7 +15,8 @@ SPECIES = {
     "trex": lambda: theropod("trex", H=3.2, body_len=2.7, body_d=1.05, body_w=0.72, neck_len=1.5, neck_r=0.5,
                              neck_rise=42, head_len=1.55, head_h=1.05, head_w=0.48, snout_h=0.5, snout_w=0.16,
                              head_pitch=-5, tail_len=6.0, tail_r=0.74, leg_r=0.52, arm_len=0.8, arm_r=0.1,
-                             fingers=2, n_teeth=11, tooth_len=0.14, brow=1.0, horn_boss=0.6, scutes=0.6, toe_len=0.22),
+                             fingers=2, n_teeth=12, tooth_len=0.16, brow=1.0, horn_boss=0.6, scutes=0.6, toe_len=0.22,
+                             skull="tyrant"),
     "atrociraptor": lambda: theropod("atrociraptor", H=0.8, body_len=0.8, body_d=0.26, body_w=0.18, neck_len=0.42,
                                      neck_r=0.085, neck_rise=50, head_len=0.33, head_h=0.17, head_w=0.08, snout_h=0.09,
                                      snout_w=0.035, tail_len=1.6, tail_r=0.13, leg_r=0.1, arm_len=0.55, arm_r=0.04,
@@ -78,21 +80,22 @@ SPECIES = {
                                      teeth=True, n_teeth=16, tooth_len=0.05, tail_len=5.0, tail_r=0.5, tail_sx=0.5,
                                      n_tail=6, tail_droop=0.01, leg_r=0.2, fleg_r=0.17, feet="croc", sprawl=0.45,
                                      style="croc", scutes=1.0, family="crocodilian"),
-    "direwolf": lambda: quadruped("direwolf", Hh=0.82, Hs=0.88, body_len=0.8, body_d=0.2, body_w=0.13, neck_len=0.28,
-                                  neck_r=0.11, neck_angle=18, head_len=0.3, head_h=0.17, head_w=0.09, head_pitch=-14,
+    "direwolf": lambda: quadruped("direwolf", Hh=0.8, Hs=0.86, body_len=0.92, body_d=0.29, body_w=0.16, neck_len=0.3,
+                                  neck_r=0.12, neck_angle=14, head_len=0.3, head_h=0.17, head_w=0.1, head_pitch=-14,
                                   style="canid", muzzle=0.5, muzzle_r=0.34, ears=1.0, teeth=True, fang=0.4,
-                                  tail_len=0.7, tail_r=0.1, tail_droop=0.25, tail_sx=1.0, leg_r=0.07, fleg_r=0.065,
-                                  feet="paw", family="mammal"),
+                                  tail_len=0.62, tail_r=0.08, tail_droop=0.3, tail_sx=1.0, leg_r=0.068, fleg_r=0.064,
+                                  feet="paw", family="mammal", fur=0.05, fur_density=230.0, fur_stiff=0.4),
     "smilodon": lambda: quadruped("smilodon", Hh=0.95, Hs=1.05, body_len=1.05, body_d=0.27, body_w=0.21, neck_len=0.3,
                                   neck_r=0.16, neck_angle=15, head_len=0.38, head_h=0.24, head_w=0.16, head_pitch=-8,
                                   style="felid", muzzle=0.3, muzzle_r=0.4, ears=0.6, ear_shape="round",
                                   teeth=True, tail_len=0.3, tail_r=0.07, tail_sx=1.0, tail_droop=0.2, leg_r=0.11,
-                                  fleg_r=0.13, feet="paw", family="mammal"),
+                                  fleg_r=0.13, feet="paw", family="mammal", fur=0.022, fur_density=420.0, fur_stiff=0.5),
     "mammoth": lambda: quadruped("mammoth", Hh=2.6, Hs=3.0, body_len=2.6, body_d=1.05, body_w=0.95, neck_len=0.5,
                                  neck_r=0.8, neck_angle=-10, head_len=1.1, head_h=0.9, head_w=0.6, head_pitch=-35,
                                  style="proboscid", muzzle=0.3, muzzle_r=0.4, ears=0.7, ear_shape="flap",
                                  trunk=1.0, dome=1.0, hump=1.0, teeth=False, tail_len=0.7, tail_r=0.12,
-                                 tail_sx=1.0, tail_droop=0.3, leg_r=0.5, fleg_r=0.52, family="mammal"),
+                                 tail_sx=1.0, tail_droop=0.3, leg_r=0.5, fleg_r=0.52, family="mammal",
+                                 fur=0.28, fur_density=70.0, fur_stiff=0.12),
     # ---------------- flyers
     "pteranodon": lambda: flyer("pteranodon", H=0.7, torso_len=0.55, torso_r=0.16, neck_len=0.55, neck_r=0.06,
                                 head_len=0.8, head_r=0.085, snout_r=0.012, wing_span=6.5, tail_len=0.15, tail_r=0.04,
@@ -122,7 +125,8 @@ SPECIES = {
                                    neck_len=0.33, neck_r=0.14, neck_angle=18, head_len=0.4, head_h=0.24, head_w=0.14,
                                    head_pitch=-10, style="canid", muzzle=0.55, muzzle_r=0.4, ears=1.1, teeth=True,
                                    fang=0.6, tail_len=1.0, tail_r=0.1, tail_sx=1.0, tail_droop=0.15, leg_r=0.11,
-                                   fleg_r=0.12, feet="paw", detail=3.0, family="mammal"),
+                                   fleg_r=0.12, feet="paw", detail=3.0, family="mammal", fur=0.045, fur_density=200.0,
+                                   fur_stiff=0.55),
     "shadowstalker": lambda: theropod("shadowstalker", H=1.5, body_len=1.4, body_d=0.35, body_w=0.26, neck_len=0.7,
                                       neck_r=0.13, neck_rise=35, head_len=0.5, head_h=0.2, head_w=0.1, snout_h=0.1,
                                       snout_w=0.04, tail_len=3.0, tail_r=0.17, leg_r=0.16, arm_len=1.3, arm_r=0.07,
@@ -131,21 +135,21 @@ SPECIES = {
     "riftspider": lambda: arthropod("riftspider", size=2.6),
     # ---------------- humanoids
     "human_m": lambda: humanoid("human_m", height=1.8, build=1.0),
-    "human_f": lambda: humanoid("human_f", height=1.7, build=0.9, female=True),
+    "human_f": lambda: humanoid("human_f", height=1.7, build=0.9, female=True, hair="bob"),
     "goblin": lambda: humanoid("goblin", height=1.25, build=0.95, head_scale=1.25, ears=1.0, nose=1.8, goblin=True),
     "demon": lambda: humanoid("demon", height=2.3, build=1.25, head_scale=0.9, nose=0.7, demon=True),
 }
 
-RES = {"compy": 220, "human_m": 280, "human_f": 280, "goblin": 280, "demon": 280, "spider": 260, "riftspider": 260,
+RES = {"compy": 220, "human_m": 420, "human_f": 420, "goblin": 360, "demon": 380, "spider": 260, "riftspider": 260,
        "titanoboa": 260, "bonewyrm": 260, "pteranodon": 260, "argentavis": 260, "wyvern": 260, "mosasaurus": 260,
        "plesiosaurus": 260, "ichthyosaurus": 260, "megalodon": 260}
 
-TRIS = {"trex": 26000, "spinosaurus": 26000, "carnotaurus": 22000, "parasaurolophus": 22000, "raptor": 18000,
-        "atrociraptor": 18000, "dilophosaurus": 18000, "gallimimus": 16000, "pachycephalosaurus": 16000,
-        "shadowstalker": 18000, "compy": 6000, "brontosaurus": 26000, "triceratops": 24000, "stegosaurus": 22000,
-        "ankylosaurus": 22000, "sarcosuchus": 20000, "mammoth": 18000, "direwolf": 14000, "smilodon": 14000,
-        "hellhound": 14000, "mosasaurus": 9000, "megalodon": 8000, "wyvern": 11000,
-        "human_m": 14000, "human_f": 14000, "goblin": 12000, "demon": 14000, "spider": 6000, "riftspider": 6000}
+TRIS = {"trex": 39000, "spinosaurus": 39000, "carnotaurus": 33000, "parasaurolophus": 33000, "raptor": 27000,
+        "atrociraptor": 27000, "dilophosaurus": 27000, "gallimimus": 24000, "pachycephalosaurus": 24000,
+        "shadowstalker": 27000, "compy": 9000, "brontosaurus": 39000, "triceratops": 36000, "stegosaurus": 33000,
+        "ankylosaurus": 33000, "sarcosuchus": 30000, "mammoth": 27000, "direwolf": 21000, "smilodon": 21000,
+        "hellhound": 21000, "mosasaurus": 13500, "megalodon": 12000, "wyvern": 16500,
+        "human_m": 46000, "human_f": 46000, "goblin": 30000, "demon": 34000, "spider": 9000, "riftspider": 9000}
 
 
 def main():
@@ -154,7 +158,7 @@ def main():
     for sid in ids:
         t = time.time()
         rig = SPECIES[sid]()
-        tris = rig.build(OUT, target_tris=TRIS.get(sid, 16000), res=RES.get(sid, 300))
+        tris = rig.build(OUT, target_tris=TRIS.get(sid, 24000), res=RES.get(sid, 300))
         print(f"{sid}: {tris} tris, {len(rig.bones)} bones, {time.time() - t:.1f}s", flush=True)
 
 

@@ -10,7 +10,7 @@ import numpy as np
 import pyfqmr
 from skimage import measure
 
-from sdfrig import _taubin, _vertex_normals
+from sdfrig import _taubin, _vertex_normals, godot_winding
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "..", "assets", "flora")
 
@@ -48,7 +48,7 @@ class MB:
             put("normal", s["n"], np.float32)
             put("uv", s["uv"], np.float32)
             put("color", s["c"], np.float32)
-            put("index", s["i"], np.int32)
+            put("index", godot_winding(s["p"], s["n"], s["i"]), np.int32)
             meta["surfaces"].append(info)
         allp = np.concatenate([np.asarray(s["p"]) for s in self.s.values()])
         meta["aabb"] = [allp.min(0).tolist(), allp.max(0).tolist()]
@@ -93,7 +93,7 @@ def tube(mb, pts, radii, segs, mat="bark", sway0=0.0, sway1=0.0, vscale=1.0):
     mb.add(mat, P, Nn, UV, C, I)
 
 
-def card(mb, center, normal, up, w, h, atlas_q, sway, rnd, mat="leaves", bend=0.0):
+def card(mb, center, normal, up, w, h, atlas_q, sway, rnd, mat="leaves", bend=0.0, crown_c=None, crown_r=1.0):
     """Leaf card quad (double sided via material). atlas_q: 0..3 quadrant."""
     nrm = normal / np.linalg.norm(normal)
     upv = up - nrm * np.dot(up, nrm)
@@ -104,14 +104,21 @@ def card(mb, center, normal, up, w, h, atlas_q, sway, rnd, mat="leaves", bend=0.
     for j, (sx, sy) in enumerate([(-1, -1), (1, -1), (1, 1), (-1, 1)]):
         p = center + side * sx * w * 0.5 + upv * sy * h * 0.5 + nrm * bend * (sy + 1) * 0.5 * h
         P.append(p)
-        # normals bent outward from crown center for soft shading
-        Nn.append(nrm * 0.6 + upv * 0.4)
         UV.append((qx + (sx * 0.5 + 0.5) * 0.5, qy + (1 - (sy * 0.5 + 0.5)) * 0.5))
-        C.append((sway, 0.7 + 0.3 * (sy * 0.5 + 0.5), rnd, 1))
+        if crown_c is not None:
+            # rounded crown shading: normal points away from the crown centre, inner leaves darker
+            off = p - crown_c
+            dn = np.linalg.norm(off) + 1e-6
+            Nn.append(off / dn * 0.85 + np.array([0, 0.15, 0]))
+            C.append((sway, 0.45 + 0.55 * min(dn / crown_r, 1.0) ** 1.5, rnd, 0))
+        else:
+            # normals bent outward for soft shading
+            Nn.append(nrm * 0.6 + upv * 0.4)
+            C.append((sway, 0.7 + 0.3 * (sy * 0.5 + 0.5), rnd, 1))
     mb.add(mat, P, Nn, UV, C, [0, 1, 2, 0, 2, 3])
 
 
-def crown(mb, rng, center, radius, count, card_size, atlas_q, sway=1.0, squash=0.8, mat="leaves"):
+def crown(mb, rng, center, radius, count, card_size, atlas_q, sway=1.0, squash=0.8, mat="leaves", crown_c=None, crown_r=None):
     for _ in range(count):
         d = rng.normal(size=3)
         d /= np.linalg.norm(d)
@@ -121,7 +128,8 @@ def crown(mb, rng, center, radius, count, card_size, atlas_q, sway=1.0, squash=0
         nrm = d + rng.normal(size=3) * 0.3
         up = np.array([0, 1.0, 0]) + rng.normal(size=3) * 0.4
         sz = card_size * rng.uniform(0.75, 1.25)
-        card(mb, c, nrm, up, sz, sz, atlas_q, sway, rng.random(), mat)
+        card(mb, c, nrm, up, sz, sz, atlas_q, sway, rng.random(), mat, crown_c=crown_c if crown_c is not None else center,
+             crown_r=crown_r or radius)
 
 
 def branch_curve(start, direction, length, droop, segs):
@@ -135,57 +143,86 @@ def branch_curve(start, direction, length, droop, segs):
 
 # ------------------------------------------------------------------ species
 def tree_broad(lod, seed=1, H=11.0, crown_r=2.4, nb0=7, spread=1.0, lean=0.25, trunk_r=0.45):
+    """Deciduous tree: buttressed trunk, main limbs, twigs, and many leaf clusters at the twig
+    ends (gaps between clusters), shaded as one rounded crown."""
     rng = np.random.default_rng(seed)
     mb = MB()
     ph = rng.random() * 6
-    trunk = [np.array([math.sin(t * 2 + ph) * lean * t, t * H * 0.6, math.cos(t * 3 + ph) * lean * 0.8 * t]) for t in np.linspace(0, 1, 6)]
-    tube(mb, trunk, np.linspace(trunk_r, trunk_r * 0.62, 6), 10 if lod == 0 else 6, sway1=0.1)
-    for k in range(5 if lod == 0 else 0):
-        a = k / 5 * math.tau + ph
-        d = np.array([math.cos(a), -0.35, math.sin(a)])
-        tube(mb, [np.array([0, 0.7, 0]), np.array([0, 0.7, 0]) + d * 1.1 * trunk_r / 0.45], [trunk_r * 0.55, 0.05], 5)
+    trunk = [np.array([math.sin(t * 2 + ph) * lean * t, t * H * 0.58, math.cos(t * 3 + ph) * lean * 0.8 * t]) for t in np.linspace(0, 1, 7)]
+    tube(mb, trunk, np.linspace(trunk_r, trunk_r * 0.6, 7), 12 if lod == 0 else 6, sway1=0.1, vscale=0.6)
+    for k in range(6 if lod == 0 else 0):
+        a = k / 6 * math.tau + ph
+        d = np.array([math.cos(a), -0.4, math.sin(a)])
+        tube(mb, [np.array([0, 0.9, 0]), np.array([0, 0.9, 0]) + d * 1.3 * trunk_r / 0.45], [trunk_r * 0.5, 0.05], 5)
     top = trunk[-1]
-    crowns = []
+    ccen = top + np.array([0, crown_r * 0.55, 0])
+    CR = crown_r * 1.9
+    clusters = []
     nb = nb0 if lod == 0 else max(3, nb0 - 3)
     for k in range(nb):
-        a = k / nb * math.tau + rng.random()
-        d = np.array([math.cos(a) * spread, rng.uniform(0.5, 0.95), math.sin(a) * spread])
+        a = k / nb * math.tau + rng.random() * 0.6
+        d = np.array([math.cos(a) * spread, rng.uniform(0.45, 0.95), math.sin(a) * spread])
         d /= np.linalg.norm(d)
-        st = top - np.array([0, rng.uniform(0, 2.4), 0])
-        L = rng.uniform(2.3, 3.8) * crown_r / 2.4
-        pts = branch_curve(st, d, L, 0.15, 4)
-        tube(mb, pts, np.linspace(trunk_r * 0.4, 0.05, 5), 6 if lod == 0 else 4, sway0=0.1, sway1=0.4)
-        crowns.append(pts[-1])
+        st = top - np.array([0, rng.uniform(0, 2.0), 0])
+        L = rng.uniform(2.4, 3.6) * crown_r / 2.4
+        pts = branch_curve(st, d, L, 0.12, 4)
+        tube(mb, pts, np.linspace(trunk_r * 0.42, 0.05, 5), 7 if lod == 0 else 4, sway0=0.1, sway1=0.4)
+        clusters.append(pts[-1])
         if lod == 0:
-            mid = pts[2]
-            crowns.append(mid + np.array([0, -0.3, 0]))
-    crowns.append(top + np.array([0, crown_r * 0.75, 0]))
-    for c in crowns:
-        crown(mb, rng, c, crown_r, 46 if lod == 0 else 8, 1.9 if lod == 0 else 3.8, 0, sway=0.8)
+            for q in range(3):
+                base = pts[1 + q]
+                d2 = d + rng.normal(size=3) * 0.6
+                d2[1] = abs(d2[1]) * 0.6 + 0.2
+                d2 /= np.linalg.norm(d2)
+                tw = branch_curve(base, d2, L * rng.uniform(0.35, 0.55), 0.1, 2)
+                tube(mb, tw, [0.07, 0.04, 0.015], 4, sway0=0.3, sway1=0.6)
+                clusters.append(tw[-1])
+    clusters.append(top + np.array([0, crown_r * 1.0, 0]))
+    for c in clusters:
+        if lod == 0:
+            crown(mb, rng, c, crown_r * 0.62, 30, 1.25, 0, sway=0.8, squash=0.7, crown_c=ccen, crown_r=CR)
+        else:
+            crown(mb, rng, c, crown_r * 0.9, 9, 3.4, 0, sway=0.8, crown_c=ccen, crown_r=CR)
     return mb
 
 
 def tree_conifer(lod, seed=2, H=16.0, width=4.2, tiers0=11):
+    """Spruce/fir: whorls of drooping branches, each carrying needle fronds along its length
+    (two crossed cards per segment), so the crown reads as layered, sagging boughs."""
     rng = np.random.default_rng(seed)
     mb = MB()
-    trunk = [np.array([0, t * H, 0]) for t in np.linspace(0, 1, 7)]
-    tube(mb, trunk, np.linspace(0.42 * H / 16, 0.04, 7), 9 if lod == 0 else 5, sway1=0.25)
-    tiers = tiers0 if lod == 0 else 7
+    trunk = [np.array([math.sin(t * 5 + seed) * 0.06, t * H, math.cos(t * 4 + seed) * 0.06]) for t in np.linspace(0, 1, 8)]
+    tube(mb, trunk, np.linspace(0.42 * H / 16, 0.03, 8), 10 if lod == 0 else 5, sway1=0.25, vscale=0.5)
+    tiers = tiers0 if lod == 0 else max(5, tiers0 // 2)
+    up = np.array([0, 1.0, 0])
     for k in range(tiers):
-        t = 0.18 + 0.8 * k / (tiers - 1)
-        y = t * H
-        rad = (1 - t) * width + 0.5
-        nb = 8 if lod == 0 else 6
+        t = 0.14 + 0.84 * k / (tiers - 1)
+        y = t * H + rng.uniform(-0.2, 0.2)
+        rad = (1 - t) ** 0.85 * width + 0.4
+        nb = (7 if lod == 0 else 5) if t < 0.85 else 4
         for j in range(nb):
-            a = j / nb * math.tau + k * 0.7 + rng.random() * 0.4
-            d = np.array([math.cos(a), -0.15, math.sin(a)])
+            a = j / nb * math.tau + k * 0.9 + rng.uniform(-0.3, 0.3)
+            d = np.array([math.cos(a), rng.uniform(0.0, 0.25), math.sin(a)])
+            d /= np.linalg.norm(d)
+            L = rad * rng.uniform(0.85, 1.1)
+            pts = branch_curve(np.array([0, y, 0]), d, L, 0.45 + 0.2 * (1 - t), 3)
             if lod == 0:
-                tube(mb, branch_curve(np.array([0, y, 0]), d, rad, 0.2, 2), [0.08, 0.05, 0.02], 4, sway0=0.2, sway1=0.6)
-            for q in range(3 if lod == 0 else 1):
-                f = (q + 1) / 3.5 if lod == 0 else 0.6
-                c = np.array([0, y, 0]) + d * rad * f + np.array([0, -0.2 - rad * 0.08 * f, 0])
-                card(mb, c, np.array([0, 1.0, 0]) + d * 0.3, d, rad * 0.85 if lod == 0 else rad * 1.6,
-                     rad * 0.75 if lod == 0 else rad * 1.45, 1, 0.5 + f * 0.5, rng.random())
+                tube(mb, pts, [0.07 * width / 4.2, 0.05, 0.03, 0.012], 4, sway0=0.2, sway1=0.6)
+            segs = [(pts[0], pts[1]), (pts[1], pts[2]), (pts[2], pts[3])] if lod == 0 else [(pts[0] + (pts[3] - pts[0]) * 0.15, pts[3])]
+            for q, (p0, p1) in enumerate(segs):
+                dirv = p1 - p0
+                ln = np.linalg.norm(dirv)
+                side = np.cross(dirv / ln, up)
+                side /= np.linalg.norm(side) + 1e-9
+                nrm = np.cross(side, dirv / ln)
+                wq = (0.95 - 0.18 * q) * min(L * 0.75, 2.2) if lod == 0 else min(L * 0.9, 2.8)
+                sw = 0.35 + 0.65 * (q + 1) / len(segs)
+                mid = (p0 + p1) * 0.5 + np.array([0, -0.05 * wq, 0])
+                card(mb, mid, nrm + side * 0.55, dirv, wq, ln * 1.35, 1, sw, rng.random(), bend=0.12)
+                card(mb, mid, nrm - side * 0.55, dirv, wq, ln * 1.35, 1, sw, rng.random(), bend=0.12)
+    # leader
+    card(mb, np.array([0, H * 0.985, 0]), np.array([1.0, 0, 0]), up, 0.7, H * 0.08, 1, 1.0, 0.5)
+    card(mb, np.array([0, H * 0.985, 0]), np.array([0, 0, 1.0]), up, 0.7, H * 0.08, 1, 1.0, 0.5)
     return mb
 
 
@@ -354,31 +391,33 @@ def cactus(lod, seed=10):
 
 
 def rock(lod, seed=11, size=1.0, flat=0.7, crystal=False):
-    """Noisy SDF rock via marching cubes."""
+    """Noisy SDF rock via marching cubes: faceted (plane cuts), layered strata, cracks, fine grain."""
     rng = np.random.default_rng(seed)
-    res = 34 if lod == 0 else 16
+    res = 72 if lod == 0 else 20
     g = np.linspace(-1.4, 1.4, res)
     X, Y, Z = np.meshgrid(g, g, g, indexing="ij")
     d = np.sqrt(X ** 2 + (Y / flat) ** 2 + Z ** 2) - 1.0
-    # facets: intersect with random planes
-    for _ in range(9):
+    for _ in range(11):
         n = rng.normal(size=3)
         n /= np.linalg.norm(n)
-        off = rng.uniform(0.6, 0.95)
+        off = rng.uniform(0.55, 0.95)
         d = np.maximum(d, (X * n[0] + Y * n[1] / flat + Z * n[2]) - off)
-    # noise
-    for o in range(3):
-        f = 2.5 * 2 ** o
+    tilt = rng.normal(size=3) * 0.25 + np.array([0, 1.0, 0])
+    tilt /= np.linalg.norm(tilt)
+    hgt = X * tilt[0] + Y * tilt[1] + Z * tilt[2]
+    # strata: stepped ledges
+    d += (np.abs(np.sin(hgt * 9.0 + rng.random() * 6)) ** 6) * 0.035 * (lod == 0)
+    for o in range(5 if lod == 0 else 2):
+        f = 2.3 * 2.1 ** o
         ph = rng.random(3) * 10
-        d += (np.sin(X * f + ph[0]) * np.sin(Y * f * 1.3 + ph[1]) * np.sin(Z * f * 0.9 + ph[2])) * 0.08 / (o + 1)
+        d += (np.sin(X * f + ph[0]) * np.sin(Y * f * 1.3 + ph[1]) * np.sin(Z * f * 0.9 + ph[2])) * 0.085 / (o + 1) ** 1.3
     v, fa, _, _ = measure.marching_cubes(d, 0.0, spacing=(g[1] - g[0],) * 3)
     v -= 1.4
     v = _taubin(v, fa, 2)
-    if lod == 0:
-        s = pyfqmr.Simplify()
-        s.setMesh(v, fa.astype(np.int32))
-        s.simplify_mesh(target_count=900, aggressiveness=5, verbose=False)
-        v, fa, _ = s.getMesh()
+    s_ = pyfqmr.Simplify()
+    s_.setMesh(v, fa.astype(np.int32))
+    s_.simplify_mesh(target_count=2600 if lod == 0 else 300, aggressiveness=5, verbose=False)
+    v, fa, _ = s_.getMesh()
     v = np.asarray(v) * size
     v[:, 1] += size * flat * 0.55
     fa = np.asarray(fa)[:, ::-1]

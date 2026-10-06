@@ -12,6 +12,10 @@ static var _skin_shader: Shader
 static var _membrane_shader: Shader
 static var _skin_tex: Texture2D
 static var _wrinkle_tex: Texture2D
+static var _cloth_tex: Texture2D
+static var _leather_tex: Texture2D
+static var _strand_tex: Texture2D
+static var _fur_shader: Shader
 
 
 static func load_meta(rig_id: String) -> Dictionary:
@@ -65,7 +69,7 @@ static func get_part_mesh(part_id: String, mirrored: bool = false) -> ArrayMesh:
 				idx[i + 1] = idx[i + 2]
 				idx[i + 2] = t
 			arr[Mesh.ARRAY_INDEX] = idx
-			mm.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr, [], {}, (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM0_SHIFT) | (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM1_SHIFT))
+			mm.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr, [], {}, (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM0_SHIFT) | (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM1_SHIFT) | (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM2_SHIFT))
 		_mesh_cache[key] = mm
 		return mm
 	var f := FileAccess.open(PART_DIR + part_id + ".json", FileAccess.READ)
@@ -84,9 +88,10 @@ static func _build_mesh(dir: String, id: String, meta: Dictionary, rigid: bool) 
 	var mesh := ArrayMesh.new()
 	var fmt := Mesh.ARRAY_FORMAT_VERTEX | Mesh.ARRAY_FORMAT_NORMAL | Mesh.ARRAY_FORMAT_TEX_UV \
 		| Mesh.ARRAY_FORMAT_INDEX \
-		| Mesh.ARRAY_FORMAT_CUSTOM0 | Mesh.ARRAY_FORMAT_CUSTOM1 \
+		| Mesh.ARRAY_FORMAT_CUSTOM0 | Mesh.ARRAY_FORMAT_CUSTOM1 | Mesh.ARRAY_FORMAT_CUSTOM2 \
 		| (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM0_SHIFT) \
-		| (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM1_SHIFT)
+		| (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM1_SHIFT) \
+		| (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM2_SHIFT)
 	for s in meta["surfaces"]:
 		if int(s["vertex_count"]) == 0:
 			continue
@@ -97,6 +102,12 @@ static func _build_mesh(dir: String, id: String, meta: Dictionary, rigid: bool) 
 		arr[Mesh.ARRAY_TEX_UV] = _slice(blob, s["uv"]).to_vector2_array()
 		arr[Mesh.ARRAY_CUSTOM0] = _slice(blob, s["custom0"]).to_float32_array()
 		arr[Mesh.ARRAY_CUSTOM1] = _slice(blob, s["custom1"]).to_float32_array()
+		if s.has("custom2"):
+			arr[Mesh.ARRAY_CUSTOM2] = _slice(blob, s["custom2"]).to_float32_array()
+		else:
+			var z := PackedFloat32Array()
+			z.resize(int(s["vertex_count"]) * 4)
+			arr[Mesh.ARRAY_CUSTOM2] = z
 		if not rigid:
 			arr[Mesh.ARRAY_BONES] = _slice(blob, s["bones"]).to_int32_array()
 			arr[Mesh.ARRAY_WEIGHTS] = _slice(blob, s["weights"]).to_float32_array()
@@ -146,6 +157,8 @@ static func instantiate(rig_id: String, parent: Node3D) -> Dictionary:
 	body_mat.shader = _get_skin_shader()
 	body_mat.set_shader_parameter("skin_tex", _skin_tex)
 	body_mat.set_shader_parameter("wrinkle_tex", _wrinkle_tex)
+	body_mat.set_shader_parameter("cloth_tex", _cloth_tex)
+	body_mat.set_shader_parameter("leather_tex", _leather_tex)
 	mi.set_surface_override_material(0, body_mat)
 	mats.append(body_mat)
 	if mi.mesh.get_surface_count() > 1:
@@ -153,7 +166,66 @@ static func instantiate(rig_id: String, parent: Node3D) -> Dictionary:
 		mem.shader = _membrane_shader
 		mi.set_surface_override_material(1, mem)
 		mats.append(mem)
-	return {"skeleton": skel, "mesh_instance": mi, "materials": mats, "meta": meta}
+	var fur_mats := _add_fur(meta, skel, skin, mi.mesh, body_mat)
+	return {"skeleton": skel, "mesh_instance": mi, "materials": mats, "fur_materials": fur_mats, "meta": meta}
+
+
+## Shell fur/hair: a second instance of the skinned body drawn N times with growing offsets.
+## Only drawn up close (visibility range); further away the body's coat colour carries the look.
+static func _add_fur(meta: Dictionary, skel: Skeleton3D, skin: Skin, mesh: Mesh, body_mat: ShaderMaterial) -> Array:
+	var fur: Dictionary = meta.get("fur", {})
+	if fur.is_empty() or fur_shells() <= 0:
+		return []
+	var n: int = mini(int(fur.get("shells", 12)), fur_shells())
+	var fmi := MeshInstance3D.new()
+	fmi.name = "Fur"
+	fmi.mesh = mesh
+	fmi.skin = skin
+	skel.add_child(fmi)
+	fmi.skeleton = NodePath("..")
+	fmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	var aabb: Array = meta["aabb"]
+	var size := Vector3(aabb[1][0] - aabb[0][0], aabb[1][1] - aabb[0][1], aabb[1][2] - aabb[0][2]).length()
+	fmi.visibility_range_end = clampf(size * 12.0, 18.0, 70.0)
+	fmi.visibility_range_end_margin = 4.0
+	fmi.visibility_range_fade_mode = GeometryInstance3D.VISIBILITY_RANGE_FADE_SELF
+	var mats := []
+	var first: ShaderMaterial = null
+	var prev: ShaderMaterial = null
+	for i in n:
+		var m := ShaderMaterial.new()
+		m.shader = _fur_shader
+		m.set_shader_parameter("shell", (float(i) + 1.0) / float(n))
+		m.set_shader_parameter("strand_tex", _strand_tex)
+		m.set_shader_parameter("fur_len", float(fur.get("len", 0.03)))
+		m.set_shader_parameter("strand_density", float(fur.get("density", 300.0)))
+		m.set_shader_parameter("fur_stiff", float(fur.get("stiff", 0.5)))
+		var c: Array = fur.get("comb", [0.0, -0.45, 1.0])
+		m.set_shader_parameter("comb", Vector3(c[0], c[1], c[2]))
+		var cr: Array = fur.get("crown", [0.0, 0.0, 0.0])
+		m.set_shader_parameter("crown", Vector3(cr[0], cr[1], cr[2]))
+		m.set_shader_parameter("comb_radial", float(fur.get("radial", 0.0)))
+		m.set_shader_parameter("use_hair_color", 1.0 if fur.get("hair", false) else 0.0)
+		m.set_shader_parameter("clumping", float(fur.get("clump", 0.3)))
+		m.set_shader_parameter("tip_light", float(fur.get("tip_light", 0.25)))
+		m.render_priority = i
+		if prev == null:
+			first = m
+		else:
+			prev.next_pass = m
+		prev = m
+		mats.append(m)
+	fmi.material_override = first
+	body_mat.set_shader_parameter("fur_len", float(fur.get("len", 0.03)))
+	return mats
+
+
+static func fur_shells() -> int:
+	var tree := Engine.get_main_loop() as SceneTree
+	var st = tree.root.get_node_or_null("Settings") if tree != null else null
+	if st == null:
+		return 12
+	return [0, 8, 12, 16][clampi(int(st.data.get("quality", 2)), 0, 3)]
 
 
 static func _get_skin_shader() -> Shader:
@@ -162,6 +234,10 @@ static func _get_skin_shader() -> Shader:
 		_membrane_shader = load("res://shaders/membrane.gdshader")
 		_skin_tex = load("res://assets/textures/skin_scales.png")
 		_wrinkle_tex = load("res://assets/textures/skin_wrinkle.png")
+		_cloth_tex = load("res://assets/textures/cloth.png")
+		_leather_tex = load("res://assets/textures/leather.png")
+		_strand_tex = load("res://assets/textures/fur_strands.png")
+		_fur_shader = load("res://shaders/fur.gdshader")
 	return _skin_shader
 
 

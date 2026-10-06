@@ -71,23 +71,77 @@ def u8(a):
     return (np.clip(a, 0, 1) * 255).astype(np.uint8)
 
 
+def _cells(n, count, seed, rmin, rmax):
+    """Tileable random discs: returns (normalized dist to nearest center / its radius, cell rand, cell id field)."""
+    from scipy.spatial import cKDTree
+    rng = np.random.default_rng(seed)
+    pts = rng.random((count, 2))
+    rad = rng.uniform(rmin, rmax, count) / np.sqrt(count)
+    rnd = rng.random(count)
+    tree = cKDTree(pts, boxsize=1.0)
+    ys, xs = np.mgrid[0:n, 0:n] / n
+    q = np.stack([ys.reshape(-1), xs.reshape(-1)], -1)
+    d, i = tree.query(q, k=4)
+    # power-diagram-ish: pick the neighbour with the smallest d/radius (bigger scales win)
+    rel = d / rad[i]
+    j = np.argmin(rel, axis=1)
+    sel = i[np.arange(len(j)), j]
+    relmin = rel[np.arange(len(j)), j].reshape(n, n)
+    rel2 = np.sort(rel, axis=1)[:, 1].reshape(n, n)
+    return relmin, rel2, rnd[sel].reshape(n, n)
+
+
 def creature_skin():
-    n = 512
-    f1, f2, cid = voronoi(n, 22, 3)
-    edge = np.clip((f2 - f1) * 2.2, 0, 1)
-    dome = np.clip(1 - f1 * 1.1, 0, 1) ** 0.6
-    fine = tile_noise(n, 32, 5, 3)
-    wr = tile_noise(n, 8, 9, 4)
-    h = edge ** 0.5 * 0.65 + dome * 0.25 + fine * 0.1 + wr * 0.1
-    # R: height, G: cell id variation, B: crease/fine noise
-    save("skin_scales.png", np.stack([u8(h), u8(cid), u8(fine), np.full((n, n), 255, np.uint8)], -1))
-    # coarse wrinkles for mammals / heavy skin
-    w1 = tile_noise(n, 6, 21, 6)
-    w2 = tile_noise(n, 12, 22, 5)
-    ridges = 1 - np.abs(w1 * 2 - 1)
-    h2 = ridges ** 3 * 0.7 + w2 * 0.3
+    n = 1024
+    # dinosaur skin after fossil impressions: rounded tubercles of mixed size, tight crevices,
+    # occasional large feature scales surrounded by smaller ones
+    r1, r2, cid = _cells(n, 2600, 3, 0.55, 1.0)
+    rel1, rel1b, _ = r1, r2, cid
+    gap = np.clip((rel1b - rel1) * 3.0, 0, 1)
+    dome = np.clip(1 - rel1 * 0.75, 0, 1) ** 0.5
+    big, bigb, bid = _cells(n, 380, 4, 0.3, 0.5)
+    bigmask = np.clip((1.0 - big) * 8, 0, 1)
+    bdome = np.clip(1 - big, 0, 1) ** 0.5
+    fine = tile_noise(n, 64, 5, 3)
+    h = np.maximum(gap ** 0.35 * (0.55 + 0.45 * dome) * (1 - bigmask), bigmask * (0.62 + 0.38 * bdome)) * 0.85 + fine * 0.15
+    var = np.where(bigmask > 0.5, bid, cid)
+    crease = 1.0 - gap ** 0.35
+    save("skin_scales.png", np.stack([u8(h), u8(var), u8(crease), np.full((n, n), 255, np.uint8)], -1))
+    # mammal / heavy skin: crossing wrinkle network + pores (elephant-like, also under fur)
+    w1 = warp_field(tile_noise(n, 10, 21, 6), n, 23, 60)
+    w2 = warp_field(tile_noise(n, 16, 22, 5), n, 24, 40)
+    ridges = np.maximum(1 - np.abs(w1 * 2 - 1), 1 - np.abs(w2 * 2 - 1))
+    pores = tile_noise(n, 180, 25, 2)
+    h2 = 1.0 - ridges ** 6 * 0.75 - np.clip((pores - 0.62) * 4, 0, 1) * 0.2
     fur = tile_noise(n, 64, 30, 2)
-    save("skin_wrinkle.png", np.stack([u8(h2), u8(w2), u8(fur), np.full((n, n), 255, np.uint8)], -1))
+    save("skin_wrinkle.png", np.stack([u8(h2), u8(tile_noise(n, 12, 26, 4)), u8(fur), np.full((n, n), 255, np.uint8)], -1))
+    # fur / hair strands for shell rendering: 64x64 strands per tile.
+    # R: strand height profile (tapering disc), G: strand tint, B: clump id
+    m = 512
+    r3, _r3b, sid = _cells(m, 64 * 64, 31, 0.32, 0.46)
+    rr = r3 * 0.0 + 1.0
+    rng = np.random.default_rng(32)
+    ln = 0.55 + 0.45 * sid
+    prof = np.clip(1 - r3 ** 2, 0, 1)
+    strand = np.where(r3 < 1.0, ln * prof ** 0.3, 0.0)
+    clump = tile_noise(m, 8, 33, 3)
+    save("fur_strands.png", np.stack([u8(strand), u8(sid), u8(clump), np.full((m, m), 255, np.uint8)], -1))
+    del rr, rng
+    # woven fabric (R height, G fibre noise, B fold noise) and leather (R height, G grain, B scuffs)
+    k = 512
+    yy, xx = np.mgrid[0:k, 0:k] / k
+    T = 96
+    wx = np.sin(xx * T * np.pi * 2) * 0.5 + 0.5
+    wy = np.sin(yy * T * np.pi * 2) * 0.5 + 0.5
+    checker = (np.floor(xx * T * 2) + np.floor(yy * T * 2)) % 2
+    weave = np.where(checker > 0, wx, wy) * 0.7 + tile_noise(k, 128, 40, 2) * 0.3
+    fib = tile_noise(k, 256, 41, 2)
+    folds = tile_noise(k, 6, 42, 4)
+    save("cloth.png", np.stack([u8(weave), u8(fib), u8(folds), np.full((k, k), 255, np.uint8)], -1))
+    g1 = tile_noise(k, 90, 43, 3)
+    cr = np.clip(1 - np.abs(tile_noise(k, 20, 44, 4) * 2 - 1) * 12, 0, 1)
+    lh = g1 * 0.8 - cr * 0.3 + 0.2
+    save("leather.png", np.stack([u8(lh), u8(g1), u8(tile_noise(k, 5, 45, 4)), np.full((k, k), 255, np.uint8)], -1))
 
 
 # ---------------------------------------------------------------------------------------------
@@ -460,6 +514,95 @@ def bark_and_leaves():
     save("leaves_atlas.png", u8(img))
 
 
+def building_textures():
+    n = 1024
+    yy, xx = np.mgrid[0:n, 0:n] / n
+    rng = np.random.default_rng(77)
+    # --- wood planks: 6 boards per tile (vertical), grain, knots, gaps, nails
+    nb = 6
+    bi = np.floor(xx * nb).astype(int)
+    fx = xx * nb - bi
+    off = rng.random(nb + 1)[bi]
+    tone = (0.8 + 0.4 * rng.random(nb + 1))[bi]
+    gw = tile_noise(n, 3, 701, 3)
+    wav = np.sin(yy * np.pi * 2 * 4 + off * 6) * 0.06 + np.sin(yy * np.pi * 2 * 11 + off * 3) * 0.02
+    grain = np.sin((fx * 2.2 + gw * 1.2 + wav + off * 10) * np.pi * 9) * 0.5 + 0.5
+    grain = grain * 0.7 + 0.3 * (np.sin((fx * 2.2 + gw * 1.2 + wav) * np.pi * 37) * 0.5 + 0.5)
+    fine = tile_noise(n, 128, 703, 2)
+    # board ends (staggered butt joints)
+    ends = np.abs(((yy + off) * 2.0) % 1.0 - 0.5) > 0.495
+    gap = (fx < 0.012) | (fx > 0.988) | ends
+    h = 0.55 + 0.25 * grain + 0.15 * fine
+    knots = np.zeros((n, n))
+    for _ in range(14):
+        cx, cy = rng.random(2)
+        d = np.sqrt(((xx - cx + 0.5) % 1 - 0.5) ** 2 * 9 + ((yy - cy + 0.5) % 1 - 0.5) ** 2)
+        knots = np.maximum(knots, np.clip(1 - d / 0.03, 0, 1))
+    h = h - knots * 0.25
+    h[gap] = 0.0
+    base = np.array([0.42, 0.29, 0.17])
+    col = base[None, None, :] * tone[..., None] * (0.72 + 0.4 * grain[..., None]) * (0.9 + 0.2 * fine[..., None])
+    col = col * (1 - 0.45 * knots[..., None])
+    weather = tile_noise(n, 6, 704, 4)
+    col = col * (1 - 0.25 * weather[..., None]) + np.array([0.4, 0.38, 0.35]) * 0.25 * weather[..., None]
+    col[gap] *= 0.25
+    # nails at board ends
+    for b in range(nb):
+        for e in (0.03, 0.53):
+            for side in (0.25, 0.75):
+                cx = (b + side) / nb
+                cy = (e - rng.random() * 0.0 - (rng.random(nb + 1)[b] * 0)) % 1.0
+                d = np.sqrt((xx - cx) ** 2 + (yy - cy) ** 2)
+                m = d < 0.0045
+                col[m] = np.array([0.18, 0.17, 0.16])
+                h[m] = 0.9
+    save("wood_planks.png", u8(col))
+    save("wood_planks_nrm.png", normal_from_height(h, 6.0))
+    # --- thatch: layered straw bundles, rows with drooping ends
+    rows = 7
+    ry = yy * rows
+    ri = np.floor(ry)
+    fy = ry - ri
+    sw = warp_field(tile_noise(n, 32, 711, 3), n, 712, 12)
+    straw = np.sin((xx * 220 + sw * 30 + ri * 3.1) * np.pi) * 0.5 + 0.5
+    lay = fy ** 0.7
+    h = lay * 0.6 + straw * 0.35 * (0.6 + 0.4 * lay)
+    sc = tile_noise(n, 16, 713, 4)
+    col = np.array([0.55, 0.44, 0.24])[None, None, :] * (0.55 + 0.55 * h[..., None]) * (0.8 + 0.35 * sc[..., None])
+    rot = np.clip((tile_noise(n, 6, 714, 4) - 0.55) * 3, 0, 1)
+    col = col * (1 - rot[..., None] * 0.5) + np.array([0.25, 0.24, 0.18]) * rot[..., None] * 0.5
+    save("thatch.png", u8(col))
+    save("thatch_nrm.png", normal_from_height(h, 5.0))
+    # --- masonry: irregular stone courses with mortar
+    courses = 5
+    cy_ = yy * courses
+    ci = np.floor(cy_).astype(int)
+    fyc = cy_ - ci
+    shift = rng.random(courses + 1)[ci]
+    nbx = 3
+    bx = (xx * nbx + shift) % 1.0
+    bid = np.floor(xx * nbx + shift).astype(int) + ci * 7
+    edge = np.minimum(np.minimum(bx, 1 - bx) * 3.0, np.minimum(fyc, 1 - fyc))
+    edge = warp_field(edge, n, 721, 10)
+    mortar = edge < 0.04
+    rough = tile_noise(n, 48, 722, 4)
+    stone_h = np.clip(edge * 8, 0, 1) ** 0.4 * 0.7 + rough * 0.3
+    stone_h[mortar] = 0.05 + rough[mortar] * 0.1
+    stone_tone = (0.75 + 0.45 * ((bid * 0.6180339) % 1.0))
+    col = np.array([0.45, 0.43, 0.4])[None, None, :] * stone_tone[..., None] * (0.75 + 0.35 * rough[..., None])
+    col[mortar] = np.array([0.55, 0.52, 0.46]) * (0.8 + 0.3 * rough[mortar][..., None])
+    moss = np.clip((tile_noise(n, 8, 723, 4) - 0.62) * 4, 0, 1) * (1 - np.clip(edge * 6, 0, 1))
+    col = col * (1 - moss[..., None] * 0.6) + np.array([0.25, 0.32, 0.15]) * moss[..., None] * 0.6
+    save("masonry.png", u8(col))
+    save("masonry_nrm.png", normal_from_height(stone_h, 7.0))
+    # --- pelt / hide with fur tufts
+    f1 = warp_field(tile_noise(n, 96, 731, 3), n, 732, 30)
+    streak = np.sin((yy * 300 + f1 * 20) * np.pi) * 0.5 + 0.5
+    col = np.array([0.45, 0.35, 0.25])[None, None, :] * (0.65 + 0.4 * streak[..., None]) * (0.8 + 0.35 * tile_noise(n, 6, 733, 4)[..., None])
+    save("pelt.png", u8(col))
+    save("pelt_nrm.png", normal_from_height(streak * 0.6 + f1 * 0.4, 3.0))
+
+
 def build_strips():
     layers = ["grass", "dirt", "rock", "sand", "mud", "snow", "ash", "corrupt"]
     ims = [Image.open(os.path.join(OUT, f"t_{l}_albedo.png")).convert("RGB") for l in layers]
@@ -482,7 +625,7 @@ def build_strips():
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     import sys
-    which = sys.argv[1:] or ["creature_skin", "terrain", "bark_and_leaves", "build_strips"]
+    which = sys.argv[1:] or ["creature_skin", "terrain", "bark_and_leaves", "build_strips", "building_textures"]
     for w in which:
         globals()[w]()
     print("textures done")

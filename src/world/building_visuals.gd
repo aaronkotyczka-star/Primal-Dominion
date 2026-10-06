@@ -6,28 +6,29 @@ static var _m := {}
 
 
 static func wood() -> Material:
-	if not _m.has("wood"):
-		var m := StandardMaterial3D.new()
-		m.albedo_texture = load("res://assets/textures/bark_albedo.png")
-		m.normal_enabled = true
-		m.normal_texture = load("res://assets/textures/bark_nrm.png")
-		m.uv1_triplanar = true
-		m.uv1_scale = Vector3(0.8, 0.8, 0.8)
-		m.albedo_color = Color(0.95, 0.85, 0.75)
-		m.roughness = 0.85
-		_m["wood"] = m
-	return _m["wood"]
+	return _tex_mat("wood", "wood_planks", 0.7, 0.85)
 
 
 static func stone() -> Material:
-	if not _m.has("stone"):
-		var rm := ShaderMaterial.new()
-		rm.shader = load("res://shaders/rock.gdshader")
-		rm.set_shader_parameter("albedo_arr", load("res://assets/textures/terrain_albedo_array.jpg"))
-		rm.set_shader_parameter("normal_arr", load("res://assets/textures/terrain_nrm_array.png"))
-		rm.set_shader_parameter("moss_amount", 0.15)
-		_m["stone"] = rm
-	return _m["stone"]
+	return _tex_mat("stone", "masonry", 0.55, 0.9)
+
+
+## Triplanar textured material (albedo + normal map) from assets/textures/<tex>.png / <tex>_nrm.png
+static func _tex_mat(key: String, tex: String, scale: float, rough: float, tint: Color = Color(1, 1, 1)) -> Material:
+	if not _m.has(key):
+		var m := StandardMaterial3D.new()
+		m.albedo_texture = load("res://assets/textures/%s.png" % tex)
+		m.normal_enabled = true
+		m.normal_texture = load("res://assets/textures/%s_nrm.png" % tex)
+		m.normal_scale = 1.2
+		m.uv1_triplanar = true
+		m.uv1_world_triplanar = true
+		m.uv1_scale = Vector3(scale, scale, scale)
+		m.albedo_color = tint
+		m.roughness = rough
+		m.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
+		_m[key] = m
+	return _m[key]
 
 
 static func plain(key: String, col: Color, rough: float = 0.85, metal: float = 0.0, emis: float = 0.0) -> Material:
@@ -45,11 +46,11 @@ static func plain(key: String, col: Color, rough: float = 0.85, metal: float = 0
 
 
 static func thatch() -> Material:
-	return plain("thatch", Color(0.55, 0.45, 0.25), 0.95)
+	return _tex_mat("thatch", "thatch", 0.8, 0.95)
 
 
 static func hide_m() -> Material:
-	return plain("hide", Color(0.45, 0.33, 0.22), 0.8)
+	return _tex_mat("hide", "pelt", 1.2, 0.85)
 
 
 static func ghost(ok: bool) -> Material:
@@ -130,9 +131,9 @@ static func make(kind: String) -> Node3D:
 		"bedroll", "bed":
 			if kind == "bed":
 				box(n, Vector3(sx, 0.4, sz), Vector3(0, 0.2, 0), wood())
-				box(n, Vector3(sx * 0.9, 0.15, sz * 0.92), Vector3(0, 0.47, 0), plain("pelt", Color(0.45, 0.36, 0.28), 1.0))
+				box(n, Vector3(sx * 0.9, 0.15, sz * 0.92), Vector3(0, 0.47, 0), _tex_mat("pelt", "pelt", 1.5, 0.95))
 			else:
-				box(n, Vector3(sx, 0.12, sz), Vector3(0, 0.06, 0), plain("pelt", Color(0.45, 0.36, 0.28), 1.0))
+				box(n, Vector3(sx, 0.12, sz), Vector3(0, 0.06, 0), _tex_mat("pelt", "pelt", 1.5, 0.95))
 				cyl(n, 0.15, 0.15, sx * 0.9, Vector3(0, 0.15, -sz * 0.42), hide_m(), Vector3(0, 0, PI * 0.5))
 		"storage_box", "storage_large":
 			box(n, Vector3(sx, sy * 0.85, sz), Vector3(0, sy * 0.425, 0), wood())

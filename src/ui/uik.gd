@@ -194,6 +194,19 @@ static func item_badge(item_id: String, size: float = 34.0) -> Control:
 	sb.set_corner_radius_all(4)
 	p.add_theme_stylebox_override("panel", sb)
 	p.custom_minimum_size = Vector2(size, size)
+	var icon_path := "res://assets/icons/%s.png" % item_id
+	if ResourceLoader.exists(icon_path):
+		sb.bg_color = Color(0.1, 0.1, 0.12, 0.85)
+		sb.set_border_width_all(1)
+		var tr := TextureRect.new()
+		tr.texture = load(icon_path)
+		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		tr.custom_minimum_size = Vector2(size - 4, size - 4)
+		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		p.add_child(tr)
+		p.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		return p
 	var l := Label.new()
 	var nm: String = it.get("name", item_id)
 	var words := nm.split(" ")

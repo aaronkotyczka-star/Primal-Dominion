@@ -4,6 +4,7 @@ import math
 
 import numpy as np
 
+from heads import carnivore_head, tyrant_skull
 from sdfrig import Rig, v3, norm, R_EYE, R_TOOTH, R_KERATIN, R_MEMBRANE, R_FEATHER, R_TOP, R_BOTTOM, R_BOOTS, R_HAIR, R_MOUTH
 
 
@@ -129,7 +130,7 @@ def build_skull(r, HB, f, L, hh, hw, sh, sw, *, teeth=True, n_teeth=10, tooth_le
                 if hit is None:
                     continue
                 tl = tooth_len * (1.15 - 0.55 * t) * (0.85 + 0.3 * ((i * 7) % 3) / 2)
-                base = hit - s * side * tl * 0.22 + u * tl * 0.15
+                base = hit - s * side * tl * 0.4 + u * tl * 0.3
                 r.add_curved_cone(base, -u + f * 0.12, tl, tl * 0.24, -f * 0.25 + s * side * 0.05, "head", R_TOOTH, segs=6, rings=3)
             if not lower_teeth:
                 continue
@@ -140,9 +141,18 @@ def build_skull(r, HB, f, L, hh, hw, sh, sw, *, teeth=True, n_teeth=10, tooth_le
                 if hit is None:
                     continue
                 tl = tooth_len * 0.75 * (1.1 - 0.5 * t)
-                base = hit - s * side * tl * 0.22 - u * tl * 0.15
+                base = hit - s * side * tl * 0.4 - u * tl * 0.3
                 r.add_curved_cone(base, u + f * 0.1, tl, tl * 0.24, -f * 0.2, "jaw", R_TOOTH, segs=6, rings=3)
     return f, s, u
+
+
+def _head_box(r, HB, f, L, hh):
+    """Mesh the head with a finer voxel (eyes, teeth, nostrils, ears)."""
+    tip = HB + f * L * 1.1
+    m = max(hh, L * 0.45)
+    lo = np.minimum(HB, tip) - m
+    hi = np.maximum(HB, tip) + m
+    r.fine_boxes.append((lo, hi, max(L / 110.0, 0.0012)))
 
 
 def surface_socket(r, name, bone, inside, direction, max_d, scale, normal=None):
@@ -176,7 +186,7 @@ def theropod(rid, H=1.0, body_len=1.0, body_d=0.35, body_w=0.25, neck_len=0.6, n
              tail_len=1.6, tail_r=0.2, leg_r=0.12, arm_len=0.45, arm_r=0.05, fingers=3, teeth=True,
              n_teeth=10, tooth_len=None, sickle=False, feathers=0.0, beak=False, duck=False, eye=1.0, brow=0.0,
              horn_boss=0.0, scutes=0.0, toe_len=0.24, quadish=False, family="theropod", detail=1.0, snout_drop=0.08,
-             dome=0.0):
+             dome=0.0, skull="generic"):
     r = Rig(rid, family)
     D, W, Lb = body_d, body_w, body_len
     tooth_len = tooth_len if tooth_len is not None else head_h * 0.16
@@ -205,9 +215,13 @@ def theropod(rid, H=1.0, body_len=1.0, body_d=0.35, body_w=0.25, neck_len=0.6, n
     JB = HB + v3(0, -head_h * 0.3, 0) + hd * head_len * 0.05
     r.add("jaw", "head", JB, JB + _dirv(head_pitch - 4) * head_len * 0.9, 0, 0, geo=False, blend=head_h * 0.15)
     r.ell("head", HB - hd * head_h * 0.2 + v3(0, -head_h * 0.05, 0), (head_w * 0.75, head_h * 0.42, head_h * 0.45), k=head_h * 0.3)
-    f, s_, u = build_skull(r, HB, hd, head_len, head_h, head_w, snout_h, snout_w, teeth=teeth, n_teeth=n_teeth,
-                           tooth_len=tooth_len, eye=eye, brow=brow, beak=beak, duck=duck, horn_boss=horn_boss,
-                           snout_drop=snout_drop, min_gap=(Lb + neck_len + head_len + tail_len) / 300 * 1.3)
+    if skull == "tyrant":
+        f, s_, u = tyrant_skull(r, HB, hd, head_len, head_h, head_w, n_teeth=n_teeth, tooth_len=tooth_len, eye=eye, boss=horn_boss)
+    else:
+        f, s_, u = build_skull(r, HB, hd, head_len, head_h, head_w, snout_h, snout_w, teeth=teeth, n_teeth=n_teeth,
+                               tooth_len=tooth_len, eye=eye, brow=brow, beak=beak, duck=duck, horn_boss=horn_boss,
+                               snout_drop=snout_drop, min_gap=(Lb + neck_len + head_len + tail_len) / 300 * 1.3)
+    _head_box(r, HB, f, head_len, head_h)
     if dome > 0:
         dc = HB + f * head_len * 0.22 + u * head_h * 0.42
         r.ell("head", dc, (head_w * 1.0 * dome, head_h * 0.55 * dome, head_len * 0.3 * dome), (s_, u, f), k=head_h * 0.12)
@@ -299,6 +313,11 @@ def theropod(rid, H=1.0, body_len=1.0, body_d=0.35, body_w=0.25, neck_len=0.6, n
     r.chain("neck", ["neck1", "neck2", "head"])
     if feathers > 0:
         feather_bones = {"pelvis", "spine", "neck1", "neck2", "tail1", "tail2", "tail3", "tail4", "tail5", "tail6", "uarm_L", "uarm_R", "farm_L", "farm_R", "thigh_L", "thigh_R"}
+        for bn in feather_bones:
+            r.fur_bones[bn] = 1.0
+        r.fur_bones["head"] = 0.3
+        r.meta["fur"] = dict(len=H * 0.045 * feathers, density=60.0 / max(H, 0.1), stiff=0.2, comb=[0.0, -0.25, 1.0],
+                             clump=0.7, tip_light=0.15, shells=10)
 
         def region_fn(p, n, bn, cur):
             if cur == 0 and bn in feather_bones:
@@ -416,7 +435,7 @@ def quadruped(rid, Hh=1.0, Hs=0.9, body_len=1.4, body_d=0.4, body_w=0.35, neck_l
               beak=False, feet="elephant", ffeet=None, sprawl=0.0, n_tail=5, eye=1.0, brow=0.0, horn_boss=0.0,
               frill=0.0, scutes=0.0, osteo=0.0, ears=0.0, ear_shape="pointed", trunk=0.0, hump=0.0, fang=0.0,
               muzzle=0.5, muzzle_r=0.3, dome=0.0, snout_drop=0.08, family="quadruped", detail=1.0, tail_sx=0.75,
-              tail_droop=0.04, spikes=0.0):
+              tail_droop=0.04, spikes=0.0, fur=0.0, fur_density=250.0, fur_stiff=0.45):
     r = Rig(rid, family)
     fleg_r = fleg_r or leg_r
     ffeet = ffeet or feet
@@ -452,7 +471,9 @@ def quadruped(rid, Hh=1.0, Hs=0.9, body_len=1.4, body_d=0.4, body_w=0.35, neck_l
     JB = HB + v3(0, -head_h * 0.3, 0) + hd * head_len * 0.1
     r.add("jaw", "head", JB, JB + _dirv(head_pitch - 4) * head_len * 0.85, 0, 0, geo=False)
     r.ell("head", HB - hd * head_h * 0.15, (head_w * 0.7, head_h * 0.42, head_h * 0.4), k=head_h * 0.3)
-    if mammal:
+    if style in ("canid", "felid"):
+        f, s_, u = carnivore_head(r, HB, hd, head_len, felid=(style == "felid"), ears=ears, fang=fang, eye=eye)
+    elif mammal:
         f, s_, u = build_mammal_head(r, HB, hd, head_len, head_h, head_w, muzzle=muzzle, muzzle_r=muzzle_r, ears=ears,
                                      ear_shape=ear_shape, teeth=teeth, fang=fang, eye=eye, trunk=trunk, dome=dome)
     else:
@@ -460,6 +481,7 @@ def quadruped(rid, Hh=1.0, Hs=0.9, body_len=1.4, body_d=0.4, body_w=0.35, neck_l
                                tooth_len=tooth_len, eye=eye, brow=brow, beak=beak, horn_boss=horn_boss,
                                snout_drop=snout_drop, eye_up=0.35 if style == "croc" else 0.2,
                                eye_t=0.12 if style == "croc" else 0.2, min_gap=(Lb + neck_len + head_len + tail_len) / 300 * 1.3)
+    _head_box(r, HB, f, head_len, head_h)
     if frill > 0:
         n = norm(f * 0.45 + u * 0.85)
         pu = norm(np.cross(n, s_))
@@ -585,6 +607,11 @@ def quadruped(rid, Hh=1.0, Hs=0.9, body_len=1.4, body_d=0.4, body_w=0.35, neck_l
     else:
         r.socket("maw", "head", HB + f * head_len * 0.6 - u * head_h * 0.2, (0, -1, -0.2), head_h * 1.2)
     r.meta.update(gait="quad", hip_height=Hh, length=float(Lb + neck_len + head_len + tail_len))
+    if fur > 0:
+        for b in r.bones:
+            short = b.name.startswith(("toe", "fing", "hand", "meta")) or b.name in ("head", "jaw")
+            r.fur_bones[b.name] = 0.35 if short else 1.0
+        r.meta["fur"] = dict(len=fur, density=fur_density, stiff=fur_stiff, comb=[0.0, -0.35, 1.0], shells=12)
     return r
 
 
@@ -702,6 +729,11 @@ def flyer(rid, H=0.6, torso_len=0.6, torso_r=0.18, neck_len=0.5, neck_r=0.06, ne
     if feathered:
         fb = {"pelvis", "spine", "neck1", "neck2", "tail1", "tail2", "tail3", "thigh_L", "thigh_R"}
         r.region_fn = lambda p, n, bn, cur: R_FEATHER if (cur == 0 and bn in fb) else None
+        for bn in fb | {"head", "uarm_L", "uarm_R"}:
+            if bn in r.index:
+                r.fur_bones[bn] = 0.45 if bn == "head" else 1.0
+        r.meta["fur"] = dict(len=torso_r * 0.35, density=90.0 / max(torso_r, 0.05) * 0.2, stiff=0.15, comb=[0.0, -0.2, 1.0],
+                             clump=0.6, tip_light=0.1, shells=10)
     hb = r.b("head")
     hd_ = norm(hb.tail - hb.head)
     r.socket("head_top", "head", hb.head + v3(0, head_r * 0.9, 0.02), (0, 1, 0.5), head_r * 3)
