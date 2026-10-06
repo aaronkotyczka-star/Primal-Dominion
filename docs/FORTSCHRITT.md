@@ -5,7 +5,7 @@ Stand: 2026-10-06 · Godot 4.5.1-stable · Branch `claude/fervent-franklin-yjq54
 Legende: ✅ umgesetzt (durch automatischen Test oder Screenshot geprüft) · 🟡 umgesetzt, aber vereinfacht/Platzhalter · ⚪ umgesetzt, nicht automatisch getestet · ❌ fehlt
 
 ## Prüfnachweise
-- `tests/run_all.gd`: skriptgesteuerter Spieltest (Spieler wird über die Eingabe-Abstraktion gesteuert), 129 Prüfungen (inkl. Menü-Zentrierung, Höhlen, Gamepad-Belegung, Gegenstandsbilder), lokal und in GitHub Actions: `ALL TESTS PASSED`.
+- `tests/run_all.gd`: skriptgesteuerter Spieltest (Spieler wird über die Eingabe-Abstraktion gesteuert), 135 Prüfungen (inkl. Menü-Zentrierung, Höhlen, Gamepad-Belegung, Gegenstandsbilder, neue Nebenquests), lokal und in GitHub Actions: `ALL TESTS PASSED`.
 - GitHub Actions (`.github/workflows/build.yml`): Import, Tests, Windows-Export, Upload als Artefakt `PrimalDominion-Windows` – erfolgreich gelaufen.
 - Screenshots: nur unter Linux mit Software-Vulkan (lavapipe, Xvfb) aufgenommen, Rundgang `--shots`.
 - **Nicht** geprüft: Start der EXE auf echtem Windows, Leistung/FPS auf der Zielhardware (RTX 4060 Ti), Langzeit-Balancing, Bedienung durch echte Spieler.
@@ -27,7 +27,7 @@ Legende: ✅ umgesetzt (durch automatischen Test oder Screenshot geprüft) · �
 | Forschung (44 Projekte), Fähigkeitsbäume (12 Bäume, 60 Fähigkeiten) | ✅ | |
 | Basisbau (34 Bauteile, Einrasten, Vorlagen, Lagerkisten-Verbund) | ✅ | |
 | Genetik & Hybride (Genlabor, Brutstätte, Mutation, Stabilität) | ✅ | |
-| Kernquest Akt I (Q1–Q8) mit Nebenquests, Entscheidung am Riss | ✅ | vollständig im Test durchgespielt (Dialog-/Aktionsebene) |
+| Kernquest Akt I (Q1–Q8) mit Nebenquests, Entscheidung am Riss | ✅ | vollständig im Test durchgespielt (Dialog-/Aktionsebene); 9 Nebenquests, davon 3 neu (Wurzelhöhlen, Eisgrotte, Glutsand), per Dialog im Test abgeschlossen |
 | Speichern/Laden (Auto, Schnell, 5 Plätze) | ✅ | |
 | Einstellungen (Auflösung, Grafik, Lautstärken, Empfindlichkeit, FOV, Tastenbelegung) | ⚪ | |
 | Tutorial-Hinweise, Kreaturenlexikon, Karte, Journal | ⚪ | |
@@ -48,12 +48,13 @@ Legende: ✅ umgesetzt (durch automatischen Test oder Screenshot geprüft) · �
 | Akt III (Narbe, Herold, 4 Enden) | 🟡 | gekürzt: eine Quest, Bosskampf, Endentscheidung als Textbildschirm |
 | Verzweigte Story über Pfadwerte (Beschützer/Eroberer/Dämon) | ⚪ | |
 | Geheimer Dämonenpfad (siehe `GEHEIM_Daemonenpfad.md`) | ✅ | inkl. Dämonen-EP/-Stufen, Formeditor |
-| Weitere Inseln mit eigenem Questinhalt | ❌ | Inseln existieren, haben aber nur wenige Orte |
+| Weitere Inseln mit eigenem Questinhalt | 🟡 | Glutsand: Händlerin Kesh + Quest „Schwefel für die Karawane“; Weißzahn: Eisgrotte + Quest „Zähne aus dem Eis“; Aschenkamm/Narbe über Akt II/III. Weiterhin wenige Orte je Insel |
 | Koop-/Mehrspieler | ❌ | nur vorbereitet (Eingabe-Abstraktion `PlayerInput`) |
 | Gamepad | 🟡 | Xbox-Belegung fest hinterlegt (nicht umbelegbar), Menüs per Steuerkreuz/A/B; nur ohne echtes Gamepad getestet (Belegung per Test geprüft) |
 
 ## Bekannte Platzhalter / Vereinfachungen
 - Menschen: anatomische Gesichter mit Lidern, Nase, Lippen, Ohren; Hände mit Fingern; Haar und Augenbrauen als Shell-Haar; Kleidung (Tunika, Hose, Gürtel, Stiefel) über glatte Masken mit erhabenen Säumen – keine echte Stoffsimulation, Finger ohne eigene Knochen.
+- Waffen sind aus prozeduralen Teilen zusammengesetzt (Klingen mit Mittelgrat, Bindungen, Maserung); Armbrust und Donnerrohr noch einfach.
 - Kreaturen und Pflanzen sind vollständig prozedural erzeugt (keine Bildhauerei/Texturen von Hand); Detailgrad begrenzt durch Rastergröße (~3–4 cm bei großen Tieren).
 - Alle Animationen sind prozedural (Gangzyklen, Aktionen) – keine handanimierten Keyframes.
 - Gegenstandsbilder sind prozedural gemalte 2D-Symbole (keine Renderings der 3D-Modelle).

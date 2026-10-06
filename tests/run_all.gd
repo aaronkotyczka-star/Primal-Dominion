@@ -67,6 +67,7 @@ func _run() -> void:
 	await t_core_quest()
 	await t_demon()
 	await t_settlement()
+	t_side_quests()
 	print("=== Ergebnis: %d bestanden, %d fehlgeschlagen ===" % [passed, failed])
 	if failed == 0:
 		print("ALL TESTS PASSED")
@@ -503,6 +504,24 @@ func t_save_load() -> void:
 	check(JSON.stringify(GameState.state["quests"]) == snap_q, "Quests identisch")
 	check(typeof(GameState.state["party"][0] if not GameState.state["party"].is_empty() else 0) == TYPE_INT, "Typen bleiben erhalten (int-UIDs)")
 	SaveSystem.delete_slot("slot5")
+
+
+func t_side_quests() -> void:
+	var done := func(q: String) -> bool:
+		return GameState.state["quests"].has(q) and GameState.state["quests"][q]["state"] == "done"
+	# prerequisites as the player would have them after Act I side content
+	for q in ["sq_nixa_blueten", "sq_tomas_erz"]:
+		if not done.call(q):
+			Dialogue.run("", "start:%s;complete:%s" % [q, q])
+	var cases := [["nixa", "Brauchst du noch", "rift_shard", 2, "Risssplitter", "sq_wurzel"],
+		["tomas", "Arbeit für mich", "saber_fang", 2, "Säbelzähne", "sq_eisgrotte"],
+		["kesh", "besorgt", "sulfur", 6, "Schwefel", "sq_glutsand"]]
+	for c in cases:
+		_talk(c[0], c[1])
+		check(Quests.is_active(c[5]), "%s offered by %s" % [c[5], c[0]])
+		Inventory.add(inv(), c[2], c[3])
+		_talk(c[0], c[4])
+		check(done.call(c[5]), "%s completed via dialogue" % c[5])
 
 
 func _talk(npc: String, option_contains: String) -> bool:
