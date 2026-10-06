@@ -96,6 +96,7 @@ func show_menu() -> void:
 	for b in col.get_children():
 		if b is Button:
 			b.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	UIK.focus_for_gamepad.call_deferred(col)
 
 
 func _popup(title: String, size: Vector2) -> UIWindow:
@@ -161,12 +162,12 @@ func _new_game_dialog() -> void:
 	nr.add_child(le)
 	nr.add_child(UIK.label("Körper:", 16))
 	var body_btns := []
-	for b in [["Mann", "human_m"], ["Frau", "human_f"]]:
+	for b in [["Mann", "human_m"], ["Mann (Bart)", "human_m2"], ["Frau", "human_f"], ["Frau (Dutt)", "human_f2"]]:
 		var bb := UIK.button(b[0], func():
 			opts["body"] = b[1]
 			for x in body_btns:
 				x.add_theme_color_override("font_color", UIK.TEXT)
-			body_btns[["human_m", "human_f"].find(b[1])].add_theme_color_override("font_color", UIK.GOLD))
+			body_btns[["human_m", "human_m2", "human_f", "human_f2"].find(b[1])].add_theme_color_override("font_color", UIK.GOLD))
 		body_btns.append(bb)
 		nr.add_child(bb)
 	body_btns[0].add_theme_color_override("font_color", UIK.GOLD)

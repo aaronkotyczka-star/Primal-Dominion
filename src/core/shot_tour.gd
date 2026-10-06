@@ -72,6 +72,40 @@ static func run(main: Node, dir: String) -> void:
 			if c and is_instance_valid(c):
 				c.queue_free()
 		showcase.clear()
+	if only == "" or "11" in only.split(","):
+		# cave mouth from outside
+		var mc := WorldData.poi_pos("wurzelhoehle")
+		var nn := WorldData.normal_at(mc.x, mc.z)
+		var dn := Vector3(nn.x, 0, nn.z).normalized() if Vector2(nn.x, nn.z).length() > 0.05 else Vector3(0, 0, 1)
+		var mp := mc + dn * 15.0
+		mp.y = WorldData.height_at(mp.x, mp.z) + 1.0
+		p.global_position = mp
+		p.rig.yaw = atan2(dn.x, dn.z)
+		p.rig.pitch = -0.1
+		p.rig.first_person = false
+		GameState.state["time"]["hour"] = 10.0
+		for i in 90:
+			await tree.process_frame
+		tree.root.get_texture().get_image().save_png(dir + "/11_cave_mouth.png")
+		print("SHOT 11_cave_mouth")
+	if only == "" or "10" in only.split(","):
+		var cm := Caves.meta("wurzelhoehle")
+		w.caves.enter("wurzelhoehle", p.global_position)
+		var o := w.caves.origin("wurzelhoehle")
+		var lp: Array = cm["lights"][1]
+		var cp: Array = cm["crystals"][0]
+		var target := o + Vector3(cp[0], cp[1], cp[2])
+		var at := o + Vector3(lp[0], lp[1] + 1.0, lp[2])
+		p.global_position = at
+		p.velocity = Vector3.ZERO
+		var d := target - at
+		p.rig.yaw = atan2(-d.x, -d.z)
+		p.rig.pitch = -0.12
+		GameState.state["time"]["hour"] = 12.0
+		for i in 120:
+			await tree.process_frame
+		tree.root.get_texture().get_image().save_png(dir + "/10_cave.png")
+		print("SHOT 10_cave")
 	tree.quit()
 
 

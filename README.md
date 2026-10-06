@@ -53,6 +53,8 @@ Kommandozeile: `godot --headless --export-release "Windows Desktop" build/window
 | Schnellspeichern / Schnellladen | F5 / F9 |
 | Pause / Menü | Esc |
 
+**Gamepad** (Xbox-Belegung, fest zusätzlich zu Maus/Tastatur): linker Stick bewegen, rechter Stick Kamera, A springen, B ausweichen, X interagieren, Y Befehlsrad, RT Angriff, LT Blocken/Zielen, LB Zielerfassung, RB Fähigkeit 1, L3 sprinten, R3 ducken, Steuerkreuz ↑ → ↓ Schnellleiste 1–3, ← Pfiff, Back Inventar, Start Pause. In Menüs: Steuerkreuz + A/B.
+
 Einstellungen: Auflösung, Fenstermodus, VSync, FPS-Limit, Grafikqualität, Renderskalierung, Sichtweite, Sichtfeld (FOV), Mausempfindlichkeit, Y-Invertierung, getrennte Lautstärken, Tastenbelegung, Tutorial-Hinweise.
 
 ## Spielstart

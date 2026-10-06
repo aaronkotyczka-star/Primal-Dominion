@@ -48,6 +48,11 @@ func poll() -> void:
 		look_delta = Vector2.ZERO
 		return
 	intent["move"] = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	# right stick look (gamepad): converted to the same units as mouse motion
+	var rs := Vector2(Input.get_joy_axis(0, JOY_AXIS_RIGHT_X), Input.get_joy_axis(0, JOY_AXIS_RIGHT_Y))
+	if rs.length() > 0.15:
+		rs = rs * ((rs.length() - 0.15) / 0.85) / rs.length()
+		look_delta += rs * absf(rs.length()) * 1400.0 * get_physics_process_delta_time()
 	for b in BUTTONS:
 		var now := Input.is_action_pressed(b)
 		var was: bool = _pressed_cache.get(b, false)

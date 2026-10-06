@@ -185,12 +185,12 @@ static func _readable(w: Node3D, pos: Vector3, text_id: String, title: String, f
 			EventBus.notify.emit("Neues Wissen: %s im Forschungsbuch verfügbar." % DB.research(research).get("name", ""), "good")
 
 
-static func pickup(w: Node3D, pos: Vector3, item_id: String, n: int, once_key: String, label: String = "") -> void:
+static func pickup(w: Node3D, pos: Vector3, item_id: String, n: int, once_key: String, label: String = "", snap: bool = true) -> void:
 	if once_key != "" and once_key in GameState.state["world"]["looted"]:
 		return
 	var node := Node3D.new()
 	w.add_child(node)
-	node.global_position = _ground(pos) + Vector3(0, 0.1, 0)
+	node.global_position = (_ground(pos) if snap else pos) + Vector3(0, 0.1, 0)
 	var is_page := item_id.begins_with("journal")
 	if is_page:
 		BuildingVisuals.box(node, Vector3(0.3, 0.02, 0.4), Vector3(0, 0.02, 0), BuildingVisuals.plain("paper", Color(0.85, 0.8, 0.65), 0.9))
@@ -387,22 +387,55 @@ static func _oasis(w: Node3D) -> void:
 	pond.material_override = BuildingVisuals.plain("oasis_water", Color(0.1, 0.3, 0.32), 0.05, 0.1)
 	w.add_child(pond)
 	pond.global_position = _ground(c) + Vector3(0, 0.12, 0)
+	# Kesh's caravan camp
+	_npc(w, "kesh", c + Vector3(6, 0, -4))
+	_prop(w, "hut", c + Vector3(10, 0, -9), 0.6)
+	_prop(w, "campfire", c + Vector3(7, 0, -1))
+	_station(w, "campfire", "campfire", c + Vector3(7.2, 0, -0.8))
 
 
 static func _cave_mouth(w: Node3D, id: String) -> void:
 	var c := _poi(id)
 	var m := Node3D.new()
 	w.add_child(m)
-	m.global_position = _ground(c)
-	BuildingVisuals.box(m, Vector3(8, 6, 1.0), Vector3(0, 3, 0), BuildingVisuals.plain("cave_dark", Color(0.02, 0.02, 0.02), 1.0))
-	for s in [-1, 1]:
-		BuildingVisuals.box(m, Vector3(3, 8, 4), Vector3(s * 5.5, 4, 0), BuildingVisuals.stone())
-	BuildingVisuals.box(m, Vector3(14, 3, 4), Vector3(0, 8.5, 0), BuildingVisuals.stone())
+	# face downhill and sit slightly into the slope so the opening reads as a hole in the hillside
+	var n := WorldData.normal_at(c.x, c.z)
+	var down := Vector3(n.x, 0, n.z)
+	if down.length() < 0.05:
+		down = Vector3(0, 0, 1)
+	down = down.normalized()
+	m.global_position = _ground(c) - down * 1.5
+	m.rotation.y = atan2(down.x, down.z)
+	# rocky arch around a dark opening
+	var dark := BuildingVisuals.plain("cave_dark", Color(0.01, 0.01, 0.012), 1.0)
+	var void_box := BuildingVisuals.box(m, Vector3(6.5, 5.5, 3.0), Vector3(0, 2.6, -1.2), dark)
+	void_box.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	for spec in [[Vector3(-5.2, 0, 0), 0.75, 0.3], [Vector3(5.2, 0, 0.2), 0.8, 2.1], [Vector3(0.5, 5.2, -0.6), 0.85, 1.2],
+			[Vector3(-3.4, 4.0, -0.4), 0.55, 4.0], [Vector3(3.6, 4.2, -0.2), 0.6, 5.3], [Vector3(0, 2.0, -4.5), 1.3, 0.0]]:
+		var r := MeshInstance3D.new()
+		r.mesh = FloraLibrary.mesh("rock_large", 0)
+		m.add_child(r)
+		r.position = spec[0]
+		r.scale = Vector3.ONE * float(spec[1])
+		r.rotation.y = float(spec[2])
+		var body := StaticBody3D.new()
+		var cs := CollisionShape3D.new()
+		var sh := SphereShape3D.new()
+		sh.radius = 3.2 * float(spec[1])
+		cs.shape = sh
+		cs.position = Vector3(0, 2.0 * float(spec[1]), 0)
+		body.add_child(cs)
+		r.add_child(body)
 	var it := Interactable.new()
-	it.prompt = "Höhleneingang – die Höhlen sind in dieser Version noch nicht begehbar."
-	it.radius = 6.0
-	it.position = Vector3(0, 1, 1)
+	it.prompt = "E: %s betreten" % Caves.NAMES.get(id, "Höhle")
+	it.radius = 5.0
+	it.position = Vector3(0, 1, 2.5)
 	m.add_child(it)
-	it.condition = func(_p): return false
+	var mouth := m.global_position + down * 6.0
+	mouth.y = WorldData.height_at(mouth.x, mouth.z) + 0.5
+	it.on_interact = func(_p):
+		var cv = w.get_node_or_null("Caves")
+		if cv:
+			cv.enter(id, mouth)
 	if id == "wurzelhoehle":
 		pickup(w, c + Vector3(4, 0, 6), "crystal", 3, "cave_crystals")

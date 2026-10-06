@@ -243,6 +243,18 @@ static func item_tooltip(st: Dictionary) -> String:
 
 ## Keeps a control exactly centered in its parent: re-centers whenever its own size,
 ## or its minimum size changes (content refresh); resolution changes are covered by the anchors.
+## With a gamepad connected, give keyboard/gamepad focus to the first button so the d-pad and
+## A/B (ui_accept/ui_cancel) can drive the menu.
+static func focus_for_gamepad(root: Node) -> void:
+	if Input.get_connected_joypads().is_empty() or not is_instance_valid(root):
+		return
+	for b in root.find_children("*", "BaseButton", true, false):
+		var bb: BaseButton = b
+		if bb.is_visible_in_tree() and not bb.disabled and bb.focus_mode != Control.FOCUS_NONE:
+			bb.grab_focus()
+			return
+
+
 static func center_window(c: Control) -> void:
 	c.anchor_left = 0.5
 	c.anchor_right = 0.5

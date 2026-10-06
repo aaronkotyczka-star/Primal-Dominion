@@ -62,6 +62,8 @@ func _run() -> void:
 	await t_hybrid()
 	await t_save_load()
 	await t_ui_centering()
+	t_gamepad_and_assets()
+	await t_caves()
 	await t_core_quest()
 	await t_demon()
 	await t_settlement()
@@ -416,6 +418,42 @@ func _centered(c: Control) -> bool:
 	var parent_rect := (c.get_parent() as Control).get_global_rect()
 	var r := c.get_global_rect()
 	return r.get_center().distance_to(parent_rect.get_center()) <= 1.0
+
+
+func t_caves() -> void:
+	var cv: Caves = w.caves
+	var mouth := p.global_position
+	cv.enter("wurzelhoehle", mouth)
+	await frames(90)
+	check(cv.active == "wurzelhoehle" and p.global_position.y > 550.0, "cave entered (player in cave interior)")
+	check(p.is_on_floor() and p.global_position.y > cv.origin("wurzelhoehle").y - 30.0, "player stands on the cave floor")
+	check(cv._spawned.size() >= 3, "cave creatures spawned (%d)" % cv._spawned.size())
+	check(w.sky.in_cave, "cave lighting active")
+	var saved := cv.save_position(p.global_position)
+	check(saved.distance_to(mouth) < 1.0, "saving inside a cave stores the mouth position")
+	cv.leave()
+	await frames(10)
+	check(cv.active == "" and p.global_position.distance_to(mouth) < 2.0 and not w.sky.in_cave, "cave left, back at the mouth")
+
+
+func t_gamepad_and_assets() -> void:
+	var has_pad := func(action: String) -> bool:
+		for ev in InputMap.action_get_events(action):
+			if ev is InputEventJoypadButton or ev is InputEventJoypadMotion:
+				return true
+		return false
+	var ok := true
+	for a in ["move_forward", "jump", "attack", "block", "interact", "pause", "inventory"]:
+		ok = ok and has_pad.call(a)
+	check(ok, "gamepad bindings for core actions")
+	# every item has a painted icon
+	var missing := 0
+	for id in DB.tables["items"]:
+		if not ResourceLoader.exists("res://assets/icons/%s.png" % id):
+			missing += 1
+	check(missing == 0, "item icons present (%d missing)" % missing)
+	# furred species carry shell-fur meta, humans carry hair
+	check(not RigLibrary.load_meta("direwolf").get("fur", {}).is_empty() and not RigLibrary.load_meta("human_m").get("fur", {}).is_empty(), "fur/hair meta in generated rigs")
 
 
 func t_ui_centering() -> void:

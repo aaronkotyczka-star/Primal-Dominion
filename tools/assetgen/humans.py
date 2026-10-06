@@ -141,6 +141,13 @@ def humanoid(rid, height=1.8, build=1.0, head_scale=1.0, ears=0.0, nose=1.0, gob
             for sd in (-1, 1):
                 r.ell("head", G(sd * 0.084, -0.045, 0.012), (0.02, 0.07, 0.058), k=0.02 * k, fur=1.0)
             r.ell("head", G(0.018, 0.058, -0.078), (0.052, 0.018, 0.026), (v3(1, -0.3, 0), v3(0.3, 1, 0), v3(0, 0, 1)), k=0.012 * k, fur=1.0)
+        if hair == "beard":
+            # full short beard along the jaw, chin and upper lip
+            for sd in (-1, 1):
+                r.ell_along("jaw", G(sd * 0.056 * wide, -0.05, 0.0), G(sd * 0.033, -0.122, -0.062), 0.016, 0.021, up=(0, 0, -1), k=0.02 * k, fur=1.0)
+                r.ell("head", G(sd * 0.05, -0.075, -0.05), (0.022, 0.03, 0.03), k=0.015 * k, fur=0.9)
+            r.ell("jaw", G(0, -0.124, -0.072), (0.03, 0.025, 0.026), k=0.014 * k, fur=1.0)
+            r.cap("head", G(-0.026, -0.087, -0.09), G(0.026, -0.087, -0.09), 0.0055, 0.0055, up=(0, 1, 0), sy=0.7, k=0.004 * k, fur=0.7)
         # eyebrows: short hair shells
         for sd in (-1, 1):
             r.cap("head", G(sd * 0.016, -0.001, -0.092), G(sd * 0.034, 0.003, -0.089), 0.0042, 0.004, up=(0, 1, 0), sy=0.55, k=0.003 * k, fur=0.2)
@@ -272,7 +279,7 @@ def humanoid(rid, height=1.8, build=1.0, head_scale=1.0, ears=0.0, nose=1.0, gob
     r.mask_fn = mask_fn
     if hair_on:
         crown = Hc + v3(0, 0.07 * k, 0.03 * k)
-        r.meta["fur"] = dict(len=(0.02 if hair == "short" else 0.028) * k, density=1400.0, stiff=0.12 if hair == "short" else 0.2,
+        r.meta["fur"] = dict(len=(0.028 if hair == "bob" else 0.02) * k, density=1400.0, stiff=0.2 if hair == "bob" else 0.12,
                              comb=[0.0, -0.6, 0.4], crown=list(map(float, crown)), radial=1.0, hair=True, clump=0.6,
                              tip_light=0.15, shells=10)
     r.meta.update(gait="human", hip_height=hipY, length=0.4 * h, height=h,

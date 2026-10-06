@@ -136,11 +136,13 @@ SPECIES = {
     # ---------------- humanoids
     "human_m": lambda: humanoid("human_m", height=1.8, build=1.0),
     "human_f": lambda: humanoid("human_f", height=1.7, build=0.9, female=True, hair="bob"),
+    "human_m2": lambda: humanoid("human_m2", height=1.78, build=1.05, hair="beard"),
+    "human_f2": lambda: humanoid("human_f2", height=1.68, build=0.92, female=True, hair="bun"),
     "goblin": lambda: humanoid("goblin", height=1.25, build=0.95, head_scale=1.25, ears=1.0, nose=1.8, goblin=True),
     "demon": lambda: humanoid("demon", height=2.3, build=1.25, head_scale=0.9, nose=0.7, demon=True),
 }
 
-RES = {"compy": 220, "human_m": 420, "human_f": 420, "goblin": 360, "demon": 380, "spider": 260, "riftspider": 260,
+RES = {"compy": 220, "human_m": 420, "human_f": 420, "human_m2": 420, "human_f2": 420, "goblin": 360, "demon": 380, "spider": 260, "riftspider": 260,
        "titanoboa": 260, "bonewyrm": 260, "pteranodon": 260, "argentavis": 260, "wyvern": 260, "mosasaurus": 260,
        "plesiosaurus": 260, "ichthyosaurus": 260, "megalodon": 260}
 
@@ -149,7 +151,7 @@ TRIS = {"trex": 39000, "spinosaurus": 39000, "carnotaurus": 33000, "parasaurolop
         "shadowstalker": 27000, "compy": 9000, "brontosaurus": 39000, "triceratops": 36000, "stegosaurus": 33000,
         "ankylosaurus": 33000, "sarcosuchus": 30000, "mammoth": 27000, "direwolf": 21000, "smilodon": 21000,
         "hellhound": 21000, "mosasaurus": 13500, "megalodon": 12000, "wyvern": 16500,
-        "human_m": 46000, "human_f": 46000, "goblin": 30000, "demon": 34000, "spider": 9000, "riftspider": 9000}
+        "human_m": 46000, "human_f": 46000, "human_m2": 46000, "human_f2": 46000, "goblin": 30000, "demon": 34000, "spider": 9000, "riftspider": 9000}
 
 
 def main():

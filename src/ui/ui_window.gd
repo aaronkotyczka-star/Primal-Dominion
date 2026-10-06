@@ -29,6 +29,7 @@ func _ready() -> void:
 	theme = UIK.get_theme()
 	UIK.center_window(self)
 	refresh()
+	UIK.focus_for_gamepad.call_deferred(self)
 
 
 func refresh() -> void:

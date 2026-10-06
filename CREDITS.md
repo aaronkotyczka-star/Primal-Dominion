@@ -6,10 +6,12 @@ Sämtliche Spielinhalte wurden für dieses Projekt neu erzeugt – es wurden **k
 
 | Inhalt | Erzeugt durch |
 |---|---|
-| Kreaturen- und Humanoid-Modelle inkl. Skelett & Skinning (31 Rigs) | `tools/assetgen/sdfrig.py`, `families.py`, `gen_creatures.py` (Signed-Distance-Felder → Marching Cubes → Glättung/Reduktion) |
+| Kreaturen- und Humanoid-Modelle inkl. Skelett & Skinning (31 Rigs) | `tools/assetgen/sdfrig.py`, `families.py`, `heads.py`, `humans.py`, `gen_creatures.py` (Signed-Distance-Felder → Marching Cubes → Glättung/Reduktion) |
 | Modulare Körperteile (Hörner, Kämme, Flügel, Sättel …) | `tools/assetgen/gen_parts.py` |
 | Pflanzen, Felsen, Kristalle | `tools/assetgen/gen_flora.py` |
-| Texturen (Haut, Rinde, Blätter, 8 Geländematerialien) | `tools/assetgen/gen_textures.py` (prozedurales Rauschen/Voronoi) |
+| Texturen (Haut, Fell-Strähnen, Stoff, Leder, Rinde, Blätter, 8 Geländematerialien, Holzplanken, Mauerwerk, Stroh) | `tools/assetgen/gen_textures.py` (prozedurales Rauschen/Voronoi/Malroutinen) |
+| Gegenstandsbilder (158) | `tools/assetgen/gen_icons.py` (gemalte Vektorformen mit Pillow) |
+| Höhlen | `tools/assetgen/gen_caves.py` (SDF-Kammern/Gänge → Marching Cubes) |
 | Welt (Höhenkarte, Biome, Vegetation, Orte) | `tools/assetgen/gen_world.py` |
 | Soundeffekte, Ambiente, Musik | `tools/assetgen/gen_audio.py` (prozedurale Synthese) |
 | Spieldaten, Story, Dialoge | `tools/data_src/*.py` → `data/*.json` |

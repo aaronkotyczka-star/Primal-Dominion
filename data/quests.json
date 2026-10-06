@@ -659,6 +659,111 @@
    ]
   }
  },
+ "sq_wurzel": {
+  "name": "Splitter aus der Tiefe",
+  "act": 1,
+  "giver": "nixa",
+  "desc": "Nixa spürt Risssplitter tief in den Wurzelhöhlen und will wissen, wie weit der Riss schon reicht.",
+  "stages": [
+   {
+    "text": "Bringe Nixa 2 Risssplitter aus den Wurzelhöhlen.",
+    "obj": [
+     {
+      "type": "deliver",
+      "item": "rift_shard",
+      "n": 2,
+      "npc": "nixa"
+     }
+    ]
+   }
+  ],
+  "rewards": {
+   "xp": 350,
+   "items": [
+    [
+     "elemental_essence",
+     3
+    ],
+    [
+     "healing_potion",
+     2
+    ]
+   ],
+   "rep": [
+    [
+     "moosfell",
+     10
+    ]
+   ]
+  }
+ },
+ "sq_eisgrotte": {
+  "name": "Zähne aus dem Eis",
+  "act": 2,
+  "giver": "tomas",
+  "desc": "In der Eisgrotte auf Weißzahn liegen die Knochen alter Säbelzahnkatzen. Tomas will die Fänge für Klingen.",
+  "stages": [
+   {
+    "text": "Bringe Tomas 2 Säbelzähne aus der Eisgrotte.",
+    "obj": [
+     {
+      "type": "deliver",
+      "item": "saber_fang",
+      "n": 2,
+      "npc": "tomas"
+     }
+    ]
+   }
+  ],
+  "rewards": {
+   "xp": 450,
+   "items": [
+    [
+     "sword_metal",
+     1
+    ]
+   ],
+   "rep": [
+    [
+     "morgengrau",
+     10
+    ]
+   ]
+  }
+ },
+ "sq_glutsand": {
+  "name": "Schwefel für die Karawane",
+  "act": 2,
+  "giver": "kesh",
+  "desc": "Kesh braucht Schwefel vom Aschenkamm, um Feuertöpfe gegen die Sandräuber herzustellen.",
+  "stages": [
+   {
+    "text": "Bringe Kesh 6 Schwefel.",
+    "obj": [
+     {
+      "type": "deliver",
+      "item": "sulfur",
+      "n": 6,
+      "npc": "kesh"
+     }
+    ]
+   }
+  ],
+  "rewards": {
+   "xp": 400,
+   "amber": 120,
+   "items": [
+    [
+     "firebomb",
+     4
+    ],
+    [
+     "saddle_large",
+     1
+    ]
+   ]
+  }
+ },
  "sq_ewald": {
   "name": "Ewalds Aufzeichnungen",
   "act": 1,

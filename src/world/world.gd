@@ -8,6 +8,7 @@ signal ready_to_play()
 var quality := 2
 var terrain: Terrain
 var sky: SkyWeather
+var caves: Caves
 var water: MeshInstance3D
 var vegetation: Vegetation
 var grass: GrassField
@@ -57,6 +58,9 @@ func build_world(q: int) -> void:
 	sky.add_to_group("sky_weather")
 	add_child(sky)
 	sky.setup(q)
+	caves = Caves.new()
+	add_child(caves)
+	caves.setup(self)
 	_build_water()
 	loading_progress.emit("Wälder wachsen …", 0.45)
 	await get_tree().process_frame
@@ -758,9 +762,11 @@ func _on_player_died() -> void:
 
 func before_save() -> void:
 	if player:
-		GameState.player()["pos"] = [player.global_position.x, player.global_position.y, player.global_position.z]
+		var pp := caves.save_position(player.global_position) if caves else player.global_position
+		GameState.player()["pos"] = [pp.x, pp.y, pp.z]
 	for n in get_tree().get_nodes_in_group("companions"):
-		n.rec["pos"] = [n.global_position.x, n.global_position.y, n.global_position.z]
+		var cp: Vector3 = caves.save_position(n.global_position) if caves and caves.active != "" else n.global_position
+		n.rec["pos"] = [cp.x, cp.y, cp.z]
 		n.rec["hp"] = n.combatant.hp
 
 

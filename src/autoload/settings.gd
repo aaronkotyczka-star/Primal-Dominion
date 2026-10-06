@@ -132,6 +132,32 @@ func _apply_bindings() -> void:
 			InputMap.action_add_event(action, ev)
 	# secondary defaults
 	_add_extra("lock_target", "m:3")
+	# gamepad (Xbox layout): fixed secondary bindings next to keyboard/mouse
+	for pair in GAMEPAD:
+		var ev: InputEvent
+		if pair[1] is String:
+			var parts: PackedStringArray = (pair[1] as String).split(":")
+			var jm := InputEventJoypadMotion.new()
+			jm.axis = int(parts[0])
+			jm.axis_value = float(parts[1])
+			ev = jm
+		else:
+			var jb := InputEventJoypadButton.new()
+			jb.button_index = int(pair[1])
+			ev = jb
+		if InputMap.has_action(pair[0]):
+			InputMap.action_add_event(pair[0], ev)
+
+
+# [action, joypad button index | "axis:direction"]
+const GAMEPAD := [
+	["move_left", "0:-1"], ["move_right", "0:1"], ["move_forward", "1:-1"], ["move_back", "1:1"],
+	["jump", JOY_BUTTON_A], ["dodge", JOY_BUTTON_B], ["interact", JOY_BUTTON_X], ["command_wheel", JOY_BUTTON_Y],
+	["lock_target", JOY_BUTTON_LEFT_SHOULDER], ["ability_1", JOY_BUTTON_RIGHT_SHOULDER],
+	["block", "4:1"], ["attack", "5:1"], ["sprint", JOY_BUTTON_LEFT_STICK], ["crouch", JOY_BUTTON_RIGHT_STICK],
+	["slot_1", JOY_BUTTON_DPAD_UP], ["slot_2", JOY_BUTTON_DPAD_RIGHT], ["slot_3", JOY_BUTTON_DPAD_DOWN],
+	["whistle", JOY_BUTTON_DPAD_LEFT], ["inventory", JOY_BUTTON_BACK], ["pause", JOY_BUTTON_START],
+]
 
 
 func _add_extra(action: String, bind: String) -> void:

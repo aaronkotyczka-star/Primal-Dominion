@@ -1,11 +1,11 @@
 # Fortschritt & ehrliche Feature-Liste
 
-Stand: 2026-10-05 · Godot 4.5.1-stable · Branch `claude/fervent-franklin-yjq54u`
+Stand: 2026-10-06 · Godot 4.5.1-stable · Branch `claude/fervent-franklin-yjq54u`
 
 Legende: ✅ umgesetzt (durch automatischen Test oder Screenshot geprüft) · 🟡 umgesetzt, aber vereinfacht/Platzhalter · ⚪ umgesetzt, nicht automatisch getestet · ❌ fehlt
 
 ## Prüfnachweise
-- `tests/run_all.gd`: skriptgesteuerter Spieltest (Spieler wird über die Eingabe-Abstraktion gesteuert), 120 Prüfungen (inkl. Menü-Zentrierung), lokal und in GitHub Actions: `ALL TESTS PASSED`.
+- `tests/run_all.gd`: skriptgesteuerter Spieltest (Spieler wird über die Eingabe-Abstraktion gesteuert), 129 Prüfungen (inkl. Menü-Zentrierung, Höhlen, Gamepad-Belegung, Gegenstandsbilder), lokal und in GitHub Actions: `ALL TESTS PASSED`.
 - GitHub Actions (`.github/workflows/build.yml`): Import, Tests, Windows-Export, Upload als Artefakt `PrimalDominion-Windows` – erfolgreich gelaufen.
 - Screenshots: nur unter Linux mit Software-Vulkan (lavapipe, Xvfb) aufgenommen, Rundgang `--shots`.
 - **Nicht** geprüft: Start der EXE auf echtem Windows, Leistung/FPS auf der Zielhardware (RTX 4060 Ti), Langzeit-Balancing, Bedienung durch echte Spieler.
@@ -35,11 +35,11 @@ Legende: ✅ umgesetzt (durch automatischen Test oder Screenshot geprüft) · �
 ## Phase 2 – Erweiterung
 | Bereich | Status | Anmerkung |
 |---|---|---|
-| 31 Arten (Dinos, Säuger, Flug-, Meeres-, Monster) mit Rigs | 🟡 | Anatomisch modelliert (Schädel mit Zahnreihen, Augen mit Pupillen, Muskeln, Zehen/Krallen, Nackenschild, Osteoderme, Federn), prozedural erzeugt; Flughäute und Gefieder der Flugtiere noch einfach |
+| 31 Arten (Dinos, Säuger, Flug-, Meeres-, Monster) mit Rigs | ✅ | Anatomisch modelliert (u. a. Tyrannosaurus-Kastenschädel, Wolf/Säbelzahn-Köpfe, Zahnreihen, Lider, Krallen, Osteoderme), Köpfe mit feinerem Raster; Fell/Flaum per Shell-Rendering (Wolf, Säbelzahn, Mammut, Höllenhund, Raptoren, Argentavis); Flughäute/Schwungfedern der Flugtiere noch flach |
 | Fraktionen (5) mit Ansehen, Handel, Reaktion auf Dämonengestalt | ✅ | |
 | Siedlung: Bewohner, Aufgaben, Expeditionen | ✅ | einfache Simulation ohne sichtbare Arbeitsanimationen |
 | Gebiete: Bündnis, Handel, Eroberung; Feldzug automatisch **oder** selbst mitkämpfen | ✅ | Mitkämpfen: Verteidiger erscheinen am Zielort; eigene Armee wird dort nicht gespawnt |
-| Höhlen | 🟡 | nur Eingänge mit Hinweis „noch nicht begehbar“ |
+| Höhlen | ✅ | 2 begehbare Höhlen (Wurzelhöhle, Weißzahnhöhle): Kammern, Gänge, Tropfsteine, leuchtende Kristalle/Pilze, Beute, Höhlenkreaturen; Speichern in der Höhle legt den Spieler an den Eingang |
 
 ## Phase 3 – Kampagne & erweiterte Systeme
 | Bereich | Status | Anmerkung |
@@ -50,13 +50,13 @@ Legende: ✅ umgesetzt (durch automatischen Test oder Screenshot geprüft) · �
 | Geheimer Dämonenpfad (siehe `GEHEIM_Daemonenpfad.md`) | ✅ | inkl. Dämonen-EP/-Stufen, Formeditor |
 | Weitere Inseln mit eigenem Questinhalt | ❌ | Inseln existieren, haben aber nur wenige Orte |
 | Koop-/Mehrspieler | ❌ | nur vorbereitet (Eingabe-Abstraktion `PlayerInput`) |
-| Gamepad | ❌ | nur Maus/Tastatur |
+| Gamepad | 🟡 | Xbox-Belegung fest hinterlegt (nicht umbelegbar), Menüs per Steuerkreuz/A/B; nur ohne echtes Gamepad getestet (Belegung per Test geprüft) |
 
 ## Bekannte Platzhalter / Vereinfachungen
-- Menschen/Goblins: einfache Gesichter (Nase, Lippen, Augen, Ohren), Haar als glattes Volumen, Kleidung als Farbregionen mit Gürtel/Kragen/Stiefelschaft – deutlich einfacher als handmodellierte Figuren.
+- Menschen: anatomische Gesichter mit Lidern, Nase, Lippen, Ohren; Hände mit Fingern; Haar und Augenbrauen als Shell-Haar; Kleidung (Tunika, Hose, Gürtel, Stiefel) über glatte Masken mit erhabenen Säumen – keine echte Stoffsimulation, Finger ohne eigene Knochen.
 - Kreaturen und Pflanzen sind vollständig prozedural erzeugt (keine Bildhauerei/Texturen von Hand); Detailgrad begrenzt durch Rastergröße (~3–4 cm bei großen Tieren).
 - Alle Animationen sind prozedural (Gangzyklen, Aktionen) – keine handanimierten Keyframes.
-- Gegenstandssymbole sind farbige Kürzel-Plaketten statt Bildern.
+- Gegenstandsbilder sind prozedural gemalte 2D-Symbole (keine Renderings der 3D-Modelle).
 - Musik und Sounds sind einfache Synthese, keine Sprachausgabe.
 - Zwischensequenzen fehlen; Story läuft über Dialoge, Hinweise und Textfenster.
 - Feldzüge werden abstrakt (Kräfteverhältnis) aufgelöst.
@@ -67,6 +67,6 @@ Legende: ✅ umgesetzt (durch automatischen Test oder Screenshot geprüft) · �
 
 ## Nächste Schritte
 1. Windows-Build auf echter Hardware starten, FPS messen, Grafikvoreinstellungen abstimmen.
-2. Höhlen begehbar machen, weitere Inseln mit Quests füllen, Akt II/III ausbauen.
-3. Humanoide Modelle und Flügel verbessern, Gegenstandsbilder rendern.
-4. Gamepad-Unterstützung, Balancing über längere Spielzeit.
+2. Weitere Inseln mit Quests füllen, Akt II/III ausbauen.
+3. Flügel (Schwungfedern) und Rüstungsmodelle als eigene Meshes.
+4. Gamepad auf echter Hardware testen, Balancing über längere Spielzeit.

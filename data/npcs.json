@@ -44,7 +44,7 @@
  "tomas": {
   "name": "Tomas Kessler",
   "faction": "morgengrau",
-  "rig": "human_m",
+  "rig": "human_m2",
   "poi": "morgengrau",
   "offset": [
    -6,
@@ -207,7 +207,7 @@
  "brannoc": {
   "name": "Hauptmann Brannoc Eisenhand",
   "faction": "eisenhand",
-  "rig": "human_m",
+  "rig": "human_m2",
   "poi": "fischerkap",
   "offset": [
    3,
@@ -312,6 +312,55 @@
   },
   "bio": "Wurde von Höllenhunden in die Enge getrieben.",
   "hidden_until": "q4_moosfell"
+ },
+ "kesh": {
+  "name": "Kesh Sandläufer",
+  "faction": "morgengrau",
+  "rig": "human_f2",
+  "poi": "oase",
+  "offset": [
+   6,
+   0,
+   -4
+  ],
+  "role": "Wüstenhändlerin",
+  "colors": {
+   "top_color": [
+    0.62,
+    0.5,
+    0.32
+   ],
+   "bottom_color": [
+    0.45,
+    0.35,
+    0.22
+   ],
+   "hair_color": [
+    0.12,
+    0.08,
+    0.05
+   ],
+   "color_main": [
+    0.5,
+    0.36,
+    0.26
+   ],
+   "color_belly": [
+    0.52,
+    0.38,
+    0.28
+   ]
+  },
+  "bio": "Zieht mit ihren Lasttieren zwischen Glutsand und Aschenkamm. Handelt mit allem, was sich tragen lässt.",
+  "trades": [
+   "salt",
+   "sulfur",
+   "gunpowder",
+   "jerky",
+   "wyvern_milk",
+   "saddle_large",
+   "firebomb"
+  ]
  },
  "siedler": {
   "name": "Siedler",

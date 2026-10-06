@@ -203,6 +203,18 @@
      "goto": "thanks"
     },
     {
+     "text": "Hast du noch Arbeit für mich?",
+     "action": "start:sq_eisgrotte",
+     "cond": "quest:sq_tomas_erz=done;!quest:sq_eisgrotte",
+     "goto": "fangs"
+    },
+    {
+     "text": "Hier sind zwei Säbelzähne.",
+     "action": "take:saber_fang:2;advance:sq_eisgrotte",
+     "cond": "quest:sq_eisgrotte=active;item:saber_fang>=2",
+     "goto": "fangs_done"
+    },
+    {
      "text": "Zeig mir deine Waren.",
      "action": "trade"
     },
@@ -226,6 +238,24 @@
    "options": [
     {
      "text": "Danke.",
+     "action": "end"
+    }
+   ]
+  },
+  "fangs": {
+   "text": "Auf Weißzahn gibt es eine Eisgrotte voller Katzenknochen. Säbelzähne, hart wie Stahl. Zwei davon, und ich schmiede dir eine Klinge, wie sie die Krone nicht hat.",
+   "options": [
+    {
+     "text": "Ich hole sie.",
+     "action": "end"
+    }
+   ]
+  },
+  "fangs_done": {
+   "text": "Prachtstücke. Gib mir eine Nacht an der Esse … Hier. Pass auf, dass sie nicht stumpf wird.",
+   "options": [
+    {
+     "text": "Danke, Tomas.",
      "action": "end"
     }
    ]
@@ -313,6 +343,18 @@
      "cond": "rep:moosfell>=25"
     },
     {
+     "text": "Brauchst du noch etwas?",
+     "action": "start:sq_wurzel",
+     "cond": "quest:sq_nixa_blueten=done;!quest:sq_wurzel",
+     "goto": "shards"
+    },
+    {
+     "text": "Hier sind zwei Risssplitter.",
+     "action": "take:rift_shard:2;advance:sq_wurzel",
+     "cond": "quest:sq_wurzel=active;item:rift_shard>=2",
+     "goto": "shards_done"
+    },
+    {
      "text": "Was meinst du mit „etwas Dunkles“?",
      "goto": "dark"
     },
@@ -344,6 +386,24 @@
     }
    ]
   },
+  "shards": {
+   "text": "Unter dem Wald, in den Wurzelhöhlen, singt der Fels. Rote Splitter wachsen dort – Risssplitter. Bring mir zwei. Aber nimm Licht mit, und Gift gegen die Spinnen.",
+   "options": [
+    {
+     "text": "Ich gehe hinab.",
+     "action": "end"
+    }
+   ]
+  },
+  "shards_done": {
+   "text": "So tief schon … Der Riss frisst sich unter der Insel entlang. Nimm diese Essenzen, du wirst sie brauchen.",
+   "options": [
+    {
+     "text": "Danke, Nixa.",
+     "action": "end"
+    }
+   ]
+  },
   "dark": {
    "text": "Jeder trägt einen Schatten. Ewald fand einen Weg, seinen zu wecken. Der Gehörnte im Moor kennt das Ritual. Aber ich rate dir: Lass ihn schlafen.",
    "options": [
@@ -363,6 +423,51 @@
     {
      "text": "Zurück.",
      "goto": "start"
+    }
+   ]
+  }
+ },
+ "kesh": {
+  "start": {
+   "text": "Wasser und Schatten, Fremder. Ich bin Kesh. Wenn du etwas brauchst, das man tragen kann, habe ich es – oder weiß, wo es liegt.",
+   "options": [
+    {
+     "text": "Du siehst besorgt aus.",
+     "action": "start:sq_glutsand",
+     "cond": "!quest:sq_glutsand",
+     "goto": "sulfur"
+    },
+    {
+     "text": "Hier ist der Schwefel. (6)",
+     "action": "take:sulfur:6;advance:sq_glutsand",
+     "cond": "quest:sq_glutsand=active;item:sulfur>=6",
+     "goto": "sulfur_done"
+    },
+    {
+     "text": "Zeig mir deine Waren.",
+     "action": "trade"
+    },
+    {
+     "text": "Leb wohl.",
+     "action": "end"
+    }
+   ]
+  },
+  "sulfur": {
+   "text": "Sandräuber. Sie lauern an den Dünen und fallen über jede Karawane her. Mit Feuertöpfen halte ich sie fern – aber mir fehlt Schwefel. Am Aschenkamm liegt er gelb im Gestein. Sechs Brocken.",
+   "options": [
+    {
+     "text": "Ich bringe ihn dir.",
+     "action": "end"
+    }
+   ]
+  },
+  "sulfur_done": {
+   "text": "Gelbes Gold! Nimm die Töpfe hier – und diesen Sattel. Ein Lasttier mit gutem Sattel ist mehr wert als zehn Schwerter.",
+   "options": [
+    {
+     "text": "Gute Reise, Kesh.",
+     "action": "end"
     }
    ]
   }

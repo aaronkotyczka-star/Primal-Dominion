@@ -179,7 +179,7 @@ static func _add_fur(meta: Dictionary, skel: Skeleton3D, skin: Skin, mesh: Mesh,
 	var n: int = mini(int(fur.get("shells", 12)), fur_shells())
 	var fmi := MeshInstance3D.new()
 	fmi.name = "Fur"
-	fmi.mesh = mesh
+	fmi.mesh = _fur_mesh(meta["id"], mesh)
 	fmi.skin = skin
 	skel.add_child(fmi)
 	fmi.skeleton = NodePath("..")
@@ -218,6 +218,29 @@ static func _add_fur(meta: Dictionary, skel: Skeleton3D, skin: Skin, mesh: Mesh,
 	fmi.material_override = first
 	body_mat.set_shader_parameter("fur_len", float(fur.get("len", 0.03)))
 	return mats
+
+
+## Copy of the body surface that keeps only triangles with fur/hair coverage (shared vertex data,
+## reduced index buffer) - e.g. a human's hair shells draw ~10% of the body instead of all of it.
+static func _fur_mesh(rig_id: String, mesh: Mesh) -> Mesh:
+	var key := "fur:" + rig_id
+	if _mesh_cache.has(key):
+		return _mesh_cache[key]
+	var arr := mesh.surface_get_arrays(0)
+	var c2: PackedFloat32Array = arr[Mesh.ARRAY_CUSTOM2]
+	var idx: PackedInt32Array = arr[Mesh.ARRAY_INDEX]
+	var keep := PackedInt32Array()
+	for i in range(0, idx.size(), 3):
+		if c2[idx[i] * 4] > 0.02 or c2[idx[i + 1] * 4] > 0.02 or c2[idx[i + 2] * 4] > 0.02:
+			keep.append(idx[i])
+			keep.append(idx[i + 1])
+			keep.append(idx[i + 2])
+	arr[Mesh.ARRAY_INDEX] = keep
+	var fm := ArrayMesh.new()
+	fm.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr, [], {}, (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM0_SHIFT) \
+		| (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM1_SHIFT) | (Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM2_SHIFT))
+	_mesh_cache[key] = fm
+	return fm
 
 
 static func fur_shells() -> int:

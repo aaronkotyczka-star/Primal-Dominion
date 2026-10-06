@@ -42,6 +42,9 @@ func setup(id: String, def: Dictionary, pos: Vector3, hostile: bool = false) -> 
 	var cs := CollisionShape3D.new()
 	var cap := CapsuleShape3D.new()
 	var rig: String = def.get("rig", "human_m")
+	# generic villagers/mercenaries: vary hairstyle (beard / bun variants of the human rigs)
+	if rig in ["human_m", "human_f"] and def.get("generic", id in ["siedler", "siedlerin", "soeldner"]) and randf() < 0.5:
+		rig += "2"
 	var h := 1.8 if rig.begins_with("human") else (1.25 if rig == "goblin" else 2.3)
 	var sc := float(def.get("boss_scale", 1.0))
 	cap.radius = 0.3 * sc

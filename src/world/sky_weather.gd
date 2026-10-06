@@ -248,7 +248,7 @@ func _process(delta: float) -> void:
 	if in_cave:
 		sun.light_energy = 0.0
 		moon.light_energy = 0.0
-		env.ambient_light_energy = 0.08
+		env.ambient_light_energy = 0.3
 		env.fog_light_color = Color(0.02, 0.02, 0.025)
 		env.fog_density = 0.02
 	# lightning
