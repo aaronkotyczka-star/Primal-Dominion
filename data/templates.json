@@ -1,0 +1,122 @@
+{
+ "tpl_hut": {
+  "name": "Kleine Hütte",
+  "pieces": [
+   [
+    "foundation",
+    0,
+    0,
+    0,
+    0
+   ],
+   [
+    "wall",
+    0,
+    0.5,
+    -2,
+    0
+   ],
+   [
+    "wall",
+    -2,
+    0.5,
+    0,
+    90
+   ],
+   [
+    "wall_window",
+    2,
+    0.5,
+    0,
+    90
+   ],
+   [
+    "doorway",
+    0,
+    0.5,
+    2,
+    0
+   ],
+   [
+    "roof",
+    0,
+    3.5,
+    0,
+    0
+   ]
+  ]
+ },
+ "tpl_starter": {
+  "name": "Startlager",
+  "pieces": [
+   [
+    "camp_totem",
+    0,
+    0,
+    0,
+    0
+   ],
+   [
+    "campfire",
+    4,
+    0,
+    2,
+    0
+   ],
+   [
+    "bedroll",
+    -3,
+    0,
+    3,
+    0
+   ],
+   [
+    "workbench",
+    0,
+    0,
+    5,
+    0
+   ],
+   [
+    "storage_box",
+    3,
+    0,
+    -3,
+    0
+   ]
+  ]
+ },
+ "tpl_outpost": {
+  "name": "Wachposten",
+  "pieces": [
+   [
+    "watchtower",
+    0,
+    0,
+    0,
+    0
+   ],
+   [
+    "palisade",
+    4,
+    0,
+    4,
+    0
+   ],
+   [
+    "palisade",
+    -4,
+    0,
+    4,
+    0
+   ],
+   [
+    "torch_post",
+    3,
+    0,
+    -3,
+    0
+   ]
+  ]
+ }
+}

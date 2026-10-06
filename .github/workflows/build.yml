@@ -1,0 +1,75 @@
+name: Build & Test
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+env:
+  GODOT_VERSION: "4.5.1"
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+
+      - name: Cache Godot
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: ~/godot
+          key: godot-${{ env.GODOT_VERSION }}-templates-win-linux
+
+      - name: Download Godot ${{ env.GODOT_VERSION }} + export templates
+        if: steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/godot
+          cd ~/godot
+          curl -sSL -o godot.zip "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          unzip -q godot.zip && rm godot.zip
+          curl -sSL -o tpl.tpz "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+          mkdir -p templates
+          unzip -q -j tpl.tpz 'templates/windows_*x86_64*' 'templates/linux_*x86_64' 'templates/version.txt' -d templates
+          rm tpl.tpz
+
+      - name: Install Godot
+        run: |
+          sudo ln -sf ~/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64 /usr/local/bin/godot
+          mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+          cp ~/godot/templates/* ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable/
+          godot --version
+
+      - name: Import project
+        run: timeout 900 godot --headless --import || true
+
+      - name: Automated tests (headless)
+        run: |
+          timeout 1500 godot --headless --path . -- --autostart --test=run_all 2>&1 | tee test.log
+          grep -q "ALL TESTS PASSED" test.log
+          ! grep -E "SCRIPT ERROR" test.log
+
+      - name: Export Windows build
+        run: |
+          mkdir -p build/windows
+          timeout 900 godot --headless --export-release "Windows Desktop" build/windows/PrimalDominion.exe
+          cp README.md CREDITS.md build/windows/ || true
+          ls -la build/windows
+
+      - name: Upload Windows build
+        uses: actions/upload-artifact@v4
+        with:
+          name: PrimalDominion-Windows
+          path: build/windows/
+          retention-days: 30
+
+      - name: Upload test log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-log
+          path: test.log

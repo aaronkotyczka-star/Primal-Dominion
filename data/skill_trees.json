@@ -1,0 +1,14 @@
+{
+ "melee": "Nahkampf",
+ "ranged": "Fernkampf",
+ "defense": "Verteidigung",
+ "hunt": "Jagd & Fallen",
+ "beast": "Bestienführung",
+ "taming": "Zähmung & Bindung",
+ "genetics": "Genetik & Hybridisierung",
+ "craft": "Handwerk & Forschung",
+ "elemental": "Elementarmagie",
+ "healing": "Heilung & Schutz",
+ "survival": "Überleben & Alchemie",
+ "explore": "Erkundung & Bewegung"
+}

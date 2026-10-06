@@ -1,0 +1,32 @@
+{
+ "1": {
+  "potency": 1.0,
+  "stamina": 1.0,
+  "instability": 0.0,
+  "research": null
+ },
+ "2": {
+  "potency": 0.7,
+  "stamina": 1.25,
+  "instability": 0.05,
+  "research": "element_fusion_1"
+ },
+ "3": {
+  "potency": 0.55,
+  "stamina": 1.5,
+  "instability": 0.1,
+  "research": "element_fusion_2"
+ },
+ "4": {
+  "potency": 0.45,
+  "stamina": 1.8,
+  "instability": 0.16,
+  "research": "element_fusion_3"
+ },
+ "5": {
+  "potency": 0.4,
+  "stamina": 2.1,
+  "instability": 0.22,
+  "research": "element_fusion_3"
+ }
+}

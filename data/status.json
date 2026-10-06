@@ -1,0 +1,179 @@
+{
+ "burning": {
+  "name": "Brennen",
+  "dur": 4.0,
+  "dot": 0.025,
+  "color": [
+   1,
+   0.4,
+   0.1
+  ]
+ },
+ "wet": {
+  "name": "Nass",
+  "dur": 6.0,
+  "color": [
+   0.3,
+   0.5,
+   1.0
+  ]
+ },
+ "chilled": {
+  "name": "Unterkühlt",
+  "dur": 4.0,
+  "slow": 0.3,
+  "stacks_to": "frozen",
+  "stacks": 3,
+  "color": [
+   0.6,
+   0.85,
+   1
+  ]
+ },
+ "frozen": {
+  "name": "Gefroren",
+  "dur": 2.5,
+  "stun": true,
+  "color": [
+   0.7,
+   0.9,
+   1
+  ]
+ },
+ "shocked": {
+  "name": "Geschockt",
+  "dur": 0.6,
+  "stun": true,
+  "chance": 0.3,
+  "color": [
+   0.8,
+   0.8,
+   1
+  ]
+ },
+ "shaken": {
+  "name": "Erschüttert",
+  "dur": 5.0,
+  "armor_mult": 0.7,
+  "color": [
+   0.6,
+   0.45,
+   0.3
+  ]
+ },
+ "scattered": {
+  "name": "Zerstreut",
+  "dur": 2.0,
+  "knockback": 6.0,
+  "color": [
+   0.75,
+   0.9,
+   0.8
+  ]
+ },
+ "rooted": {
+  "name": "Verwurzelt",
+  "dur": 1.5,
+  "root": true,
+  "chance": 0.35,
+  "color": [
+   0.35,
+   0.8,
+   0.25
+  ]
+ },
+ "poisoned": {
+  "name": "Vergiftet",
+  "dur": 8.0,
+  "dot": 0.012,
+  "stackable": 4,
+  "color": [
+   0.5,
+   0.85,
+   0.2
+  ]
+ },
+ "blinded": {
+  "name": "Geblendet",
+  "dur": 3.0,
+  "miss": 0.35,
+  "color": [
+   1,
+   0.95,
+   0.7
+  ]
+ },
+ "feared": {
+  "name": "Verängstigt",
+  "dur": 4.0,
+  "dmg_mult": 0.8,
+  "flee_chance": 0.2,
+  "color": [
+   0.4,
+   0.2,
+   0.6
+  ]
+ },
+ "bleeding": {
+  "name": "Blutung",
+  "dur": 6.0,
+  "dot": 0.018,
+  "lifesteal": 0.1,
+  "color": [
+   0.7,
+   0.05,
+   0.08
+  ]
+ },
+ "stunned": {
+  "name": "Betäubt",
+  "dur": 1.0,
+  "stun": true,
+  "color": [
+   1,
+   1,
+   0.5
+  ]
+ },
+ "slowed": {
+  "name": "Verlangsamt",
+  "dur": 4.0,
+  "slow": 0.5,
+  "color": [
+   0.6,
+   0.5,
+   0.4
+  ]
+ },
+ "steam": {
+  "name": "Dampf",
+  "dur": 3.0,
+  "miss": 0.5,
+  "color": [
+   0.85,
+   0.85,
+   0.85
+  ]
+ },
+ "septic": {
+  "name": "Sepsis",
+  "dur": 8.0,
+  "heal_mult": 0.5,
+  "dot": 0.01,
+  "color": [
+   0.5,
+   0.3,
+   0.1
+  ]
+ },
+ "entangled": {
+  "name": "Gefesselt",
+  "dur": 5.0,
+  "root": true,
+  "color": [
+   0.6,
+   0.55,
+   0.4
+  ]
+ }
+}

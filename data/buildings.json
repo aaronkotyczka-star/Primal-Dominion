@@ -1,0 +1,629 @@
+{
+ "camp_totem": {
+  "name": "Lagerstein",
+  "cat": "facility",
+  "cost": {
+   "stone": 10,
+   "wood": 6
+  },
+  "size": [
+   1.2,
+   2.6,
+   1.2
+  ],
+  "snap": 0,
+  "research": null,
+  "desc": "Beansprucht ein Lager (Radius 60 m). Ermöglicht Gehege, sicheres Speichern und Bewohner.",
+  "hp": 2000,
+  "base_radius": 60,
+  "safe_save": true,
+  "pen_capacity": 0
+ },
+ "campfire": {
+  "name": "Lagerfeuer",
+  "cat": "facility",
+  "cost": {
+   "stone": 6,
+   "wood": 4
+  },
+  "size": [
+   1.6,
+   0.6,
+   1.6
+  ],
+  "snap": 0,
+  "research": null,
+  "desc": "Kochen und Wärme. Sicherer Ort zum Speichern.",
+  "hp": 500,
+  "station": "campfire",
+  "light": true,
+  "safe_save": true
+ },
+ "bedroll": {
+  "name": "Schlaflager",
+  "cat": "facility",
+  "cost": {
+   "hide": 6,
+   "fiber": 10
+  },
+  "size": [
+   1.0,
+   0.3,
+   2.2
+  ],
+  "snap": 0,
+  "research": null,
+  "desc": "Wiedereinstiegspunkt. Schlafen gibt den Bonus „Ausgeruht“.",
+  "hp": 500,
+  "bed": true
+ },
+ "bed": {
+  "name": "Bett",
+  "cat": "facility",
+  "cost": {
+   "wood": 12,
+   "pelt": 4,
+   "fiber": 10
+  },
+  "size": [
+   1.4,
+   0.7,
+   2.3
+  ],
+  "snap": 0,
+  "research": "carpentry",
+  "desc": "Wie Schlaflager, stärkerer Ruhebonus.",
+  "hp": 500,
+  "bed": true
+ },
+ "storage_box": {
+  "name": "Vorratskiste",
+  "cat": "facility",
+  "cost": {
+   "wood": 12,
+   "fiber": 4
+  },
+  "size": [
+   1.2,
+   0.8,
+   0.8
+  ],
+  "snap": 0,
+  "research": null,
+  "desc": "30 Plätze. Wird beim Herstellen in der Nähe genutzt.",
+  "hp": 500,
+  "storage": 30
+ },
+ "storage_large": {
+  "name": "Großes Lager",
+  "cat": "facility",
+  "cost": {
+   "wood": 30,
+   "metal_ingot": 4
+  },
+  "size": [
+   2.4,
+   1.8,
+   1.4
+  ],
+  "snap": 0,
+  "research": "carpentry",
+  "desc": "",
+  "hp": 500,
+  "storage": 80
+ },
+ "workbench": {
+  "name": "Werkbank",
+  "cat": "facility",
+  "cost": {
+   "wood": 20,
+   "stone": 8,
+   "fiber": 10
+  },
+  "size": [
+   2.0,
+   1.0,
+   1.0
+  ],
+  "snap": 0,
+  "research": null,
+  "desc": "",
+  "hp": 500,
+  "station": "workbench"
+ },
+ "forge": {
+  "name": "Schmiede",
+  "cat": "facility",
+  "cost": {
+   "stone": 40,
+   "clay": 10,
+   "wood": 10
+  },
+  "size": [
+   2.4,
+   2.4,
+   2.0
+  ],
+  "snap": 0,
+  "research": "metallurgy",
+  "desc": "",
+  "hp": 500,
+  "station": "forge",
+  "light": true
+ },
+ "alchemy_table": {
+  "name": "Alchemietisch",
+  "cat": "facility",
+  "cost": {
+   "wood": 16,
+   "stone": 10,
+   "crystal": 2
+  },
+  "size": [
+   1.8,
+   1.1,
+   1.0
+  ],
+  "snap": 0,
+  "research": "alchemy_basics",
+  "desc": "",
+  "hp": 500,
+  "station": "alchemy"
+ },
+ "kitchen": {
+  "name": "Kochstelle",
+  "cat": "facility",
+  "cost": {
+   "stone": 20,
+   "clay": 6,
+   "wood": 8
+  },
+  "size": [
+   2.0,
+   1.6,
+   1.4
+  ],
+  "snap": 0,
+  "research": "cooking",
+  "desc": "",
+  "hp": 500,
+  "station": "kitchen",
+  "light": true
+ },
+ "research_table": {
+  "name": "Forschungstisch",
+  "cat": "facility",
+  "cost": {
+   "wood": 18,
+   "hide": 4,
+   "stone": 6
+  },
+  "size": [
+   2.0,
+   1.0,
+   1.2
+  ],
+  "snap": 0,
+  "research": null,
+  "desc": "Forschung durchführen und Funde untersuchen.",
+  "hp": 500,
+  "station": "research"
+ },
+ "gene_lab": {
+  "name": "Genlabor",
+  "cat": "facility",
+  "cost": {
+   "wood": 30,
+   "crystal": 6,
+   "metal_ingot": 6,
+   "elemental_essence": 2
+  },
+  "size": [
+   3.0,
+   2.4,
+   2.4
+  ],
+  "snap": 0,
+  "research": "genetics_1",
+  "desc": "Hybridisierung, Genanalyse und Stammbäume.",
+  "hp": 500,
+  "station": "gene_lab"
+ },
+ "incubator": {
+  "name": "Brutstätte",
+  "cat": "facility",
+  "cost": {
+   "stone": 20,
+   "clay": 8,
+   "pelt": 2
+  },
+  "size": [
+   2.0,
+   1.0,
+   2.0
+  ],
+  "snap": 0,
+  "research": null,
+  "desc": "Brütet Eier aus. Bei Feuer in der Nähe schneller.",
+  "hp": 500,
+  "station": "incubator"
+ },
+ "infirmary": {
+  "name": "Krankenstation",
+  "cat": "facility",
+  "cost": {
+   "wood": 24,
+   "hide": 8,
+   "herb_healing": 10
+  },
+  "size": [
+   3.0,
+   2.0,
+   2.4
+  ],
+  "snap": 0,
+  "research": "veterinary",
+  "desc": "Heilt Kreaturen im Lager und behandelt Verletzungen.",
+  "hp": 500,
+  "station": "infirmary"
+ },
+ "pen": {
+  "name": "Gehege",
+  "cat": "facility",
+  "cost": {
+   "wood": 40,
+   "fiber": 20
+  },
+  "size": [
+   10.0,
+   2.0,
+   10.0
+  ],
+  "snap": 0,
+  "research": null,
+  "desc": "+5 Kapazität für Kreaturen im Lager.",
+  "hp": 500,
+  "pen_capacity": 5
+ },
+ "pen_large": {
+  "name": "Großgehege",
+  "cat": "facility",
+  "cost": {
+   "wood": 60,
+   "stone": 40,
+   "metal_ingot": 6
+  },
+  "size": [
+   16.0,
+   3.5,
+   16.0
+  ],
+  "snap": 0,
+  "research": "husbandry_2",
+  "desc": "",
+  "hp": 500,
+  "pen_capacity": 12
+ },
+ "water_pen": {
+  "name": "Wassergehege",
+  "cat": "facility",
+  "cost": {
+   "wood": 40,
+   "stone": 30,
+   "clay": 10
+  },
+  "size": [
+   14.0,
+   1.5,
+   14.0
+  ],
+  "snap": 0,
+  "research": "sea_harness",
+  "desc": "Für Wasserkreaturen. Nahe der Küste bauen.",
+  "hp": 500,
+  "pen_capacity": 6,
+  "water": true
+ },
+ "flight_platform": {
+  "name": "Flugplattform",
+  "cat": "facility",
+  "cost": {
+   "wood": 50,
+   "stone": 20,
+   "hide": 10
+  },
+  "size": [
+   8.0,
+   4.0,
+   8.0
+  ],
+  "snap": 0,
+  "research": "flight_harness",
+  "desc": "Landeplatz und Unterkunft für Flieger.",
+  "hp": 500,
+  "pen_capacity": 4,
+  "flyer": true
+ },
+ "farm_plot": {
+  "name": "Feldbeet",
+  "cat": "facility",
+  "cost": {
+   "wood": 6,
+   "fiber": 10,
+   "clay": 4
+  },
+  "size": [
+   3.0,
+   0.4,
+   3.0
+  ],
+  "snap": 0,
+  "research": "agriculture",
+  "desc": "Bewohner bauen hier Knollen, Beeren und Kräuter an.",
+  "hp": 500,
+  "farm": true
+ },
+ "hut": {
+  "name": "Wohnhütte",
+  "cat": "facility",
+  "cost": {
+   "wood": 40,
+   "thatch": 20,
+   "hide": 6
+  },
+  "size": [
+   5.0,
+   4.0,
+   5.0
+  ],
+  "snap": 0,
+  "research": null,
+  "desc": "Unterkunft für 2 Bewohner.",
+  "hp": 500,
+  "residents": 2
+ },
+ "watchtower": {
+  "name": "Wachturm",
+  "cat": "defense",
+  "cost": {
+   "wood": 40,
+   "stone": 20
+  },
+  "size": [
+   3.0,
+   7.0,
+   3.0
+  ],
+  "snap": 0,
+  "research": "fortification",
+  "desc": "Bewohner oder Automatik verteidigen das Lager.",
+  "hp": 500,
+  "defense": {
+   "range": 40,
+   "dmg": 18,
+   "rate": 1.6
+  }
+ },
+ "palisade": {
+  "name": "Palisade",
+  "cat": "defense",
+  "cost": {
+   "wood": 6
+  },
+  "size": [
+   4.0,
+   3.5,
+   0.6
+  ],
+  "snap": 2,
+  "research": null,
+  "desc": "",
+  "hp": 800
+ },
+ "palisade_gate": {
+  "name": "Palisadentor",
+  "cat": "defense",
+  "cost": {
+   "wood": 14,
+   "fiber": 6
+  },
+  "size": [
+   4.0,
+   3.5,
+   0.6
+  ],
+  "snap": 2,
+  "research": null,
+  "desc": "",
+  "hp": 800,
+  "gate": true
+ },
+ "stone_wall": {
+  "name": "Steinmauer",
+  "cat": "defense",
+  "cost": {
+   "stone": 16,
+   "cement": 4
+  },
+  "size": [
+   4.0,
+   3.5,
+   0.8
+  ],
+  "snap": 2,
+  "research": "masonry",
+  "desc": "",
+  "hp": 2500
+ },
+ "spike_wall": {
+  "name": "Stachelwall",
+  "cat": "defense",
+  "cost": {
+   "wood": 10,
+   "flint": 4
+  },
+  "size": [
+   4.0,
+   1.6,
+   1.2
+  ],
+  "snap": 2,
+  "research": null,
+  "desc": "",
+  "hp": 600,
+  "damage_touch": 12
+ },
+ "torch_post": {
+  "name": "Fackelpfahl",
+  "cat": "decor",
+  "cost": {
+   "wood": 2,
+   "fiber": 2
+  },
+  "size": [
+   0.3,
+   2.2,
+   0.3
+  ],
+  "snap": 0,
+  "research": null,
+  "desc": "",
+  "hp": 500,
+  "light": true
+ },
+ "banner": {
+  "name": "Banner",
+  "cat": "decor",
+  "cost": {
+   "wood": 4,
+   "hide": 2
+  },
+  "size": [
+   0.5,
+   4.0,
+   0.5
+  ],
+  "snap": 0,
+  "research": null,
+  "desc": "Zeigt dein Wappen; erhöht die Moral der Bewohner.",
+  "hp": 500
+ },
+ "rift_altar": {
+  "name": "Rissaltar",
+  "cat": "facility",
+  "cost": {
+   "stone": 30,
+   "demon_essence": 6,
+   "rift_shard": 2
+  },
+  "size": [
+   3.0,
+   2.0,
+   3.0
+  ],
+  "snap": 0,
+  "research": "pact_lore",
+  "desc": "Rituale, Pakte und Beschwörungen.",
+  "hp": 500,
+  "station": "pact"
+ },
+ "foundation": {
+  "name": "Fundament",
+  "cat": "structure",
+  "cost": {
+   "wood": 8
+  },
+  "size": [
+   4.0,
+   0.5,
+   4.0
+  ],
+  "snap": 4,
+  "research": null,
+  "desc": "",
+  "hp": 500
+ },
+ "wall": {
+  "name": "Holzwand",
+  "cat": "structure",
+  "cost": {
+   "wood": 6
+  },
+  "size": [
+   4.0,
+   3.0,
+   0.3
+  ],
+  "snap": 4,
+  "research": null,
+  "desc": "",
+  "hp": 500
+ },
+ "wall_window": {
+  "name": "Fensterwand",
+  "cat": "structure",
+  "cost": {
+   "wood": 5
+  },
+  "size": [
+   4.0,
+   3.0,
+   0.3
+  ],
+  "snap": 4,
+  "research": null,
+  "desc": "",
+  "hp": 500
+ },
+ "doorway": {
+  "name": "Türrahmen",
+  "cat": "structure",
+  "cost": {
+   "wood": 5,
+   "fiber": 2
+  },
+  "size": [
+   4.0,
+   3.0,
+   0.3
+  ],
+  "snap": 4,
+  "research": null,
+  "desc": "",
+  "hp": 500,
+  "gate": true
+ },
+ "roof": {
+  "name": "Dach",
+  "cat": "structure",
+  "cost": {
+   "wood": 4,
+   "thatch": 6
+  },
+  "size": [
+   4.0,
+   0.3,
+   4.0
+  ],
+  "snap": 4,
+  "research": null,
+  "desc": "",
+  "hp": 500
+ },
+ "stairs": {
+  "name": "Treppe",
+  "cat": "structure",
+  "cost": {
+   "wood": 8
+  },
+  "size": [
+   2.0,
+   3.0,
+   4.0
+  ],
+  "snap": 4,
+  "research": null,
+  "desc": "",
+  "hp": 500
+ }
+}

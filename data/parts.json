@@ -1,0 +1,547 @@
+{
+ "horns_brow": {
+  "name": "Stirnhörner",
+  "sockets": [
+   "head_top"
+  ],
+  "size": 0.5,
+  "families": [
+   "theropod",
+   "ornithopod",
+   "quadruped",
+   "mammal",
+   "crocodilian",
+   "wyvern",
+   "serpent"
+  ],
+  "effects": {
+   "atk": 1.08
+  },
+  "abilities": [
+   "gore"
+  ],
+  "instability": 0.04
+ },
+ "horn_nose": {
+  "name": "Nasenhorn",
+  "sockets": [
+   "nose"
+  ],
+  "size": 0.45,
+  "families": [
+   "theropod",
+   "ornithopod",
+   "quadruped",
+   "mammal",
+   "crocodilian",
+   "wyvern"
+  ],
+  "effects": {
+   "atk": 1.04
+  },
+  "abilities": [
+   "gore"
+  ],
+  "instability": 0.02
+ },
+ "horns_short": {
+  "name": "Kurzhörner",
+  "sockets": [
+   "head_top"
+  ],
+  "size": 0.7,
+  "families": [
+   "theropod",
+   "ornithopod",
+   "quadruped",
+   "mammal",
+   "crocodilian",
+   "wyvern",
+   "serpent",
+   "arthropod"
+  ],
+  "effects": {
+   "atk": 1.05
+  },
+  "abilities": [
+   "charge"
+  ],
+  "instability": 0.03
+ },
+ "horns_demon": {
+  "name": "Dämonenhörner",
+  "sockets": [
+   "head_top"
+  ],
+  "size": 0.55,
+  "families": [
+   "theropod",
+   "ornithopod",
+   "quadruped",
+   "mammal",
+   "crocodilian",
+   "wyvern",
+   "pterosaur",
+   "avian",
+   "marine",
+   "fish",
+   "serpent",
+   "arthropod"
+  ],
+  "effects": {
+   "atk": 1.12
+  },
+  "traits": [
+   "demonic"
+  ],
+  "instability": 0.1,
+  "monster": true
+ },
+ "horns_ram": {
+  "name": "Widderhörner",
+  "sockets": [
+   "head_top"
+  ],
+  "size": 0.5,
+  "families": [
+   "theropod",
+   "ornithopod",
+   "quadruped",
+   "mammal",
+   "crocodilian",
+   "wyvern",
+   "pterosaur",
+   "avian",
+   "marine",
+   "fish",
+   "serpent",
+   "arthropod"
+  ],
+  "effects": {
+   "deff": 1.06
+  },
+  "abilities": [
+   "headbutt"
+  ],
+  "instability": 0.05,
+  "monster": true
+ },
+ "frill": {
+  "name": "Nackenschild",
+  "sockets": [
+   "frill",
+   "neck_back"
+  ],
+  "size": 0.85,
+  "families": [
+   "quadruped",
+   "mammal",
+   "theropod",
+   "ornithopod",
+   "crocodilian"
+  ],
+  "effects": {
+   "deff": 1.12
+  },
+  "abilities": [
+   "frill_display"
+  ],
+  "instability": 0.06
+ },
+ "crest_dilo": {
+  "name": "Doppelkamm",
+  "sockets": [
+   "head_top"
+  ],
+  "size": 0.55,
+  "families": [
+   "theropod",
+   "ornithopod",
+   "quadruped",
+   "mammal",
+   "crocodilian",
+   "wyvern",
+   "pterosaur"
+  ],
+  "effects": {},
+  "abilities": [
+   "poison_spit"
+  ],
+  "instability": 0.03
+ },
+ "frill_neck": {
+  "name": "Halskragen",
+  "sockets": [
+   "neck_back"
+  ],
+  "size": 0.9,
+  "families": [
+   "theropod",
+   "ornithopod",
+   "wyvern",
+   "serpent"
+  ],
+  "effects": {},
+  "abilities": [
+   "frill_display"
+  ],
+  "instability": 0.02
+ },
+ "crest_parasaur": {
+  "name": "Röhrenkamm",
+  "sockets": [
+   "head_top"
+  ],
+  "size": 0.75,
+  "families": [
+   "theropod",
+   "ornithopod",
+   "quadruped",
+   "mammal",
+   "crocodilian",
+   "wyvern"
+  ],
+  "effects": {
+   "stam": 1.08
+  },
+  "abilities": [
+   "warning_call"
+  ],
+  "instability": 0.03
+ },
+ "crest_ptera": {
+  "name": "Flugkamm",
+  "sockets": [
+   "head_top"
+  ],
+  "size": 0.6,
+  "families": [
+   "theropod",
+   "ornithopod",
+   "quadruped",
+   "mammal",
+   "crocodilian",
+   "wyvern",
+   "pterosaur",
+   "avian",
+   "marine",
+   "fish",
+   "serpent",
+   "arthropod"
+  ],
+  "effects": {
+   "spd": 1.03
+  },
+  "instability": 0.02
+ },
+ "dome": {
+  "name": "Kuppelschädel",
+  "sockets": [
+   "head_top"
+  ],
+  "size": 0.6,
+  "families": [
+   "theropod",
+   "ornithopod",
+   "quadruped",
+   "mammal",
+   "crocodilian",
+   "wyvern"
+  ],
+  "effects": {
+   "deff": 1.05
+  },
+  "abilities": [
+   "headbutt"
+  ],
+  "instability": 0.03
+ },
+ "plates": {
+  "name": "Rückenplatten",
+  "sockets": [
+   "back_front",
+   "back",
+   "tail_mid"
+  ],
+  "size": 0.75,
+  "multi": true,
+  "families": [
+   "theropod",
+   "ornithopod",
+   "quadruped",
+   "mammal",
+   "crocodilian",
+   "wyvern",
+   "serpent"
+  ],
+  "effects": {
+   "deff": 1.15,
+   "spd": 0.97
+  },
+  "abilities": [
+   "plate_guard"
+  ],
+  "instability": 0.06
+ },
+ "spikes_back": {
+  "name": "Rückenstacheln",
+  "sockets": [
+   "back"
+  ],
+  "size": 0.6,
+  "families": [
+   "theropod",
+   "ornithopod",
+   "quadruped",
+   "mammal",
+   "crocodilian",
+   "wyvern",
+   "pterosaur",
+   "avian",
+   "marine",
+   "fish",
+   "serpent",
+   "arthropod"
+  ],
+  "effects": {
+   "deff": 1.06,
+   "atk": 1.03
+  },
+  "traits": [
+   "thorns"
+  ],
+  "instability": 0.04
+ },
+ "thagomizer": {
+  "name": "Schwanzstacheln",
+  "sockets": [
+   "tail_tip"
+  ],
+  "size": 1.6,
+  "families": [
+   "theropod",
+   "ornithopod",
+   "quadruped",
+   "mammal",
+   "crocodilian",
+   "wyvern",
+   "marine",
+   "serpent"
+  ],
+  "effects": {
+   "atk": 1.05
+  },
+  "abilities": [
+   "thagomizer_strike"
+  ],
+  "instability": 0.05
+ },
+ "club": {
+  "name": "Schwanzkeule",
+  "sockets": [
+   "tail_tip"
+  ],
+  "size": 1.3,
+  "families": [
+   "theropod",
+   "ornithopod",
+   "quadruped",
+   "mammal",
+   "crocodilian",
+   "wyvern",
+   "marine",
+   "serpent"
+  ],
+  "effects": {
+   "atk": 1.04,
+   "spd": 0.98
+  },
+  "abilities": [
+   "club_smash"
+  ],
+  "instability": 0.05
+ },
+ "armor": {
+  "name": "Knochenpanzer",
+  "sockets": [
+   "back"
+  ],
+  "size": 1.0,
+  "families": [
+   "quadruped",
+   "mammal",
+   "crocodilian",
+   "theropod"
+  ],
+  "effects": {
+   "deff": 1.35,
+   "spd": 0.85
+  },
+  "abilities": [
+   "shell_up"
+  ],
+  "instability": 0.1
+ },
+ "sail": {
+  "name": "Sonnensegel",
+  "sockets": [
+   "back"
+  ],
+  "size": 0.62,
+  "families": [
+   "theropod",
+   "ornithopod",
+   "quadruped",
+   "mammal",
+   "crocodilian",
+   "wyvern",
+   "marine",
+   "fish"
+  ],
+  "effects": {
+   "stam": 1.1
+  },
+  "traits": [
+   "sun_sail"
+  ],
+  "instability": 0.05
+ },
+ "tusks": {
+  "name": "Stoßzähne",
+  "sockets": [
+   "maw"
+  ],
+  "size": 0.9,
+  "families": [
+   "quadruped",
+   "mammal"
+  ],
+  "effects": {
+   "atk": 1.1
+  },
+  "abilities": [
+   "gore"
+  ],
+  "instability": 0.05
+ },
+ "fangs": {
+  "name": "Säbelzähne",
+  "sockets": [
+   "maw"
+  ],
+  "size": 0.4,
+  "families": [
+   "mammal",
+   "theropod",
+   "quadruped",
+   "crocodilian",
+   "serpent"
+  ],
+  "effects": {
+   "atk": 1.1
+  },
+  "abilities": [
+   "saber_strike"
+  ],
+  "instability": 0.05
+ },
+ "wing_membrane": {
+  "name": "Hautflügel",
+  "sockets": [
+   "shoulder_L",
+   "shoulder_R"
+  ],
+  "size": 1.2,
+  "pair": true,
+  "families": [
+   "theropod",
+   "ornithopod",
+   "mammal",
+   "quadruped",
+   "wyvern"
+  ],
+  "effects": {
+   "spd": 1.05,
+   "stam": 0.95
+  },
+  "traits": [
+   "glider"
+  ],
+  "abilities": [
+   "wing_buffet"
+  ],
+  "instability": 0.18,
+  "research": "chimera"
+ },
+ "wing_feather": {
+  "name": "Federschwingen",
+  "sockets": [
+   "shoulder_L",
+   "shoulder_R"
+  ],
+  "size": 1.1,
+  "pair": true,
+  "families": [
+   "theropod",
+   "ornithopod",
+   "mammal"
+  ],
+  "effects": {
+   "spd": 1.06
+  },
+  "traits": [
+   "glider"
+  ],
+  "abilities": [
+   "wing_buffet"
+  ],
+  "instability": 0.16,
+  "research": "chimera"
+ },
+ "bone_spikes": {
+  "name": "Knochenauswüchse",
+  "sockets": [
+   "back",
+   "back_front",
+   "tail_mid"
+  ],
+  "size": 0.6,
+  "multi": true,
+  "families": [
+   "theropod",
+   "ornithopod",
+   "quadruped",
+   "mammal",
+   "crocodilian",
+   "wyvern",
+   "pterosaur",
+   "avian",
+   "marine",
+   "fish",
+   "serpent",
+   "arthropod"
+  ],
+  "effects": {
+   "atk": 1.08,
+   "deff": 1.05
+  },
+  "traits": [
+   "demonic",
+   "thorns"
+  ],
+  "instability": 0.12,
+  "monster": true
+ },
+ "tail_demon": {
+  "name": "Dämonenschweif",
+  "sockets": [
+   "tail_tip"
+  ],
+  "size": 0.8,
+  "families": [
+   "humanoid"
+  ],
+  "effects": {},
+  "instability": 0.0
+ }
+}

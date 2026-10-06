@@ -1,0 +1,756 @@
+{
+ "melee_power": {
+  "tree": "melee",
+  "name": "Wucht",
+  "desc": "+8% Nahkampfschaden pro Rang.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "melee_dmg": 0.08
+  }
+ },
+ "melee_combo": {
+  "tree": "melee",
+  "name": "Kombokette",
+  "desc": "Schnellere Kombos; Rang 2: vierter Kombo-Schlag.",
+  "max": 2,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "combo_speed": 0.1
+  }
+ },
+ "power_strike": {
+  "tree": "melee",
+  "name": "Kraftschlag",
+  "desc": "Aktive Fähigkeit: wuchtiger, betäubender Schlag.",
+  "max": 1,
+  "kind": "active",
+  "ability": "power_strike",
+  "req": "melee_power",
+  "level": 3,
+  "per_rank": {}
+ },
+ "whirlwind": {
+  "tree": "melee",
+  "name": "Wirbel",
+  "desc": "Aktive Fähigkeit: Rundumschlag.",
+  "max": 1,
+  "kind": "active",
+  "ability": "whirlwind",
+  "req": "melee_combo",
+  "level": 8,
+  "per_rank": {}
+ },
+ "melee_execute": {
+  "tree": "melee",
+  "name": "Henker",
+  "desc": "+25% Schaden gegen Ziele unter 30% LP pro Rang.",
+  "max": 2,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 12,
+  "per_rank": {
+   "execute": 0.25
+  }
+ },
+ "ranged_aim": {
+  "tree": "ranged",
+  "name": "Ruhige Hand",
+  "desc": "+8% Fernkampfschaden, weniger Streuung.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "ranged_dmg": 0.08
+  }
+ },
+ "ranged_draw": {
+  "tree": "ranged",
+  "name": "Schnellspannen",
+  "desc": "Bogen/Armbrust 12% schneller.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "draw_speed": 0.12
+  }
+ },
+ "aimed_shot": {
+  "tree": "ranged",
+  "name": "Gezielter Schuss",
+  "desc": "Aktiv: verdoppelter Schaden, Durchschlag.",
+  "max": 1,
+  "kind": "active",
+  "ability": "aimed_shot",
+  "req": "ranged_aim",
+  "level": 3,
+  "per_rank": {}
+ },
+ "multishot": {
+  "tree": "ranged",
+  "name": "Salve",
+  "desc": "Aktiv: drei Pfeile im Fächer.",
+  "max": 1,
+  "kind": "active",
+  "ability": "multishot",
+  "req": "ranged_draw",
+  "level": 8,
+  "per_rank": {}
+ },
+ "ranged_tranq": {
+  "tree": "ranged",
+  "name": "Betäubungsschütze",
+  "desc": "+20% Betäubungswirkung pro Rang.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "torpor": 0.2
+  }
+ },
+ "def_block": {
+  "tree": "defense",
+  "name": "Schildwall",
+  "desc": "Blocken kostet 15% weniger Ausdauer und blockt mehr.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "block": 0.15
+  }
+ },
+ "def_parry": {
+  "tree": "defense",
+  "name": "Parade",
+  "desc": "Größeres Paradefenster; Konter-Schaden +20%.",
+  "max": 2,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "parry": 0.05
+  }
+ },
+ "def_armor": {
+  "tree": "defense",
+  "name": "Abhärtung",
+  "desc": "+6% Rüstung pro Rang.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "armor": 0.06
+  }
+ },
+ "def_vitality": {
+  "tree": "defense",
+  "name": "Lebenskraft",
+  "desc": "+15 maximale LP pro Rang.",
+  "max": 5,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "hp": 15
+  }
+ },
+ "def_second_wind": {
+  "tree": "defense",
+  "name": "Zweiter Atem",
+  "desc": "Einmal pro Kampf: bei <20% LP heilst du 30%.",
+  "max": 1,
+  "kind": "passive",
+  "ability": null,
+  "req": "def_vitality",
+  "level": 10,
+  "per_rank": {}
+ },
+ "hunt_tracking": {
+  "tree": "hunt",
+  "name": "Fährtenlesen",
+  "desc": "Zeigt Stufe, Zustand und Zähmbarkeit wilder Tiere; Rang 3: Alphas auf Karte.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "tracking": 1
+  }
+ },
+ "hunt_skinning": {
+  "tree": "hunt",
+  "name": "Ausweiden",
+  "desc": "+20% Beute aus Kadavern.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "loot": 0.2
+  }
+ },
+ "hunt_traps": {
+  "tree": "hunt",
+  "name": "Fallensteller",
+  "desc": "Fallen halten 25% länger; schaltet Fallenbau frei.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "trap": 0.25
+  }
+ },
+ "hunt_stealth": {
+  "tree": "hunt",
+  "name": "Lautlos",
+  "desc": "Geduckt werden wilde Tiere später aufmerksam.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "stealth": 0.2
+  }
+ },
+ "hunt_bola": {
+  "tree": "hunt",
+  "name": "Wurfmeister",
+  "desc": "Bolas & Wurfspeere +25% Wirkung.",
+  "max": 2,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "throw": 0.25
+  }
+ },
+ "beast_command": {
+  "tree": "beast",
+  "name": "Rudelführer",
+  "desc": "+1 Gefährte im aktiven Gefolge pro Rang.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "party": 1
+  }
+ },
+ "beast_pack": {
+  "tree": "beast",
+  "name": "Großes Gefolge",
+  "desc": "+1 Gefährte; Gefährten folgen enger in Formation.",
+  "max": 2,
+  "kind": "passive",
+  "ability": null,
+  "req": "beast_command",
+  "level": 10,
+  "per_rank": {
+   "party": 1
+  }
+ },
+ "beast_tactics": {
+  "tree": "beast",
+  "name": "Taktik",
+  "desc": "+8% Schaden deiner Gefährten pro Rang.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "companion_dmg": 0.08
+  }
+ },
+ "beast_rally": {
+  "tree": "beast",
+  "name": "Bestienruf",
+  "desc": "Aktiv: Gefährten +25% Schaden/Tempo.",
+  "max": 1,
+  "kind": "active",
+  "ability": "beast_rally",
+  "req": "beast_tactics",
+  "level": 6,
+  "per_rank": {}
+ },
+ "beast_mount": {
+  "tree": "beast",
+  "name": "Reiterkunst",
+  "desc": "Reitkampf: +15% Schaden vom Sattel, Reittier +10% Tempo.",
+  "max": 2,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "mount": 0.15
+  }
+ },
+ "tame_trust": {
+  "tree": "taming",
+  "name": "Sanfte Hand",
+  "desc": "Vertrauenszähmung 25% schneller; Tiere fliehen später.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "trust": 0.25
+  }
+ },
+ "tame_knockout": {
+  "tree": "taming",
+  "name": "Bändiger",
+  "desc": "Betäubungszähmung 20% schneller; Betäubung hält länger.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "ko_tame": 0.2
+  }
+ },
+ "tame_bond": {
+  "tree": "taming",
+  "name": "Seelenband",
+  "desc": "+25% Bindungsgewinn.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "bond": 0.25
+  }
+ },
+ "tame_magic": {
+  "tree": "taming",
+  "name": "Runenbinder",
+  "desc": "+12% Chance bei magischer Bindung und Pakten.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 6,
+  "per_rank": {
+   "magic_bind": 0.12
+  }
+ },
+ "tame_imprint": {
+  "tree": "taming",
+  "name": "Prägung",
+  "desc": "Geschlüpfte Tiere starten mit +15 Bindung und besseren Werten.",
+  "max": 2,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "imprint": 0.15
+  }
+ },
+ "gen_insight": {
+  "tree": "genetics",
+  "name": "Geneinsicht",
+  "desc": "Zeigt Genwerte; Rang 2: Vererbungschancen; Rang 3: verborgene Mutationen.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "insight": 1
+  }
+ },
+ "gen_control": {
+  "tree": "genetics",
+  "name": "Vererbungslenkung",
+  "desc": "+15% Kontrolle über vererbte Merkmale.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": "gen_insight",
+  "level": 1,
+  "per_rank": {
+   "control": 0.15
+  }
+ },
+ "gen_stability": {
+  "tree": "genetics",
+  "name": "Stabile Linien",
+  "desc": "-15% Instabilität bei Kreuzungen.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "stability": 0.15
+  }
+ },
+ "gen_mutation": {
+  "tree": "genetics",
+  "name": "Mutagenese",
+  "desc": "+30% Chance auf positive Mutationen.",
+  "max": 2,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 8,
+  "per_rank": {
+   "mutation": 0.3
+  }
+ },
+ "gen_chimera": {
+  "tree": "genetics",
+  "name": "Chimärenkunde",
+  "desc": "Familienübergreifende Kreuzungen weniger riskant.",
+  "max": 2,
+  "kind": "passive",
+  "ability": null,
+  "req": "gen_control",
+  "level": 12,
+  "per_rank": {
+   "chimera": 0.2
+  }
+ },
+ "craft_quality": {
+  "tree": "craft",
+  "name": "Meisterhand",
+  "desc": "+8% Qualität hergestellter Ausrüstung.",
+  "max": 5,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "quality": 0.08
+  }
+ },
+ "craft_efficiency": {
+  "tree": "craft",
+  "name": "Sparsamkeit",
+  "desc": "10% Chance pro Rang, keine Materialien zu verbrauchen.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "save_mat": 0.1
+  }
+ },
+ "craft_research": {
+  "tree": "craft",
+  "name": "Gelehrter",
+  "desc": "+25% Forschungspunkte.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "research": 0.25
+  }
+ },
+ "craft_runes": {
+  "tree": "craft",
+  "name": "Runenschmied",
+  "desc": "Runen verleihen +20% Elementarschaden.",
+  "max": 2,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 8,
+  "per_rank": {
+   "rune": 0.2
+  }
+ },
+ "craft_salvage": {
+  "tree": "craft",
+  "name": "Verwerter",
+  "desc": "Zerlegen gibt mehr Material zurück.",
+  "max": 2,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "salvage": 0.25
+  }
+ },
+ "firebolt": {
+  "tree": "elemental",
+  "name": "Feuerlanze",
+  "desc": "Aktiv: Feuergeschoss.",
+  "max": 1,
+  "kind": "active",
+  "ability": "firebolt",
+  "req": "elemental_affinity",
+  "level": 5,
+  "per_rank": {}
+ },
+ "ice_shard": {
+  "tree": "elemental",
+  "name": "Eissplitter",
+  "desc": "Aktiv: unterkühlendes Geschoss.",
+  "max": 1,
+  "kind": "active",
+  "ability": "ice_shard",
+  "req": "elemental_affinity",
+  "level": 5,
+  "per_rank": {}
+ },
+ "lightning_arc": {
+  "tree": "elemental",
+  "name": "Blitzbogen",
+  "desc": "Aktiv: überspringender Blitz.",
+  "max": 1,
+  "kind": "active",
+  "ability": "lightning_arc",
+  "req": "firebolt",
+  "level": 10,
+  "per_rank": {}
+ },
+ "elemental_affinity": {
+  "tree": "elemental",
+  "name": "Elementargespür",
+  "desc": "Erlernbar nach Nixas Unterricht. +10% Elementarschaden.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 4,
+  "per_rank": {
+   "element_dmg": 0.1
+  }
+ },
+ "elemental_mastery": {
+  "tree": "elemental",
+  "name": "Reaktionsmeister",
+  "desc": "Elementarreaktionen +20% Wirkung.",
+  "max": 2,
+  "kind": "passive",
+  "ability": null,
+  "req": "elemental_affinity",
+  "level": 12,
+  "per_rank": {
+   "reaction": 0.2
+  }
+ },
+ "heal_mend": {
+  "tree": "healing",
+  "name": "Heilkunde",
+  "desc": "+20% Heilkraft pro Rang.",
+  "max": 5,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "heal": 0.2
+  }
+ },
+ "heal_wave": {
+  "tree": "healing",
+  "name": "Heilende Welle",
+  "desc": "Aktiv: Gruppenheilung.",
+  "max": 1,
+  "kind": "active",
+  "ability": "heal_wave",
+  "req": "heal_mend",
+  "level": 6,
+  "per_rank": {}
+ },
+ "ward": {
+  "tree": "healing",
+  "name": "Schutzglyphe",
+  "desc": "Aktiv: Schild für dich oder Gefährten.",
+  "max": 1,
+  "kind": "active",
+  "ability": "ward",
+  "req": null,
+  "level": 4,
+  "per_rank": {}
+ },
+ "cleanse": {
+  "tree": "healing",
+  "name": "Reinigen",
+  "desc": "Aktiv: entfernt negative Zustände.",
+  "max": 1,
+  "kind": "active",
+  "ability": "cleanse",
+  "req": null,
+  "level": 6,
+  "per_rank": {}
+ },
+ "beast_mend": {
+  "tree": "healing",
+  "name": "Tierheilung",
+  "desc": "Aktiv: starke Heilung eines Gefährten.",
+  "max": 1,
+  "kind": "active",
+  "ability": "beast_mend",
+  "req": null,
+  "level": 3,
+  "per_rank": {}
+ },
+ "surv_hunger": {
+  "tree": "survival",
+  "name": "Genügsam",
+  "desc": "Hunger sinkt 15% langsamer.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "hunger": 0.15
+  }
+ },
+ "surv_alchemy": {
+  "tree": "survival",
+  "name": "Alchemist",
+  "desc": "+20% Trankwirkung; Rang 2: 1 Extra-Ergebnis.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "potion": 0.2
+  }
+ },
+ "surv_forage": {
+  "tree": "survival",
+  "name": "Sammler",
+  "desc": "+25% Ertrag beim Sammeln.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "gather": 0.25
+  }
+ },
+ "surv_climate": {
+  "tree": "survival",
+  "name": "Wetterfest",
+  "desc": "+30% Kälte/Hitze-Resistenz.",
+  "max": 2,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "climate": 0.3
+  }
+ },
+ "surv_regen": {
+  "tree": "survival",
+  "name": "Zähigkeit",
+  "desc": "+50% LP-Regeneration außerhalb des Kampfes.",
+  "max": 2,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "regen": 0.5
+  }
+ },
+ "exp_sprint": {
+  "tree": "explore",
+  "name": "Ausdauerläufer",
+  "desc": "Sprinten kostet 15% weniger Ausdauer.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "sprint": 0.15
+  }
+ },
+ "exp_swim": {
+  "tree": "explore",
+  "name": "Taucher",
+  "desc": "+50% Atem und +15% Schwimmtempo.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "swim": 0.5
+  }
+ },
+ "exp_climb": {
+  "tree": "explore",
+  "name": "Kletterer",
+  "desc": "Rang 1: steilere Hänge begehbar. Rang 2: Klettern an Felswänden.",
+  "max": 2,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "climb": 1
+  }
+ },
+ "exp_cartography": {
+  "tree": "explore",
+  "name": "Kartograf",
+  "desc": "Zeigt Orte in der Nähe auf der Karte.",
+  "max": 2,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "carto": 1
+  }
+ },
+ "exp_dodge": {
+  "tree": "explore",
+  "name": "Akrobat",
+  "desc": "Ausweichen kostet weniger und gewährt längere Unverwundbarkeit.",
+  "max": 3,
+  "kind": "passive",
+  "ability": null,
+  "req": null,
+  "level": 1,
+  "per_rank": {
+   "dodge": 0.15
+  }
+ }
+}

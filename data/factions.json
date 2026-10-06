@@ -1,0 +1,52 @@
+{
+ "morgengrau": {
+  "name": "Siedler von Morgengrau",
+  "desc": "Gestrandete Menschen, Fischer und Gelehrte. Vorsichtig, aber hilfsbereit.",
+  "demon_reaction": "hostile",
+  "color": [
+   0.8,
+   0.7,
+   0.4
+  ]
+ },
+ "moosfell": {
+  "name": "Moosfell-Goblins",
+  "desc": "Händler und Kräuterkundige aus dem Dschungel. Fürchten die Rissbrut.",
+  "demon_reaction": "flee",
+  "color": [
+   0.35,
+   0.6,
+   0.3
+  ]
+ },
+ "knochenbrecher": {
+  "name": "Knochenbrecher-Stamm",
+  "desc": "Kriegerische Goblins der Ebene. Respektieren nur Stärke.",
+  "demon_reaction": "respect",
+  "color": [
+   0.7,
+   0.3,
+   0.2
+  ]
+ },
+ "daemonengoblins": {
+  "name": "Rissbrut",
+  "desc": "Vom Riss verdorbene Goblins unter dem Propheten Vashrak.",
+  "demon_reaction": "ally",
+  "color": [
+   0.5,
+   0.1,
+   0.2
+  ]
+ },
+ "eisenhand": {
+  "name": "Eisenhand-Söldner",
+  "desc": "Söldner vom Festland unter Hauptmann Brannoc. Wollen die Inseln beherrschen.",
+  "demon_reaction": "hostile",
+  "color": [
+   0.45,
+   0.45,
+   0.5
+  ]
+ }
+}

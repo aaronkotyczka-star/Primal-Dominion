@@ -1,0 +1,46 @@
+; Engine configuration file.
+config_version=5
+
+[application]
+
+config/name="Primal Dominion"
+config/description="Düsteres Dinosaurier- und Monster-RPG"
+config/version="0.1.0"
+run/main_scene="res://scenes/main.tscn"
+config/features=PackedStringArray("4.5", "Forward Plus")
+config/icon="res://assets/icon.svg"
+boot_splash/bg_color=Color(0.04, 0.04, 0.05, 1)
+boot_splash/show_image=false
+
+[autoload]
+
+EventBus="*res://src/autoload/event_bus.gd"
+DB="*res://src/autoload/db.gd"
+Settings="*res://src/autoload/settings.gd"
+GameState="*res://src/autoload/game_state.gd"
+SaveSystem="*res://src/autoload/save_system.gd"
+Audio="*res://src/autoload/audio.gd"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/mode=2
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/vsync/vsync_mode=1
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
+common/physics_ticks_per_second=60
+
+[rendering]
+
+anti_aliasing/quality/msaa_3d=0
+anti_aliasing/quality/screen_space_aa=1
+lights_and_shadows/directional_shadow/size=4096
+lights_and_shadows/directional_shadow/soft_shadow_filter_quality=3
+textures/default_filters/anisotropic_filtering_level=3
+environment/defaults/default_clear_color=Color(0.05, 0.05, 0.06, 1)
+occlusion_culling/use_occlusion_culling=false

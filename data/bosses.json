@@ -1,0 +1,56 @@
+{
+ "gorrath": {
+  "base": "trex",
+  "name": "Gorrath, der Verderbte",
+  "level": 30,
+  "hp_mult": 3.5,
+  "atk_mult": 1.4,
+  "scale": 1.3,
+  "corruption": 1.0,
+  "glow": 1.0,
+  "glow_color": [
+   1.0,
+   0.25,
+   0.05
+  ],
+  "elements": {
+   "fire": 0.5,
+   "shadow": 0.5
+  },
+  "parts": [
+   {
+    "id": "bone_spikes",
+    "socket": "back",
+    "size": 1.4
+   },
+   {
+    "id": "horns_demon",
+    "socket": "head_top",
+    "size": 0.9
+   }
+  ],
+  "abilities": [
+   "heavy_bite",
+   "roar",
+   "tail_swipe",
+   "hellfire_breath"
+  ],
+  "tameable": false
+ },
+ "alpha_raptor": {
+  "base": "raptor",
+  "name": "Narbenklaue",
+  "level": 15,
+  "hp_mult": 3.0,
+  "atk_mult": 1.5,
+  "scale": 1.3,
+  "corruption": 0.0,
+  "tameable": false,
+  "abilities": [
+   "bite",
+   "pounce",
+   "pack_call",
+   "slash_claw"
+  ]
+ }
+}
