@@ -603,6 +603,27 @@ def building_textures():
     save("pelt_nrm.png", normal_from_height(streak * 0.6 + f1 * 0.4, 3.0))
 
 
+def gear_textures():
+    n = 512
+    yy, xx = np.mgrid[0:n, 0:n] / n
+    # wood grain running along v (handles are UV/triplanar mapped along their length)
+    w = tile_noise(n, 4, 801, 3)
+    g = np.sin((xx * 9 + w * 2.5 + np.sin(yy * np.pi * 2 * 2) * 0.15) * np.pi * 2) * 0.5 + 0.5
+    g2 = np.sin((xx * 41 + w * 4) * np.pi * 2) * 0.5 + 0.5
+    v = 0.75 + 0.18 * g + 0.07 * g2 + 0.1 * (tile_noise(n, 64, 802, 2) - 0.5)
+    save("wood_grain.png", u8(np.stack([v, v * 0.97, v * 0.93], -1)))
+    # knapped stone: conchoidal flake scars
+    f1, f2, cid = voronoi(n, 14, 803)
+    ridge = np.clip((f2 - f1) * 3, 0, 1)
+    v = 0.7 + 0.2 * ridge ** 0.5 + 0.12 * (cid - 0.5) + 0.08 * (tile_noise(n, 96, 804, 2) - 0.5)
+    save("stone_chip.png", u8(np.stack([v, v, v * 0.98], -1)))
+    # brushed / scratched metal
+    sc = tile_noise(n, 4, 805, 2)
+    lines = np.clip(tile_noise(n, 256, 806, 1) * 1.6 - 0.6, 0, 1)
+    v = 0.8 + 0.1 * sc + 0.1 * np.sin(yy * np.pi * 2 * 120 + sc * 8) * 0.3 - lines * 0.15
+    save("metal_scratch.png", u8(np.stack([v, v, v * 1.01], -1)))
+
+
 def build_strips():
     layers = ["grass", "dirt", "rock", "sand", "mud", "snow", "ash", "corrupt"]
     ims = [Image.open(os.path.join(OUT, f"t_{l}_albedo.png")).convert("RGB") for l in layers]
@@ -625,7 +646,7 @@ def build_strips():
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     import sys
-    which = sys.argv[1:] or ["creature_skin", "terrain", "bark_and_leaves", "build_strips", "building_textures"]
+    which = sys.argv[1:] or ["creature_skin", "terrain", "bark_and_leaves", "build_strips", "building_textures", "gear_textures"]
     for w in which:
         globals()[w]()
     print("textures done")

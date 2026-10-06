@@ -195,6 +195,20 @@ def tree_conifer(lod, seed=2, H=16.0, width=4.2, tiers0=11):
     tube(mb, trunk, np.linspace(0.42 * H / 16, 0.03, 8), 10 if lod == 0 else 5, sway1=0.25, vscale=0.5)
     tiers = tiers0 if lod == 0 else max(5, tiers0 // 2)
     up = np.array([0, 1.0, 0])
+    if lod == 1:
+        # distant LOD: per whorl three crossed vertical needle cards + one horizontal card
+        spacing = H * 0.84 / (tiers - 1)
+        for k in range(tiers):
+            t = 0.14 + 0.84 * k / (tiers - 1)
+            y = t * H
+            rad = (1 - t) ** 0.85 * width + 0.4
+            for j in range(3):
+                a = j / 3 * math.pi + k * 0.5
+                nrm = np.array([math.cos(a), 0, math.sin(a)])
+                card(mb, np.array([0, y - spacing * 0.35, 0]), nrm, up, rad * 2.1, spacing * 1.9, 1, 0.6, rng.random())
+            card(mb, np.array([0, y - spacing * 0.3, 0]), up, np.array([1.0, 0, 0]), rad * 1.9, rad * 1.9, 1, 0.6, rng.random())
+        card(mb, np.array([0, H * 0.985, 0]), np.array([1.0, 0, 0]), up, 0.7, H * 0.08, 1, 1.0, 0.5)
+        return mb
     for k in range(tiers):
         t = 0.14 + 0.84 * k / (tiers - 1)
         y = t * H + rng.uniform(-0.2, 0.2)

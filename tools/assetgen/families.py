@@ -716,7 +716,12 @@ def flyer(rid, H=0.6, torso_len=0.6, torso_r=0.18, neck_len=0.5, neck_r=0.06, ne
                 tb.append([("pelvis" if not feathered else "spine", 1.0)])
             else:
                 tb.append(lb[i])
+        if feathered:
+            # under-wing base surface (shorter chord) + individual flight feathers on top
+            trail = [L + (T - L) * 0.55 for L, T in zip(lead, trail)]
         r.add_membrane(lead, lb, trail, tb, R_FEATHER if feathered else R_MEMBRANE, rows=5, feather=feathered)
+        if feathered:
+            _flight_feathers(r, s, sn, sh, el, wr, mc, tipp, half)
     if feathered:
         # tail fan
         TT = r.b("tail3").tail
@@ -751,6 +756,51 @@ def flyer(rid, H=0.6, torso_len=0.6, torso_r=0.18, neck_len=0.5, neck_r=0.06, ne
     r.socket("mouth", "jaw", r.b("jaw").tail, (0, 0, -1), head_r)
     r.meta.update(gait="flyer", hip_height=H, length=float(torso_len + neck_len + head_len + tail_len), wing_span=wing_span)
     return r
+
+
+def _flight_feathers(r, s, sn, sh, el, wr, mc, tipp, half):
+    """Primaries fanning from the hand, secondaries along the forearm, tertials, two covert rows.
+    Each feather is a two-sided card whose UV maps to one feather cell of the membrane shader."""
+    up = v3(0, 1, 0)
+    k = [0]
+
+    def feather(base, dirv, length, width, bones, lift):
+        d = norm(dirv)
+        wv = norm(np.cross(up, d)) * width * 0.5
+        b = base + up * lift
+        tip = b + d * length + up * (-0.02 * length)
+        cell = k[0] % 26
+        k[0] += 1
+        r.add_membrane([b - wv, b + wv], [bones, bones], [tip - wv * 0.7, tip + wv * 0.7], [bones, bones], R_FEATHER, rows=2,
+                       uspan=(cell / 26.0, (cell + 1) / 26.0))
+    out = v3(s, 0, 0)
+    back = v3(0, -0.04, 1)
+    # primaries (10): from the hand/fingers, fanning from outward to backward
+    for i in range(10):
+        t = i / 9
+        base = mc + (tipp - mc) * (0.85 - 0.75 * t) if t < 1 else mc
+        d = out * (1 - t) * 0.9 + back * (0.25 + t)
+        ln = half * (0.36 - 0.1 * t)
+        feather(base, d, ln, ln * 0.2, [(f"wing4_{sn}" if t < 0.6 else f"wing3_{sn}", 1.0)], 0.004 * half * (10 - i))
+    # secondaries (12) along the forearm, tertials (5) near the body
+    for i in range(12):
+        t = i / 11
+        base = wr + (el - wr) * t
+        ln = half * (0.3 - 0.04 * t)
+        feather(base, back + out * 0.12 * (1 - t), ln, ln * 0.22, [(f"wing2_{sn}", 1.0)], 0.003 * half * (12 - i) * 0.5)
+    for i in range(5):
+        t = i / 4
+        base = el + (sh - el) * t
+        ln = half * (0.24 - 0.05 * t)
+        feather(base, back - out * 0.1 * t, ln, ln * 0.25, [(f"wing1_{sn}", 1.0)], 0.002 * half)
+    # coverts: two shorter rows layered above
+    for row, (frac, lift) in enumerate(((0.5, 0.012), (0.28, 0.02))):
+        for i in range(14):
+            t = i / 13
+            base = (mc + (wr - mc) * (t * 2)) if t < 0.5 else (wr + (sh - wr) * ((t - 0.5) * 2))
+            bn = f"wing3_{sn}" if t < 0.25 else (f"wing2_{sn}" if t < 0.75 else f"wing1_{sn}")
+            ln = half * 0.3 * frac
+            feather(base, back + out * 0.1, ln, ln * 0.45, [(bn, 1.0)], lift * half)
 
 
 # =====================================================================================

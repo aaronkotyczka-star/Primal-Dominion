@@ -4,7 +4,7 @@
 uniform vec3 color_main : source_color = vec3(0.35, 0.32, 0.25);
 uniform vec3 color_belly : source_color = vec3(0.65, 0.6, 0.5);
 uniform vec3 color_pattern : source_color = vec3(0.15, 0.13, 0.1);
-uniform int pattern_type = 1; // 0 none, 1 stripes, 2 spots/rosettes, 3 saddle bands, 4 mottled
+uniform int pattern_type = 1; // 0 none, 1 stripes, 2 spots, 3 saddle bands, 4 mottled, 5 rosettes
 uniform float pattern_scale = 1.0;
 uniform float pattern_strength = 0.7;
 uniform vec3 hair_color : source_color = vec3(0.12, 0.08, 0.05);
@@ -70,7 +70,11 @@ vec3 coat_color(vec3 rp, vec3 rn) {
 		float band = sin((rp.z * 6.5 + n1 * 3.2 + rp.y * 1.5) * pattern_scale) * 0.5 + 0.5;
 		pat = smoothstep(0.62, 0.8, band + (n2 - 0.5) * 0.25) * smoothstep(-0.5, 0.5, rn.y);
 	} else if (pattern_type == 2) {
-		// rosettes / spots
+		// irregular spots, denser and darker over the back
+		vec2 c = cell3(rp * 6.0 * pattern_scale + n1 * 0.9);
+		pat = smoothstep(0.42, 0.26, c.x + (n2 - 0.5) * 0.2) * (0.3 + 0.7 * dorsal);
+	} else if (pattern_type == 5) {
+		// rosettes (big cats)
 		vec2 c = cell3(rp * 5.0 * pattern_scale + n1 * 0.6);
 		float ring = smoothstep(0.32, 0.38, c.x) * (1.0 - smoothstep(0.5, 0.62, c.x));
 		pat = max(ring, smoothstep(0.24, 0.16, c.x) * 0.7) * (0.35 + dorsal);

@@ -42,6 +42,14 @@ func _init() -> void:
 		cols = {"color_main": [0.66, 0.5, 0.4], "color_belly": [0.68, 0.53, 0.43], "color_pattern": [0.6, 0.45, 0.36],
 			"top_color": [0.42, 0.36, 0.26], "bottom_color": [0.24, 0.22, 0.2], "boots_color": [0.24, 0.16, 0.1],
 			"hair_color": [0.2, 0.13, 0.08], "eye_color": [0.25, 0.4, 0.5]}
+	if sp["rig"] == "goblin":
+		cols["color_main"] = [0.33, 0.43, 0.25]
+		cols["color_belly"] = [0.36, 0.45, 0.28]
+		cols["eye_color"] = [0.9, 0.75, 0.2]
+	elif sp["rig"] == "demon":
+		cols["color_main"] = [0.25, 0.08, 0.07]
+		cols["color_belly"] = [0.3, 0.1, 0.08]
+		cols["eye_color"] = [1.0, 0.5, 0.1]
 	var vis := CreatureVisual.new()
 	root.add_child(vis)
 	var ph := {"rig": sp["rig"], "scale": 1.0, "parts": sp.get("parts", []), "colors": cols,

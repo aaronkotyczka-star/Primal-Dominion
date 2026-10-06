@@ -394,8 +394,27 @@ static func _oasis(w: Node3D) -> void:
 	_station(w, "campfire", "campfire", c + Vector3(7.2, 0, -0.8))
 
 
-static func _cave_mouth(w: Node3D, id: String) -> void:
+## The cave POIs sit on cliffs; the mouth goes to the nearest hillside spot that is still walkable.
+static func cave_mouth_pos(id: String) -> Vector3:
 	var c := _poi(id)
+	var best := c
+	var best_d := 1e9
+	for ri in 14:
+		var r := ri * 6.0
+		for ai in 16:
+			var a := TAU * ai / 16.0
+			var q := c + Vector3(cos(a) * r, 0, sin(a) * r)
+			var ny := WorldData.normal_at(q.x, q.z).y
+			if ny > 0.9 and WorldData.height_at(q.x, q.z) > 3.0:
+				var d := r
+				if d < best_d:
+					best_d = d
+					best = q
+	return best
+
+
+static func _cave_mouth(w: Node3D, id: String) -> void:
+	var c := cave_mouth_pos(id)
 	var m := Node3D.new()
 	w.add_child(m)
 	# face downhill and sit slightly into the slope so the opening reads as a hole in the hillside
@@ -411,7 +430,8 @@ static func _cave_mouth(w: Node3D, id: String) -> void:
 	var void_box := BuildingVisuals.box(m, Vector3(6.5, 5.5, 3.0), Vector3(0, 2.6, -1.2), dark)
 	void_box.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	for spec in [[Vector3(-5.2, 0, 0), 0.75, 0.3], [Vector3(5.2, 0, 0.2), 0.8, 2.1], [Vector3(0.5, 5.2, -0.6), 0.85, 1.2],
-			[Vector3(-3.4, 4.0, -0.4), 0.55, 4.0], [Vector3(3.6, 4.2, -0.2), 0.6, 5.3], [Vector3(0, 2.0, -4.5), 1.3, 0.0]]:
+			[Vector3(-3.4, 4.0, -0.4), 0.55, 4.0], [Vector3(3.6, 4.2, -0.2), 0.6, 5.3], [Vector3(0, -1.5, -9.0), 2.4, 0.0],
+			[Vector3(-8.0, -1.0, -6.0), 1.5, 2.5], [Vector3(8.5, -1.0, -6.5), 1.6, 4.4]]:
 		var r := MeshInstance3D.new()
 		r.mesh = FloraLibrary.mesh("rock_large", 0)
 		m.add_child(r)

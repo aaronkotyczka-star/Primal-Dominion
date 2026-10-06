@@ -329,7 +329,7 @@ class Rig:
                 idx += [a, a + w, a + 1, a + 1, a + w, a + w + 1]
         self.add_extra(pos, nrm, idx, [[(bone, 1.0)]] * len(pos), R_EYE, uv=uv)
 
-    def add_membrane(self, lead_pts, lead_bones, trail_pts, trail_bones, region, rows=6, feather=False):
+    def add_membrane(self, lead_pts, lead_bones, trail_pts, trail_bones, region, rows=6, feather=False, uspan=(0.0, 1.0)):
         """Grid surface between leading edge polyline and trailing edge polyline (same count).
         Written as two-sided geometry on surface 1 with UVs (u span, v chord)."""
         n = len(lead_pts)
@@ -340,7 +340,7 @@ class Rig:
                 p = lead_pts[i] * (1 - v) + trail_pts[i] * v
                 pos.append(p)
                 bw.append(_blend_bw(lead_bones[i], trail_bones[i], v))
-                uv.append((i / (n - 1), v))
+                uv.append((uspan[0] + (uspan[1] - uspan[0]) * i / (n - 1), v))
         pos = np.array(pos)
         # normals: computed later per face, here approximate
         for i in range(n - 1):

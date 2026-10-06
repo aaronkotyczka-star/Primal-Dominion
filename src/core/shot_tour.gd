@@ -74,14 +74,14 @@ static func run(main: Node, dir: String) -> void:
 		showcase.clear()
 	if only == "" or "11" in only.split(","):
 		# cave mouth from outside
-		var mc := WorldData.poi_pos("wurzelhoehle")
+		var mc := Settlements.cave_mouth_pos("wurzelhoehle")
 		var nn := WorldData.normal_at(mc.x, mc.z)
 		var dn := Vector3(nn.x, 0, nn.z).normalized() if Vector2(nn.x, nn.z).length() > 0.05 else Vector3(0, 0, 1)
 		var mp := mc + dn * 15.0
 		mp.y = WorldData.height_at(mp.x, mp.z) + 1.0
 		p.global_position = mp
 		p.rig.yaw = atan2(dn.x, dn.z)
-		p.rig.pitch = -0.1
+		p.rig.pitch = atan2(WorldData.height_at(mc.x, mc.z) + 3.0 - mp.y - 1.6, 15.0) * 0.8
 		p.rig.first_person = false
 		GameState.state["time"]["hour"] = 10.0
 		for i in 90:

@@ -71,7 +71,7 @@ def humanoid(rid, height=1.8, build=1.0, head_scale=1.0, ears=0.0, nose=1.0, gob
     r.ell("head", G(0, 0.035, -0.045), (0.064 * wide, 0.055, 0.048), k=0.02 * k)
     for sd in (-1, 1):
         r.ell("head", G(sd * 0.084 * wide, 0.0, -0.038), (0.014, 0.028, 0.028), k=0.012 * k, sub=True)
-    r.ell("head", G(0, 0.002, -0.08), (0.046 * wide, 0.012 * (1.5 if goblin or demon else 1.0), 0.016), k=0.016 * k)
+    r.ell("head", G(0, 0.002, -0.08 + 0.003 * fem), (0.046 * wide, 0.012 * (1.5 if goblin or demon else 1.0) * (1 - 0.35 * fem), 0.016 * (1 - 0.3 * fem)), k=0.016 * k)
     for sd in (-1, 1):
         r.ell("head", G(sd * 0.032, -0.024, -0.064), (0.022, 0.02, 0.016), k=0.01 * k)
         r.ell("head", G(sd * 0.048, -0.036, -0.058), (0.024, 0.016, 0.024), k=0.012 * k)
@@ -83,23 +83,23 @@ def humanoid(rid, height=1.8, build=1.0, head_scale=1.0, ears=0.0, nose=1.0, gob
         r.ell("head", G(sd * 0.0122 * nl, -0.067, -0.092), (0.0078 * nl, 0.0072, 0.0078), k=0.004 * k)
         r.ell("head", G(sd * 0.0075 * nl, -0.0715, -0.096), (0.0032, 0.0021, 0.0034), k=0.0015 * k, sub=True)
         # cheek fat pad (avoid the gaunt look)
-        r.ell("head", G(sd * 0.042, -0.07, -0.06), (0.022, 0.025, 0.022), k=0.016 * k)
+        r.ell("head", G(sd * 0.042, -0.07, -0.06), (0.022 * (1 - 0.25 * fem), 0.025 * (1 - 0.2 * fem), 0.022), k=0.016 * k)
     r.ell("head", G(0, -0.078, -0.066), (0.038 * wide, 0.03, 0.03), k=0.014 * k)
     r.ell("head", G(0, -0.084, -0.0915), (0.0105, 0.0075, 0.0052), k=0.004 * k)
-    r.ell("head", G(0, -0.0925, -0.0912), (0.024, 0.0065, 0.0075), k=0.0035 * k)
-    r.ell("jaw", G(0, -0.1045, -0.0892), (0.0215, 0.0075, 0.0085), k=0.0035 * k)
+    r.ell("head", G(0, -0.0925, -0.0912), (0.024 - 0.001 * fem, 0.0065 * (1 + 0.25 * fem), 0.0075 * (1 + 0.15 * fem)), k=0.0035 * k)
+    r.ell("jaw", G(0, -0.1045, -0.0892), (0.0215 - 0.001 * fem, 0.0075 * (1 + 0.3 * fem), 0.0085 * (1 + 0.15 * fem)), k=0.0035 * k)
     r.cap("head", G(-0.0245, -0.0988, -0.0965), G(0.0245, -0.0988, -0.0965), 0.0012, 0.0012, up=(0, 1, 0), k=0.0018 * k, sub=True, region=R_MOUTH)
     for sd in (-1, 1):
         r.ell("head", G(sd * 0.026, -0.099, -0.086), (0.004, 0.004, 0.004), k=0.003 * k, sub=True)
     # mandible + chin (male jaw squarer)
     for sd in (-1, 1):
-        r.ell_along("jaw", G(sd * 0.05 * wide, -0.062, -0.004), G(sd * 0.03, -0.122, -0.06), 0.014, 0.018, up=(0, 0, -1), k=0.03 * k)
-        r.ell("head", G(sd * 0.055 * wide, -0.06, -0.025), (0.018, 0.03, 0.03), k=0.02 * k)
-    r.ell("jaw", G(0, -0.112, -0.045), (0.04, 0.022, 0.04), k=0.02 * k)
+        r.ell_along("jaw", G(sd * (0.05 - 0.006 * fem) * wide, -0.062, -0.004), G(sd * (0.03 - 0.005 * fem), -0.12 + 0.004 * fem, -0.06), 0.014 * (1 - 0.25 * fem), 0.018 * (1 - 0.2 * fem), up=(0, 0, -1), k=0.03 * k)
+        r.ell("head", G(sd * (0.055 - 0.006 * fem) * wide, -0.06, -0.025), (0.018 * (1 - 0.2 * fem), 0.03, 0.03), k=0.02 * k)
+    r.ell("jaw", G(0, -0.112 + 0.004 * fem, -0.045), (0.04 * (1 - 0.18 * fem), 0.022, 0.04), k=0.02 * k)
     r.ell("jaw", G(0, -0.123, -0.078), (0.019 + 0.005 * (1 - fem), 0.016, 0.016), k=0.01 * k)
     r.ell("jaw", G(0, -0.112, -0.086), (0.012, 0.005, 0.004), k=0.004 * k, sub=True)
     # eyes: orbital soft tissue around the eyeball, almond-shaped lid opening, upper lid fold
-    er = 0.0118 * k * (1.25 if goblin else 1.0)
+    er = 0.0118 * k * (1.25 if goblin else 1.0) * (1 + 0.04 * fem)
     for sd in (-1, 1):
         ec = G(sd * 0.0315, -0.02, -0.0702)
         r.add_eye(ec, er, v3(sd * 0.06, -0.02, -1.0), "head")
@@ -123,9 +123,17 @@ def humanoid(rid, height=1.8, build=1.0, head_scale=1.0, ears=0.0, nose=1.0, gob
     hair_on = not (goblin or demon) and hair != "none"
     if hair_on:
         # hair = (cranium grown by the hair thickness) ∩ (volume above the hairline)
-        th = 0.011 if hair == "short" else 0.016
+        th = 0.011 if hair == "short" else (0.007 if hair == "bun" else 0.016)
         r.ell("head", G(0, 0.02, 0.014), (0.073 * wide + th, 0.089 + th, 0.096 + th))
-        if hair == "short":
+        if hair == "bun":
+            # hair pulled back tight, gathered in a bun at the back of the head
+            r.ell("head", G(0, 0.1, 0.038), (0.14, 0.13, 0.138))
+            r.isect_end(2, "head", k=0.006 * k, fur=0.85)
+            r.ell("head", G(0, 0.02, 0.008), (0.073 * wide + th * 0.8, 0.089 + th * 0.8, 0.098 + th * 0.8))
+            r.ell("head", G(0, -0.01, 0.085), (0.1, 0.085, 0.07))
+            r.isect_end(2, "head", k=0.01 * k, fur=0.85)
+            r.ell("head", G(0, 0.03, 0.115), (0.037, 0.035, 0.03), k=0.012 * k, fur=0.7)
+        elif hair == "short":
             r.ell("head", G(0, 0.1, 0.038), (0.14, 0.13, 0.138))
             r.isect_end(2, "head", k=0.006 * k, fur=1.0)
             # back and sides reach down to the nape
@@ -279,7 +287,7 @@ def humanoid(rid, height=1.8, build=1.0, head_scale=1.0, ears=0.0, nose=1.0, gob
     r.mask_fn = mask_fn
     if hair_on:
         crown = Hc + v3(0, 0.07 * k, 0.03 * k)
-        r.meta["fur"] = dict(len=(0.028 if hair == "bob" else 0.02) * k, density=1400.0, stiff=0.2 if hair == "bob" else 0.12,
+        r.meta["fur"] = dict(len=(0.028 if hair in ("bob", "beard") else 0.02) * k, density=1400.0, stiff=0.2 if hair == "bob" else 0.12,
                              comb=[0.0, -0.6, 0.4], crown=list(map(float, crown)), radial=1.0, hair=True, clump=0.6,
                              tip_light=0.15, shells=10)
     r.meta.update(gait="human", hip_height=hipY, length=0.4 * h, height=h,
